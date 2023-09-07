@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class SkillTestControl : MonoBehaviour
 {
-    public GameObject cube;
+    public GameObject chicken;
+    public GameObject galic;
+    public Transform barrel;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +20,9 @@ public class SkillTestControl : MonoBehaviour
         // { 뭔가 닭 같은거 발사하는 기능 
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            GameObject projectile = Instantiate(cube, transform.position, Quaternion.identity);
-            projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 10f, ForceMode.Impulse);
+            //GameObject projectile = Instantiate(chicken, transform.position, Quaternion.identity);
+            GameObject projectile = Instantiate(galic, barrel.position, Quaternion.identity);
+            projectile.GetComponent<Rigidbody>().AddForce(transform.forward * 15f, ForceMode.Impulse);
         }
         //  뭔가 닭 같은거 발사하는 기능 }
     }
