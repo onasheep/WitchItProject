@@ -23,7 +23,6 @@ public class Galic : MonoBehaviour
             this.gameObject.GetComponent<Rigidbody>().constraints
             = RigidbodyConstraints.FreezeAll;
             StartCoroutine(IncreaseCollider());
-            Debug.LogFormat("{0}",collision.collider.tag);
         }
         
     }
