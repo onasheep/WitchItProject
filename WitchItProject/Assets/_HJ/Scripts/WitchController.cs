@@ -22,7 +22,7 @@ public class WitchController : MonoBehaviour
     
     private bool isJump = false;
 
-
+    public bool isDead = false;
 
     void Start()
     {
@@ -35,24 +35,36 @@ public class WitchController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (isDead) { return; }
         if(isJump == false)
         {
             Move();
-            //HJ_ TODO 애니메이션 추가할 때 사용
-            //SetAnimation(name); 
         }
         else
         {
             JumpMove();
         }
+        //HJ_ TODO 애니메이션 추가할 때 사용
+        SetAnimation("MoveTotal"); 
         Turn();
     }
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && isJump == false)
+        if (isDead) { return; }
+        if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
         {
             Jump();
+        }
+
+        if(Input.GetKeyDown(KeyCode.Y))
+        {
+            isDead = true;
+        }
+
+        if (isDead)
+        {
+            myAnimator.SetTrigger("Die");
         }
     }
 
