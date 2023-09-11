@@ -6,5 +6,5 @@ using UnityEngine;
 public static class RDefine 
 {
     // TODO : 리소스로 사용할 프리팹 이름 
-    
+    public const string Hunter = "hunter"; 
 }
