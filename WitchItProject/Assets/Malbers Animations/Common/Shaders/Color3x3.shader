@@ -175,7 +175,6 @@ Shader "Malbers/Color3x3"
 		ENDCG
 	}
 	Fallback "Diffuse"
-	CustomEditor "ASEMaterialInspector"
 }
 /*ASEBEGIN
 Version=18921

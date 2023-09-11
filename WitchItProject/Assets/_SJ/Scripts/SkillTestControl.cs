@@ -8,6 +8,8 @@ public class SkillTestControl : MonoBehaviour
     public GameObject chicken;
     public GameObject galic;
     public Transform barrel;
+
+    private ISkillModule activeSkillModule;
     // Start is called before the first frame update
     void Start()
     {
