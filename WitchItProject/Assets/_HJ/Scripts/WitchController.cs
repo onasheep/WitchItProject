@@ -10,18 +10,17 @@ public class WitchController : MonoBehaviour
     [SerializeField] private Rigidbody myRigid;
     [SerializeField] private Animator myAnimator;
 
-    [SerializeField] private  Transform myCamera;
+    [SerializeField] private Transform myCamera;
 
-    [SerializeField][Range (0, 100)]private int witchHealth = 50;
-    [SerializeField][Range (0f, 100f)]private float witchMana = 50f;
+    [SerializeField][Range(0, 100)] private int witchHealth = 50;
+    [SerializeField][Range(0f, 100f)] private float witchMana = 50f;
 
 
-    [SerializeField][Range (0f, 10f)]private float moveSpeed = 5f;
-    [SerializeField][Range (0f, 10f)]private float rotationSpeed = 5f;
+    [SerializeField][Range(0f, 10f)] private float moveSpeed = 5f;
+    [SerializeField][Range(0f, 10f)] private float rotationSpeed = 5f;
     [SerializeField][Range(0f, 10f)] private float jumpForce = 5f;
-    
-    private bool isJump = false;
 
+    private bool isJump = false;
     public bool isDead = false;
 
     void Start()
@@ -33,22 +32,6 @@ public class WitchController : MonoBehaviour
 
     }
 
-    private void FixedUpdate()
-    {
-        if (isDead) { return; }
-        if(isJump == false)
-        {
-            Move();
-        }
-        else
-        {
-            JumpMove();
-        }
-        //HJ_ TODO 애니메이션 추가할 때 사용
-        SetAnimation("MoveTotal"); 
-        Turn();
-    }
-
     void Update()
     {
         if (isDead) { return; }
@@ -57,7 +40,7 @@ public class WitchController : MonoBehaviour
             Jump();
         }
 
-        if(Input.GetKeyDown(KeyCode.Y))
+        if (Input.GetKeyDown(KeyCode.Y))
         {
             isDead = true;
         }
@@ -68,6 +51,21 @@ public class WitchController : MonoBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (isDead) { return; }
+        if (isJump == false)
+        {
+            Move();
+        }
+        else
+        {
+            JumpMove();
+        }
+        //HJ_ TODO 애니메이션 추가할 때 사용
+        SetAnimation("MoveTotal");
+        Turn();
+    }
 
     void Move()
     {
@@ -90,7 +88,7 @@ public class WitchController : MonoBehaviour
         myRigid.velocity = dirVelocity;
         //==============================
     }
-    
+
     void SetAnimation(string name)
     {
         float moveDirectionZ = Input.GetAxisRaw("Vertical");

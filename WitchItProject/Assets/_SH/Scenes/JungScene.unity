@@ -709,7 +709,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1738454473}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.4, z: -8}
+  m_LocalPosition: {x: 0, y: 1.4, z: -6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1100,7 +1100,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5311698367388816459, guid: deaa6703606e990498734bcee8e52e77, type: 3}
       propertyPath: m_CameraDistance
-      value: 8
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5311698368149134080, guid: deaa6703606e990498734bcee8e52e77, type: 3}
       propertyPath: m_Follow
@@ -1128,7 +1128,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5311698368149134081, guid: deaa6703606e990498734bcee8e52e77, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8
+      value: -6
       objectReference: {fileID: 0}
     - target: {fileID: 5311698368149134081, guid: deaa6703606e990498734bcee8e52e77, type: 3}
       propertyPath: m_LocalRotation.w

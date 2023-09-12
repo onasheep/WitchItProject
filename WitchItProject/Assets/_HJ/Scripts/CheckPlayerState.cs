@@ -22,7 +22,6 @@ public class CheckPlayerState : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         if (witch.isDead && testBool == false)
         {
             witchRenderer.enabled = true;
