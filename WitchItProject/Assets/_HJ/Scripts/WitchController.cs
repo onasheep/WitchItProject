@@ -45,7 +45,7 @@ public class WitchController : MonoBehaviour
             JumpMove();
         }
         //HJ_ TODO 애니메이션 추가할 때 사용
-        SetAnimation("MoveTotal"); 
+        SetAnimation("MoveTotal");
         Turn();
     }
 
