@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7978968573451500239}
   - component: {fileID: 7970851888231945591}
   - component: {fileID: 7937885503288305189}
+  - component: {fileID: 1113013258538406827}
   m_Layer: 0
   m_Name: SM_Item_Cauldron_01
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7982835779076519497}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7981188329649325741}
@@ -99,6 +100,22 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43274024326562390, guid: c64dc0ae8a39abf4db40947139be3131, type: 2}
+--- !u!54 &1113013258538406827
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7982835779076519497}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7983124483994429065
 GameObject:
   m_ObjectHideFlags: 0

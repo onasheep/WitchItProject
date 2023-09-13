@@ -178,6 +178,7 @@ GameObject:
   - component: {fileID: 5203912538132781948}
   - component: {fileID: 5196374551803506072}
   - component: {fileID: 5236022433941673004}
+  - component: {fileID: 6291647837321711354}
   m_Layer: 0
   m_Name: SM_Item_Bottle_Clear_01
   m_TagString: Untagged
@@ -194,7 +195,7 @@ Transform:
   m_GameObject: {fileID: 5209313230375284696}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5214928528441010164}
@@ -266,3 +267,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43344088145005624, guid: 12ab6ec13e81cdf44a231073c372a96e, type: 2}
+--- !u!54 &6291647837321711354
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5209313230375284696}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5446968050967493404}
   - component: {fileID: 5446221839720306782}
   - component: {fileID: 5446002131750460602}
+  - component: {fileID: 444402440105136290}
   m_Layer: 0
   m_Name: SM_Prop_Bench_01_Snow
   m_TagString: Untagged
@@ -128,3 +129,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43410136700269154, guid: fbf82a821775dca4b8a51685f45427f6, type: 2}
+--- !u!54 &444402440105136290
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5436686705026056326}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
