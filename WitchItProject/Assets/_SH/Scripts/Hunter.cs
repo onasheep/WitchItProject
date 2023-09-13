@@ -10,52 +10,88 @@ public class Hunter : MonoBehaviour
 
     카메라와 오른손은 크로스헤어를 바라본다
      
-     */
+    */
 
     private Transform myCamera;
     private GameObject crossHair;
+
+
+    private GameObject bulletPrefab;
+    private Vector3 fireDirection;
+
+    private Rigidbody rigid;
+    private Animator animator;
 
     private RaycastHit hunterRayHit;
 
     private void Start()
     {
         myCamera = GameObject.Find("HunterCamera").transform;
+        myCamera.SetParent(transform);
+        myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = GameObject.Find("CrossHair");
+
+        bulletPrefab = (GameObject)Resources.Load("Bullet");
+
+        rigid = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
-        Physics.Raycast(myCamera.transform.position, myCamera.transform.forward, out hunterRayHit, 15f);
+        Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
-        myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
+        MoveHunter();
     }
 
     private void FixedUpdate()
     {
-        RotateCameraVertical();
-        RotateCameraHorizontal();
+        RotateVertical();
+        RotateHorizontal();
 
         if (hunterRayHit.collider != null)
         {
-            crossHair.transform.position = hunterRayHit.collider.transform.position;
+            crossHair.transform.position = hunterRayHit.point;
         }
         else
         {
             crossHair.transform.position = myCamera.transform.forward.normalized * 15;
         }
+
+        fireDirection = crossHair.transform.position - myCamera.transform.position;
     }
 
-    private void RotateCameraVertical()
+    private void ThrowKnife()
     {
-        float mouseVerticalMove = Input.GetAxis("Mouse X");
+        if (Input.GetButtonDown("Fire1"))
+        {
 
-        myCamera.Rotate(Vector3.up * mouseVerticalMove * -5);
+        }
     }
 
-    private void RotateCameraHorizontal()
+    private void MoveHunter()
     {
-        float mouseHorizontalMove = Input.GetAxis("Mouse Y");
+        float verticalInput = Input.GetAxis("Vertical");
+        float horizontalInput = Input.GetAxis("Horizontal");
 
-        myCamera.Rotate(Vector3.right * mouseHorizontalMove * 5);
+        rigid.AddForce(transform.forward * verticalInput * 50);
+        rigid.AddForce(transform.right * horizontalInput * 50);
+
+        animator.SetFloat("InputVertical", verticalInput);
+        animator.SetFloat("InputHorizontal", horizontalInput);
+    }
+
+    private void RotateVertical()
+    {
+        float mouseVerticalMove = Input.GetAxis("Mouse Y");
+
+        myCamera.Rotate(Vector3.right * mouseVerticalMove * -5);
+    }
+
+    private void RotateHorizontal()
+    {
+        float mouseHorizontalMove = Input.GetAxis("Mouse X");
+
+        transform.Rotate(Vector3.up * mouseHorizontalMove * 5);
     }
 }
