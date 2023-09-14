@@ -8,7 +8,7 @@ public class Cross : MonoBehaviour
 
     private float scale = 0f;
     private float time = 0f;
-    private float maxRadius = 6f;
+    private float maxRadius = 8f;
     // Start is called before the first frame update
     void Start()
     {

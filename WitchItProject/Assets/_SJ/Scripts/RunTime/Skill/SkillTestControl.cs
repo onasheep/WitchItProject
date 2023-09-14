@@ -27,21 +27,21 @@ public class SkillTestControl : PlayerBase
         if(Input.GetKeyDown(KeyCode.Space))
         {
             // Wolf Test
-            GameObject skillObj = Instantiate(ResourceManager.resources[RDefine.WOLF_OBJ], barrel_W.position, Quaternion.identity);
+            GameObject skillObj = Instantiate(ResourceManager.objs[RDefine.WOLF_OBJ], barrel_W.position, Quaternion.identity);
             base.skillSlot.Slots[0].ActivateSkill(skillObj);
             
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             // Cross Test
-            GameObject skillObj = Instantiate(ResourceManager.resources[RDefine.CROSS_OBJ], barrel_C.position, Quaternion.identity);
+            GameObject skillObj = Instantiate(ResourceManager.objs[RDefine.CROSS_OBJ], barrel_C.position, Quaternion.identity);
             base.skillSlot.Slots[1].ActivateSkill(skillObj);
 
         }
         if (Input.GetKeyDown(KeyCode.W))
         {
             // Cross Test
-            GameObject skillObj = Instantiate(ResourceManager.resources["Mushroom_Orb"/*RDefine.MUSHROOM_OBJ*/], barrel_C.position, Quaternion.identity);
+            GameObject skillObj = Instantiate(ResourceManager.objs["Mushroom_Orb"/*RDefine.MUSHROOM_OBJ*/], barrel_C.position, Quaternion.identity);
             base.skillSlot.Slots[1].ActivateSkill(skillObj);
 
         }

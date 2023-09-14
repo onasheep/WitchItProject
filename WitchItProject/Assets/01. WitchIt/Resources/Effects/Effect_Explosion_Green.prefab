@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 852477075284106160}
   - component: {fileID: 655925182688085670}
   - component: {fileID: 655402442683149396}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4902,7 +4902,7 @@ GameObject:
   - component: {fileID: 852538365610597662}
   - component: {fileID: 655893470188520054}
   - component: {fileID: 655392486513117036}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Radius
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9785,8 +9785,8 @@ GameObject:
   - component: {fileID: 2593483448373827194}
   - component: {fileID: 2558443491706648816}
   - component: {fileID: 5676709629234639044}
-  m_Layer: 0
-  m_Name: Explosion_Green
+  m_Layer: 9
+  m_Name: Effect_Explosion_Green
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14706,7 +14706,7 @@ GameObject:
   - component: {fileID: 2401063953716047142}
   - component: {fileID: 2559141568669393344}
   - component: {fileID: 2560107733368303540}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SmokeCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19597,7 +19597,7 @@ GameObject:
   - component: {fileID: 9088483670528060078}
   - component: {fileID: 9001680692815319234}
   - component: {fileID: 9001390634326284874}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TrailEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24488,7 +24488,7 @@ GameObject:
   - component: {fileID: 9088342582182462764}
   - component: {fileID: 9002630344252262580}
   - component: {fileID: 9002050248879997690}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SmokeTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
