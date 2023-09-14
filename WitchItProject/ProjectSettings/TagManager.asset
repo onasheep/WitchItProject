@@ -20,10 +20,10 @@ TagManager:
   - ChangeableObjects
   - Witch
   - Hunter
-  - 
-  - 
-  - 
-  - 
+  - Projectile
+  - Ground
+  - Wall
+  - Boarder
   - 
   - 
   - 

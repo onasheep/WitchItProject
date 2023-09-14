@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1364463787848126919}
   - component: {fileID: -1940894461565551165}
   - component: {fileID: -421656596283250765}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cross
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 8117560428602807208}
   - component: {fileID: 8734306647367142843}
   - component: {fileID: 6429538529598204326}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: BlockArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
