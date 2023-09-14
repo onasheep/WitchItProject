@@ -7,7 +7,7 @@ public class Skill_Beartrap : SkillBase
     public string SkillType { get; private set; }
     public float MoveSpeed { get; private set; }
 
-    public Skill_Beartrap(string skillType_ = "Beartrap", float moveSpeed_ = 1f)
+    public Skill_Beartrap(string skillType_ = "Beartrap", float moveSpeed_ = 5f)
     {
         SkillType = skillType_;
         MoveSpeed = moveSpeed_;
