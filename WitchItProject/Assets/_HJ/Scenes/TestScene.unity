@@ -626,6 +626,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WitchCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 8080983533844796367, guid: b4bea886650d68a4f880df3a566507c5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8080983533845068635, guid: b4bea886650d68a4f880df3a566507c5, type: 3}
       propertyPath: m_RootOrder
       value: 10
@@ -729,17 +733,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eaceba4b21f1fd34599a4053a8666b64, type: 3}
---- !u!114 &1805478666270429346 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1805478665588067675, guid: eaceba4b21f1fd34599a4053a8666b64, type: 3}
-  m_PrefabInstance: {fileID: 1805478666270429345}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &5311698366854799072
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -867,6 +860,10 @@ PrefabInstance:
     - target: {fileID: 6956904834655323067, guid: 0b2bb5a31f8d31e4b8fabaf6660fdd51, type: 3}
       propertyPath: m_Name
       value: HunterCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956904834655323067, guid: 0b2bb5a31f8d31e4b8fabaf6660fdd51, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0b2bb5a31f8d31e4b8fabaf6660fdd51, type: 3}

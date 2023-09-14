@@ -24,10 +24,10 @@ public class Wolf : MonoBehaviour
         isRun = true;
         isFind = false;
         ray = new Ray(rayStart.position, rayStart.forward);
+
         Invoke("PlayDieAnim", existTime);
     }
 
-    // Update is called once per frame
     void Update()
     {
         CheckRay();
@@ -51,16 +51,13 @@ public class Wolf : MonoBehaviour
         animator.SetTrigger("isEnd");        
     }
 
-
     // TEST : 임시 프리팹 파괴 함수 
     // 추후 설계에 따라 오브젝트 풀 또는 깔끔한 방법으로 파괴
-    // AnimEvent로 isEnd 애니메이션 실행 이후 실행
+    // AnimEvent로 isEnd Smell 애니메이션 실행 이후 실행
     private void DestroyWolf()
     {
         Destroy(this.gameObject);
     }
-
-
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag.Equals("Witch"))
@@ -70,7 +67,6 @@ public class Wolf : MonoBehaviour
         }
         
     }
-
     private void OnTriggerExit(Collider other)
     {
         if(other.gameObject.tag.Equals("Witch"))

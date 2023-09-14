@@ -18,7 +18,9 @@ public class Cross : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         // 태그로 하니까 작동 안하던걸 레이어로 하니 작동함
-        if(collision.gameObject.layer != LayerMask.NameToLayer("Witch"))
+        Physics.IgnoreLayerCollision(9, 9);
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Default")
+            /*||collision.gameObject.layer == LayerMask.NameToLayer("Ground")*/)
         {
             this.gameObject.GetComponent<Rigidbody>().constraints
             = RigidbodyConstraints.FreezeAll;

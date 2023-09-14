@@ -43,7 +43,7 @@ public static partial class GFunc
         else { return default(List<GameObject>); }
     }       // GetChildrenObjs()
 
-
+    
     //! 특정 오브젝트의 자식 오브젝트를 서치해서 찾는 함수 
     public static GameObject FindChildObj
         (this GameObject targetObj_, string objName_)

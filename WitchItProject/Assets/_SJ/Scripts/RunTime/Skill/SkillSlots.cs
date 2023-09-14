@@ -6,6 +6,9 @@ public class SkillSlot
 {
     private int slotCount = -1;
     public SkillBase[] Slots { get; private set; }
+    public SkillManager skillManager { get; private set; }
+
+
     // Enum Type 
     // Witch Hunter 
 
@@ -22,19 +25,27 @@ public class SkillSlot
 
     public SkillSlot(PlayerBase playerController_, int slotCount_ = 2)
     {
+        skillManager = new SkillManager();
+
         slotCount = slotCount_;
         Slots = new SkillBase[slotCount];
+             
 
+        // TODO : 선택된 Hunter Witch에 따라 다른 Dictionary를 가져오고 
+        // 선택된 Skill 이름을 받아 Key 값을 통해 Skill 을 불러내 초기화하고 slot에 넣어 준다.
+        skillManager.HunterSkill["Beartrap"].Init(playerController_);
+        skillManager.HunterSkill["Wolf"].Init(playerController_);
+        skillManager.HunterSkill["Cross"].Init(playerController_);
 
-        Skill_Wolf skill_wolf = new Skill_Wolf();
-        Skill_Cross skill_cross = new Skill_Cross();
+        Slots[0] = skillManager.HunterSkill["Wolf"];
 
-        skill_wolf.Init(playerController_);
-        skill_cross.Init(playerController_);
-
-        Slots[0] = skill_cross;
+        Slots[1] = skillManager.HunterSkill["Cross"];
     }
 
+    public void SelSkill()
+    {
+
+    }
 
     //public bool CheckValid()
     //{
