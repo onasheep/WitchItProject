@@ -16,4 +16,7 @@ public static class RDefine
     public const string EYE_OBJ = "Eye";
     //  ¸¶³à ½ºÅ³ ÇÁ¸®ÆÕ }
 
+
+    // 09/13 Jung literal
+    public const string BULLET_OBJ = "Bullet";
 }
