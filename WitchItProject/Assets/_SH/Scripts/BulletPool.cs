@@ -15,6 +15,8 @@ public class BulletPool : MonoBehaviour
     {
         instance = this;
 
+        bulletPrefab = (GameObject)Resources.Load("Bullet");
+
         Initialize(30);
     }
 
@@ -28,34 +30,36 @@ public class BulletPool : MonoBehaviour
 
     private Bullet CreateNewObject()
     {
-        Bullet newObj = Instantiate(bulletPrefab).GetComponent<Bullet>();
-        newObj.gameObject.SetActive(false);
-        newObj.transform.SetParent(transform);
-        return newObj;
+        Bullet newObj_ = Instantiate(bulletPrefab).GetComponent<Bullet>();
+        newObj_.gameObject.SetActive(false);
+        newObj_.transform.SetParent(transform);
+        newObj_.transform.localPosition = Vector3.zero;
+        return newObj_;
     }
 
     public static Bullet GetObject()
     {
         if (instance.bulletQueue.Count > 0)
         {
-            Bullet obj = instance.bulletQueue.Dequeue();
-            obj.gameObject.SetActive(true);
-            obj.transform.SetParent(null);
-            return obj;
+            Bullet obj_ = instance.bulletQueue.Dequeue();
+            obj_.gameObject.SetActive(true);
+            obj_.transform.SetParent(null);
+            return obj_;
         }
         else
         {
-            Bullet newObj = instance.CreateNewObject();
-            newObj.gameObject.SetActive(true);
-            newObj.transform.SetParent(null);
-            return newObj;
+            Bullet newObj_ = instance.CreateNewObject();
+            newObj_.gameObject.SetActive(true);
+            newObj_.transform.SetParent(null);
+            return newObj_;
         }
     }
 
-    public static void ReturnObject(Bullet obj)
+    public static void ReturnObject(Bullet obj_)
     {
-        obj.gameObject.SetActive(false);
-        obj.transform.SetParent(instance.transform);
-        instance.bulletQueue.Enqueue(obj);
+        obj_.gameObject.SetActive(false);
+        obj_.transform.SetParent(instance.transform);
+        obj_.transform.localPosition = Vector3.zero;
+        instance.bulletQueue.Enqueue(obj_);
     }
 }

@@ -1,3 +1,4 @@
+using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,10 +16,6 @@ public class Hunter : MonoBehaviour
     private Transform myCamera;
     private GameObject crossHair;
 
-
-    private GameObject bulletPrefab;
-    private Vector3 fireDirection;
-
     private Rigidbody rigid;
     private Animator animator;
 
@@ -31,8 +28,6 @@ public class Hunter : MonoBehaviour
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = GameObject.Find("CrossHair");
 
-        bulletPrefab = (GameObject)Resources.Load("Bullet");
-
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
@@ -42,12 +37,17 @@ public class Hunter : MonoBehaviour
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
         MoveHunter();
+        Jump();
+        ThrowKnife();
+
+        LimitCameraAngle();
     }
 
     private void FixedUpdate()
     {
         RotateVertical();
         RotateHorizontal();
+
 
         if (hunterRayHit.collider != null)
         {
@@ -57,15 +57,35 @@ public class Hunter : MonoBehaviour
         {
             crossHair.transform.position = myCamera.transform.forward.normalized * 15;
         }
-
-        fireDirection = crossHair.transform.position - myCamera.transform.position;
     }
 
     private void ThrowKnife()
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            Bullet obj_ = BulletPool.GetObject();
 
+            obj_.transform.position = myCamera.position + myCamera.forward;
+            obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
+
+            animator.SetTrigger("Shot");
+        }
+        //else if (Input.GetButton("Fire1"))
+        //{
+        //    Bullet obj_ = BulletPool.GetObject();
+
+        //    obj_.transform.position = myCamera.position + myCamera.forward;
+        //    obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
+        //}
+    }
+
+    private void Jump()
+    {
+        if (Input.GetButtonDown("Jump"))
+        {
+            animator.SetBool("IsGround", false);
+            animator.SetTrigger("Jump");
+            rigid.AddForce(transform.up * 6, ForceMode.Impulse);
         }
     }
 
@@ -88,10 +108,46 @@ public class Hunter : MonoBehaviour
         myCamera.Rotate(Vector3.right * mouseVerticalMove * -5);
     }
 
+    private void LimitCameraAngle()
+    {
+        Vector3 currentAngle = myCamera.transform.rotation.eulerAngles;
+
+        if (currentAngle.x > 180)
+        {
+            currentAngle.x = Mathf.Clamp(currentAngle.x, 270, 360);
+        }
+        else
+        {
+            currentAngle.x = Mathf.Clamp(currentAngle.x, 0, 72);
+        }
+
+        currentAngle.y = transform.rotation.eulerAngles.y;
+        currentAngle.z = transform.rotation.eulerAngles.z;
+
+        myCamera.rotation = Quaternion.Euler(currentAngle);
+    }
+
     private void RotateHorizontal()
     {
         float mouseHorizontalMove = Input.GetAxis("Mouse X");
 
         transform.Rotate(Vector3.up * mouseHorizontalMove * 5);
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        if (animator.GetBool("IsGround") == false)
+        {
+            foreach (ContactPoint contact in collision.contacts)
+            {
+                Vector3 point = contact.point;
+
+                if (point.y <= transform.position.y)
+                {
+                    animator.SetBool("IsGround", true);
+                    break;
+                }
+            }
+        }
     }
 }
