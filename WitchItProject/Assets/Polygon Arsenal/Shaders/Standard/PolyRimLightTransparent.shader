@@ -28,10 +28,11 @@ Shader "PolygonArsenal/PolyRimLightTransparent"
        float4 _RimColor;
        float _RimWidth;
 	   float _RimGlow;
+       float _Alpha;
 
        void surf (Input IN, inout SurfaceOutput o) 
        {
-           o.Albedo = _InnerColor.rgb;
+           o.Albedo = _InnerColor.rgb ;
            half rim = 1.0 - saturate(dot (normalize(IN.viewDir), o.Normal));
            o.Emission = _RimColor.rgb * _RimGlow * pow (rim, _RimWidth);
        }

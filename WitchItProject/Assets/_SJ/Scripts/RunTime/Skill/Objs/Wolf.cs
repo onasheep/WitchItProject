@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Wolf : MonoBehaviour
@@ -12,20 +13,32 @@ public class Wolf : MonoBehaviour
 
     private bool isFind = default;
     private bool isRun = default;
+
+    //  자기에게 붙어 있으므로 바인딩이 유리할지도? 
+    public GameObject effect_Question;
+    public GameObject effect_Skull;
     
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        rigid = this.GetComponent<Rigidbody>(); 
+        Init();
+
+        Invoke("PlayDieAnim", existTime);
+    }
+
+    private void Init()
+    {
+        rigid = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
         rayStart = this.gameObject.FindChildObj("CG").GetComponent<Transform>();
+
+        effect_Question.SetActive(true);
+
 
         isRun = true;
         isFind = false;
         ray = new Ray(rayStart.position, rayStart.forward);
-
-        Invoke("PlayDieAnim", existTime);
     }
 
     void Update()
@@ -58,10 +71,15 @@ public class Wolf : MonoBehaviour
     {
         Destroy(this.gameObject);
     }
+
+
     private void OnTriggerStay(Collider other)
     {
         if(other.gameObject.tag.Equals("Witch"))
         {
+            effect_Skull.SetActive(true);
+            effect_Question.SetActive(false);
+
             isFind = true;
             animator.SetBool("isFind", isFind);
         }
@@ -71,6 +89,8 @@ public class Wolf : MonoBehaviour
     {
         if(other.gameObject.tag.Equals("Witch"))
         {
+            effect_Question.SetActive(true);
+            effect_Skull.SetActive(false);
             isFind = false;
             animator.SetBool("isFind", isFind) ;
         }
