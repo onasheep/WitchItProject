@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class Mushroom_Orb : MonoBehaviour
 {
+    private float existTime = 2f;
     private void OnTriggerEnter(Collider other)
     {
         // LayerMask ¹«½Ã
         Physics.IgnoreLayerCollision(9, 9);
+
+        GameObject effectOrb = Instantiate(ResourceManager.effects[RDefine.EFFECT_ORB],this.transform.position, Quaternion.identity);  
+        Destroy(effectOrb, existTime);
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")
             || other.gameObject.layer == LayerMask.NameToLayer("Wall"))

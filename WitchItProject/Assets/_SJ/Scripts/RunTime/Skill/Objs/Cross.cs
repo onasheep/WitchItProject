@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cross : MonoBehaviour
 {
     public GameObject blockCollider;
+    public GameObject particleObject;
 
     private float scale = 0f;
     private float time = 0f;
@@ -19,9 +20,13 @@ public class Cross : MonoBehaviour
     {
         // 태그로 하니까 작동 안하던걸 레이어로 하니 작동함
         Physics.IgnoreLayerCollision(9, 9);
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Default")
-            /*||collision.gameObject.layer == LayerMask.NameToLayer("Ground")*/)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")
+            ||collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
+            // { 콜라이더 중복 충돌 예외 처리
+            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            //  콜라이더 중복 충돌 예외 처리 }
+
             this.gameObject.GetComponent<Rigidbody>().constraints
             = RigidbodyConstraints.FreezeAll;
             StartCoroutine(IncreaseCollider());
@@ -34,7 +39,10 @@ public class Cross : MonoBehaviour
         while(scale < maxRadius)
         {
             time += Time.deltaTime;
-            scale += time * 0.2f;
+            scale += time * 0.1f;
+
+            particleObject.transform.localScale = new Vector3(scale, scale, scale);
+            
             blockCollider.transform.localScale = new Vector3(scale, scale, scale);
             blockCollider.GetComponent<SphereCollider>().radius =
                 blockCollider.GetComponent<MeshFilter>().mesh.bounds.extents.x;
@@ -50,7 +58,10 @@ public class Cross : MonoBehaviour
         while (0 < scale)
         {
             time += Time.deltaTime;
-            scale -= time * 0.0005f;
+            scale -= time * 0.00005f;
+
+            particleObject.transform.localScale = new Vector3(scale, scale, scale);
+
             blockCollider.transform.localScale = new Vector3(scale, scale, scale);
             blockCollider.GetComponent<SphereCollider>().radius =
                 blockCollider.GetComponent<MeshFilter>().mesh.bounds.extents.x;

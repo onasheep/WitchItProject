@@ -18,7 +18,6 @@ public class Skill_Mushroom : SkillBase
     {
         object_.GetComponent<Rigidbody>().AddForce
             (Vector3.forward * MoveSpeed, ForceMode.Impulse);
-        Debug.LogFormat("{0}", MoveSpeed);
-
+        
     }
 }

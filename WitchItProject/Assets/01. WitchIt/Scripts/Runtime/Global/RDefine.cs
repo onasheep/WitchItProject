@@ -17,6 +17,8 @@ public static class RDefine
 
     // { ¸¶³à ½ºÅ³ ÇÁ¸®ÆÕ 
     public const string EFFECT_EXPLOSION_GREEN = "Effect_Explosion_Green";
+    public const string EFFECT_SMOKE = "Effect_Smoke";
+    public const string EFFECT_ORB = "Effect_Orb";
     public const string MUSHROOM_OBJ = "Mushroom";
     public const string EYE_OBJ = "Eye";
     //  ¸¶³à ½ºÅ³ ÇÁ¸®ÆÕ }
