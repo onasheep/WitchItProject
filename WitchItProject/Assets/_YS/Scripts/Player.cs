@@ -1,12 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
+using Photon.Realtime;
+using Cinemachine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviourPunCallbacks, IPunObservable
 {
     private Rigidbody rigid;
     private Animator animator;
     private Transform tr;
+    private new Camera camera;
+
+    private PhotonView pv;
+
+    private CinemachineVirtualCamera virtualCamera;
 
     public float speed = 4.0f;
     public float turnSpeed = 360.0f;
@@ -24,13 +32,29 @@ public class Player : MonoBehaviour
         rigid = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
         tr = GetComponent<Transform>();
+        camera = Camera.main;
+
+        pv = GetComponent<PhotonView>();
+        virtualCamera = GameObject.FindObjectOfType<CinemachineVirtualCamera>();
+
+        if(pv.IsMine)
+        {
+            virtualCamera.Follow = transform;
+            virtualCamera.LookAt = transform;
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerInput();
-        PlayerMove();
+        if(pv.IsMine)
+        {
+            PlayerInput();
+            PlayerMove();
+            PlayerTurn();
+        }
+        
     }
 
     void PlayerInput()
@@ -49,5 +73,20 @@ public class Player : MonoBehaviour
         tr.Rotate(rotateVec * turnSpeed * Time.deltaTime);
 
         animator.SetBool("isRun", moveVec != Vector3.zero);
+    }
+
+    void PlayerTurn()
+    {
+        transform.LookAt(transform.position + moveVec);
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(transform.rotation);
+        }
+        
     }
 }

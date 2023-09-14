@@ -1,23 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 
 public class GameManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        // TODO : 씬 전환 기타 사유로 오류 날 수 있음
-        // 방어로직 한개 추가 예정 IsValid()
-        ResourceManager.Init();                                        
+        CreatePlayer();
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+        
+    }
+
+    void CreatePlayer()
+    {
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        int idx = Random.Range(0, points.Length);
+
+        PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
     }
 }
-
-
