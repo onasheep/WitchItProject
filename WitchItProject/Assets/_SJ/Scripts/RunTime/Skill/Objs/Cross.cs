@@ -5,6 +5,7 @@ using UnityEngine;
 public class Cross : MonoBehaviour
 {
     public GameObject blockCollider;
+    public GameObject particleObject;
 
     private float scale = 0f;
     private float time = 0f;
@@ -14,27 +15,52 @@ public class Cross : MonoBehaviour
     {
 
     }
-    
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
         // 태그로 하니까 작동 안하던걸 레이어로 하니 작동함
         Physics.IgnoreLayerCollision(9, 9);
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Default")
-            /*||collision.gameObject.layer == LayerMask.NameToLayer("Ground")*/)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Ground")
+            || other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
+            // { 콜라이더 중복 충돌 예외 처리
+            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+            //  콜라이더 중복 충돌 예외 처리 }
+
             this.gameObject.GetComponent<Rigidbody>().constraints
             = RigidbodyConstraints.FreezeAll;
             StartCoroutine(IncreaseCollider());
         }
-        
     }
+
+    // LEGACY : 
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    // 태그로 하니까 작동 안하던걸 레이어로 하니 작동함
+    //    Physics.IgnoreLayerCollision(9, 9);
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")
+    //        ||collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+    //    {
+    //        // { 콜라이더 중복 충돌 예외 처리
+    //        this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+    //        //  콜라이더 중복 충돌 예외 처리 }
+
+    //        this.gameObject.GetComponent<Rigidbody>().constraints
+    //        = RigidbodyConstraints.FreezeAll;
+    //        StartCoroutine(IncreaseCollider());
+    //    }
+        
+    //}
     private IEnumerator IncreaseCollider()
     {
         blockCollider.transform.localScale = Vector3.zero;
         while(scale < maxRadius)
         {
             time += Time.deltaTime;
-            scale += time * 0.2f;
+            scale += time * 0.1f;
+
+            particleObject.transform.localScale = new Vector3(scale, scale, scale);
+            
             blockCollider.transform.localScale = new Vector3(scale, scale, scale);
             blockCollider.GetComponent<SphereCollider>().radius =
                 blockCollider.GetComponent<MeshFilter>().mesh.bounds.extents.x;
@@ -47,17 +73,27 @@ public class Cross : MonoBehaviour
 
     private IEnumerator DecreaseCollider()
     {
+
         while (0 < scale)
         {
             time += Time.deltaTime;
-            scale -= time * 0.0005f;
-            blockCollider.transform.localScale = new Vector3(scale, scale, scale);
+            scale -= time * 0.005f;
+
+            Vector3 scaleVector = new Vector3(scale,scale,scale);
+
+            particleObject.transform.localScale = scaleVector;
+            blockCollider.transform.localScale = scaleVector;
+            
             blockCollider.GetComponent<SphereCollider>().radius =
                 blockCollider.GetComponent<MeshFilter>().mesh.bounds.extents.x;
             yield return null;
         }       // loop : 범위가 작아지고 그 동안 범위를 마녀는 이동 할 수 없음
-        this.gameObject.SetActive(false);
-        time = 0f;
+
+        GameObject effect = 
+            Instantiate(ResourceManager.effects[RDefine.EFFECT_EXPLOSION_YELLOW], this.transform.position + new Vector3(0f, 0.5f,0f), Quaternion.identity);
+        Destroy(effect,1f);
+
+        Destroy(this.gameObject);        
     }       // DecreaseCollider()
 
 }

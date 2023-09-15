@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4087417048328140884}
   - component: {fileID: 4087417048327096556}
   - component: {fileID: -4168750312054831007}
-  - component: {fileID: 143121937165503683}
+  - component: {fileID: 3463216507723953186}
   - component: {fileID: -351612706789319144}
   m_Layer: 9
   m_Name: Mushroom
@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4087417048325104776}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.3, y: 0.088, z: -4.14}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
@@ -102,8 +102,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!135 &143121937165503683
-SphereCollider:
+--- !u!136 &3463216507723953186
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -112,9 +112,10 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.18
-  m_Center: {x: -0.0000072568655, y: 0.07, z: 0.00022804737}
+  m_Radius: 0.2
+  m_Height: 0.60531765
+  m_Direction: 1
+  m_Center: {x: -0.0000072568655, y: 0.23834106, z: 0.00022804737}
 --- !u!114 &-351612706789319144
 MonoBehaviour:
   m_ObjectHideFlags: 0

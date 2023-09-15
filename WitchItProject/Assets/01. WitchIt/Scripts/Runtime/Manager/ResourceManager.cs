@@ -38,7 +38,6 @@ public static class ResourceManager
         // TEST :
         #endregion
 
-
         foreach (GameObject resource in effectResource)
         {
             effects.Add(resource.name, resource);

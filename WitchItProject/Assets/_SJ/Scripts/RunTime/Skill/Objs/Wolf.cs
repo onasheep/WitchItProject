@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Wolf : MonoBehaviour
 {
-    private Rigidbody rigid;
-    private Animator animator;
+    private Rigidbody rigid = default;
+    private Animator animator = default;
 
     private Ray ray;
-    private Transform rayStart;
+    private Transform rayStart = default;
     private float rayDist = 1.5f;
     private float existTime = 10f;
 
@@ -17,7 +17,8 @@ public class Wolf : MonoBehaviour
     //  자기에게 붙어 있으므로 바인딩이 유리할지도? 
     public GameObject effect_Question;
     public GameObject effect_Skull;
-    
+
+    private Vector3 smokeEffectOffset = default;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +34,12 @@ public class Wolf : MonoBehaviour
         animator = this.GetComponent<Animator>();
         rayStart = this.gameObject.FindChildObj("CG").GetComponent<Transform>();
 
-        effect_Question.SetActive(true);
+        float width = this.GetComponentInChildren<BoxCollider>().size.z;
+        float height = this.GetComponentInChildren<BoxCollider>().size.y;
 
+        smokeEffectOffset = new Vector3(0f, height / 2,width / 2);
+
+        effect_Question.SetActive(true);
 
         isRun = true;
         isFind = false;
@@ -69,30 +74,34 @@ public class Wolf : MonoBehaviour
     // AnimEvent로 isEnd Smell 애니메이션 실행 이후 실행
     private void DestroyWolf()
     {
+        
+        GameObject effect = Instantiate(ResourceManager.effects[RDefine.EFFECT_SMOKE], this.transform.position+ smokeEffectOffset, Quaternion.identity);
+        Destroy(effect, 2f);
         Destroy(this.gameObject);
     }
 
 
     private void OnTriggerStay(Collider other)
     {
-        if(other.gameObject.tag.Equals("Witch"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Witch"))
         {
             effect_Skull.SetActive(true);
             effect_Question.SetActive(false);
 
             isFind = true;
             animator.SetBool("isFind", isFind);
-        }
-        
+        }       // if : 마녀가 범위 안에 있는 경우
+
     }
     private void OnTriggerExit(Collider other)
     {
-        if(other.gameObject.tag.Equals("Witch"))
+        if(other.gameObject.layer == LayerMask.NameToLayer("Witch"))
         {
             effect_Question.SetActive(true);
             effect_Skull.SetActive(false);
+
             isFind = false;
             animator.SetBool("isFind", isFind) ;
-        }
+        }       // if : 마녀가 범위 밖에 있는 경우
     }
 }

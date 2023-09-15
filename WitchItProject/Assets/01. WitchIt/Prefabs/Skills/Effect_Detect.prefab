@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2600857064028987890}
   - component: {fileID: 5434365698330418125}
   m_Layer: 0
-  m_Name: Nova
+  m_Name: Effect_Detect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
