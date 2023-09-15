@@ -4,6 +4,10 @@ public static class RDefine
 {
     // TODO : ∏Æº“Ω∫∑Œ ªÁøÎ«“ «¡∏Æ∆’ ¿Ã∏ß 
 
+    public const string OBJ_PATH = "Objs";
+    public const string EFFECT_PATH = "Effects";
+
+
     // { «Â≈Õ Ω∫≈≥ «¡∏Æ∆’ 
     public const string WOLF_OBJ = "Wolf";
     public const string CROSS_OBJ = "Cross";
@@ -12,6 +16,7 @@ public static class RDefine
 
 
     // { ∏∂≥‡ Ω∫≈≥ «¡∏Æ∆’ 
+    public const string EFFECT_EXPLOSION_GREEN = "Effect_Explosion_Green";
     public const string MUSHROOM_OBJ = "Mushroom";
     public const string EYE_OBJ = "Eye";
     //  ∏∂≥‡ Ω∫≈≥ «¡∏Æ∆’ }

@@ -9,7 +9,7 @@ public class Mushroom : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody>();
-        
+
         float x = Random.Range(-1f, 1f);
         float z = Random.Range(-1f, 1f);
 
@@ -34,17 +34,18 @@ public class Mushroom : MonoBehaviour
     {
         // LayerMask ¹«½Ã
         Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Projectile"), LayerMask.NameToLayer("Projectile"));
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")
+           || collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-
             this.transform.up = collision.GetContact(0).normal;
             this.transform.localScale *= 2f;
-            Instantiate(ResourceManager.resources["Explosion_Green"], this.transform);
+            Instantiate(ResourceManager.effects[RDefine.EFFECT_EXPLOSION_GREEN], this.transform);
             rigid.constraints = RigidbodyConstraints.FreezeAll;
             rigid.velocity = Vector3.zero;
             rigid.useGravity = false;
-            
+
         }
     }
- 
 }
+ 
+
