@@ -25,7 +25,7 @@ public class WitchController : MonoBehaviour
 
     void Start()
     {
-        myCamera = GameObject.Find("PlayerCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
+        myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
         //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
         myRigid = GetComponent<Rigidbody>();
         myAnimator = GetComponent<Animator>();
@@ -38,6 +38,7 @@ public class WitchController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
         {
             Jump();
+            myAnimator.SetTrigger("Jumping");
         }
 
         if (Input.GetKeyDown(KeyCode.Y))
@@ -127,6 +128,7 @@ public class WitchController : MonoBehaviour
     void Jump()
     {
         isJump = true;
+       // myAnimator.SetBool("Jumping", false);
         myRigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
     }
     void JumpMove()

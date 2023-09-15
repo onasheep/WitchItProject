@@ -224,4 +224,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   introCanvas: {fileID: 0}
+  titleCanvas: {fileID: 0}
   introVideo: {fileID: 0}
