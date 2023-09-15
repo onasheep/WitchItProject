@@ -24,7 +24,6 @@ public class SkillManager
 
         Skill_Mushroom skill_mushroom = new Skill_Mushroom();
 
-
         HunterSkill.Add(skill_wolf.SkillType,skill_wolf);
         HunterSkill.Add(skill_cross.SkillType, skill_cross);
         HunterSkill.Add(skill_beartrap.SkillType, skill_beartrap);

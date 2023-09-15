@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class SkillTestControl : PlayerBase
 {
-    public GameObject chicken;
-    public GameObject cross;
     public Transform barrel_W;
     public Transform barrel_C;
 

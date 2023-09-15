@@ -25,6 +25,8 @@ public class Mushroom : MonoBehaviour
 
     private void DestroyMushroom()
     {
+        GameObject effect = Instantiate(ResourceManager.effects[RDefine.EFFECT_NOVA_YELLOW], transform.position, Quaternion.Euler(-90f,0f,0f));
+        Destroy(effect, 1f);
         Destroy(this.gameObject);
     }
 
@@ -42,8 +44,10 @@ public class Mushroom : MonoBehaviour
             //  콜라이더 중복 충돌 예외 처리 }
 
             this.transform.up = collision.GetContact(0).normal;
+
             this.transform.localScale *= 2f;
             Instantiate(ResourceManager.effects[RDefine.EFFECT_EXPLOSION_GREEN], this.transform);
+
             rigid.constraints = RigidbodyConstraints.FreezeAll;
             rigid.velocity = Vector3.zero;
             rigid.useGravity = false;

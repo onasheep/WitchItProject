@@ -41,6 +41,11 @@ public class Hunter : MonoBehaviour
         ThrowKnife();
 
         LimitCameraAngle();
+    
+        if(rigid.velocity.magnitude > 5f)
+        {
+            rigid.velocity = rigid.velocity.normalized * 5f;
+        }
     }
 
     private void FixedUpdate()
@@ -94,8 +99,8 @@ public class Hunter : MonoBehaviour
         float verticalInput = Input.GetAxis("Vertical");
         float horizontalInput = Input.GetAxis("Horizontal");
 
-        rigid.AddForce(transform.forward * verticalInput * 50);
-        rigid.AddForce(transform.right * horizontalInput * 50);
+        rigid.AddForce(transform.forward * verticalInput * 15,ForceMode.Force);
+        rigid.AddForce(transform.right * horizontalInput * 15, ForceMode.Force);
 
         animator.SetFloat("InputVertical", verticalInput);
         animator.SetFloat("InputHorizontal", horizontalInput);
