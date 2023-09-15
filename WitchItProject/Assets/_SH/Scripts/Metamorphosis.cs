@@ -15,10 +15,10 @@ public class Metamorphosis : MonoBehaviour
 
     private void Start()
     {
-        playerCamera = GameObject.Find("PlayerCamera").transform;
+        playerCamera = GameObject.Find("WitchCamera").transform;
         lookPoint = GameObject.Find("CameraLookPoint");
 
-        witchBody = GameObject.Find("Character_Female_Gypsy");
+        witchBody = GameObject.Find("WitchCharacter");
         currBody = witchBody;
     }
 
@@ -27,6 +27,33 @@ public class Metamorphosis : MonoBehaviour
         Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - playerCamera.position).normalized, out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects"));
 
         ShootRay();
+        CancelMetamorphosis();
+    }
+
+    private void CancelMetamorphosis()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (witchBody.activeInHierarchy)
+            {
+                return;
+            }
+            else if (!witchBody.activeInHierarchy)
+            {
+                witchBody.transform.position = lookPoint.transform.position;
+
+                witchBody.SetActive(true);
+
+                GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+                lookPoint.transform.SetParent(witchBody.transform);
+                lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
+
+                Destroy(prevBody_);
+
+                currBody = witchBody;
+            }
+        }
     }
 
     private void MetamorphosisToObj(GameObject obj_)
@@ -36,20 +63,25 @@ public class Metamorphosis : MonoBehaviour
         newBody_.transform.position = lookPoint.transform.position;
         newBody_.AddComponent<Cube>();
 
-        lookPoint.transform.SetParent(newBody_.transform);
-
         if (currBody == witchBody)
         {
             currBody.SetActive(false);
-            currBody.transform.parent.GetComponent<CapsuleCollider>().isTrigger = true;
-            currBody.transform.parent.GetComponent<Rigidbody>().useGravity = false;
+
+            lookPoint.transform.SetParent(newBody_.transform);
+            lookPoint.transform.localPosition = Vector3.zero;
+
             currBody = newBody_;
         }
         else
         {
-            GameObject prevBody_ = currBody;
-            currBody = newBody_;
+            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+            lookPoint.transform.SetParent(newBody_.transform);
+            lookPoint.transform.localPosition = Vector3.zero;
+
             Destroy(prevBody_);
+
+            currBody = newBody_;
         }
     }
 
@@ -57,7 +89,7 @@ public class Metamorphosis : MonoBehaviour
     {
         if (Input.GetButtonDown("Fire1"))
         {
-            if(hit.collider != null)
+            if (hit.collider != null)
             {
                 MetamorphosisToObj(hit.collider.gameObject);
             }
