@@ -14,7 +14,6 @@ public static class RDefine
     public const string BEARTRAP_OBJ = "Beartrap";
     //  «Â≈Õ Ω∫≈≥ «¡∏Æ∆’ }
 
-
     // { ∏∂≥‡ Ω∫≈≥ «¡∏Æ∆’ 
     public const string EFFECT_EXPLOSION_GREEN = "Effect_Explosion_Green";
     public const string EFFECT_EXPLOSION_YELLOW = "Effect_Explosion_Yellow";

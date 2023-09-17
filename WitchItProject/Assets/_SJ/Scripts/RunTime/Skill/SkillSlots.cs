@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,15 +16,7 @@ public class SkillSlot
     // Enum Type
     // Skill 1, Skill 2, Skill 3
 
-
-    // LEGACY:
-    //public SkillSlot(int slotCount_ = 2)
-    //{
-    //    slotCount = slotCount_;
-    //    Slots = new SkillAction[slotCount];
-    //}
-
-    public SkillSlot(PlayerBase playerController_, int slotCount_ = 2)
+    public SkillSlot(PlayerBase playerController_,int slotCount_ = 2)
     {
         skillManager = new SkillManager();
 
@@ -37,14 +30,25 @@ public class SkillSlot
         skillManager.HunterSkill["Wolf"].Init(playerController_);
         skillManager.HunterSkill["Cross"].Init(playerController_);
 
-        Slots[0] = skillManager.HunterSkill["Wolf"];
+        skillManager.WitchSkill["Mushroom"].Init(playerController_);
 
-        Slots[1] = skillManager.HunterSkill["Cross"];
+       
     }
 
-    public void SelSkill()
-    {
+    
 
+    public void SelSkill(int type)
+    {    
+        if(type == 0)
+        {
+            Slots[0] = skillManager.WitchSkill["Mushroom"];
+        
+        }
+        else if(type == 1)
+        {
+            Slots[0] = skillManager.HunterSkill["Wolf"];
+            Slots[1] = skillManager.HunterSkill["Cross"];
+        }
     }
 
     //public bool CheckValid()

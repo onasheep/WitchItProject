@@ -25,7 +25,7 @@ public class Mushroom : MonoBehaviour
 
     private void DestroyMushroom()
     {
-        GameObject effect = Instantiate(ResourceManager.effects[RDefine.EFFECT_NOVA_YELLOW], transform.position, Quaternion.Euler(-90f,0f,0f));
+        GameObject effect = Instantiate(ResourceManager.effects[RDefine.EFFECT_NOVA_YELLOW], transform.position, Quaternion.LookRotation(transform.up));
         Destroy(effect, 1f);
         Destroy(this.gameObject);
     }
