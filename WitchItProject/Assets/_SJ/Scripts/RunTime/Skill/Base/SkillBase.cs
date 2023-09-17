@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class SkillBase
 {
-    public PlayerBase playerController = default;
+    private PlayerBase playerController = default;
+    public string SkillType {  get; protected set; }
+    public float MoveSpeed { get; protected set; }
 
     public virtual void Init(PlayerBase player_)
     {

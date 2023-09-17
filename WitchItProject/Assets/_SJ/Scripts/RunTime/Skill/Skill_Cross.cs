@@ -5,10 +5,8 @@ using UnityEngine;
 
 public class Skill_Cross : SkillBase
 {
-    public string SkillType { get; private set; }
-    public float MoveSpeed { get; private set; }
 
-    public Skill_Cross(string skillType_ = "Cross", float moveSpeed_ = 15f)
+    public Skill_Cross(string skillType_ = RDefine.CROSS_OBJ, float moveSpeed_ = 15f)
     {
         SkillType = skillType_;
         MoveSpeed = moveSpeed_;

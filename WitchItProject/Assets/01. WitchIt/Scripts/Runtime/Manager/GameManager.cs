@@ -20,11 +20,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
 
         ResourceManager.Init();
-        CreatePlayer();
-        //접속 정보 추출 및 표시
-        SetRoomInfo();
-        //EXIT 버튼 이벤트 연결
-        exitBtn.onClick.AddListener(() => OnExitClick());
+        //CreatePlayer();
+        ////접속 정보 추출 및 표시
+        //SetRoomInfo();
+        ////EXIT 버튼 이벤트 연결
+        //exitBtn.onClick.AddListener(() => OnExitClick());
     }
 
     // Update is called once per frame

@@ -11,10 +11,6 @@ public class Cross : MonoBehaviour
     private float time = 0f;
     private float maxRadius = 8f;
     // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -33,24 +29,6 @@ public class Cross : MonoBehaviour
         }
     }
 
-    // LEGACY : 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    // 태그로 하니까 작동 안하던걸 레이어로 하니 작동함
-    //    Physics.IgnoreLayerCollision(9, 9);
-    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground")
-    //        ||collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
-    //    {
-    //        // { 콜라이더 중복 충돌 예외 처리
-    //        this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-    //        //  콜라이더 중복 충돌 예외 처리 }
-
-    //        this.gameObject.GetComponent<Rigidbody>().constraints
-    //        = RigidbodyConstraints.FreezeAll;
-    //        StartCoroutine(IncreaseCollider());
-    //    }
-        
-    //}
     private IEnumerator IncreaseCollider()
     {
         blockCollider.transform.localScale = Vector3.zero;

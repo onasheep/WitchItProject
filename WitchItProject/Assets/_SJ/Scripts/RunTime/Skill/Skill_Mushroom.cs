@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Skill_Mushroom : SkillBase
 {
-    public string SkillType { get; private set; }
-    public float MoveSpeed { get; private set; }
 
     public Skill_Mushroom(string skillType_ = "Mushroom", float moveSpeed_ = 15f)
     {
