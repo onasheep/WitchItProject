@@ -5,7 +5,7 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     public Transform myCamera;
-    public GameObject followTarget;
+    //public GameObject followTarget;
 
     private Rigidbody rigid;
 
@@ -13,8 +13,8 @@ public class Cube : MonoBehaviour
 
     private void Start()
     {
-        myCamera = GameObject.Find("PlayerCamera").transform;
-        followTarget = FindObjectOfType<WitchController>().gameObject;
+        myCamera = GameObject.Find("WitchCamera").transform;
+        //followTarget = FindObjectOfType<WitchController>().gameObject;
         rigid = GetComponent<Rigidbody>();
     }
 
