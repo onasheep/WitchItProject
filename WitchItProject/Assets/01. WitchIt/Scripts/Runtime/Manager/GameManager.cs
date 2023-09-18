@@ -6,6 +6,7 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -15,34 +16,35 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public Button exitBtn;
 
-    // Start is called before the first frame update
+    
+
     void Awake()
     {
 
         ResourceManager.Init();
         //CreatePlayer();
-        ////Á¢¼Ó Á¤º¸ ÃßÃâ ¹× Ç¥½Ã
+        ////ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ Ç¥ï¿½ï¿½
         //SetRoomInfo();
-        ////EXIT ¹öÆ° ÀÌº¥Æ® ¿¬°á
+        ////EXIT ï¿½ï¿½Æ° ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
         //exitBtn.onClick.AddListener(() => OnExitClick());
     }
 
     // Update is called once per frame
     void Update()
     {
-        // { ~~~ ·ÎÁ÷ ±¸Çö / sj_h
-        // } ~~~ ·ÎÁ÷ ±¸Çö / sj_h
+        // { ~~~ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ / sj_h
+        // } ~~~ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ / sj_h
     }
 
     void CreatePlayer()
     {
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        int idx = Random.Range(1, points.Length);
+        int idx = UnityEngine.Random.Range(1, points.Length);
 
         PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
     }
 
-    //·ë Á¢¼Ó Á¤º¸¸¦ Ãâ·Â
+    //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     void SetRoomInfo()
     {
         Room room = PhotonNetwork.CurrentRoom;
@@ -51,19 +53,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         
     }
 
-    //exit ¹öÆ°ÀÇ onclick¿¡ ¿¬°áÇÒ ÇÔ¼ö
+    //exit ï¿½ï¿½Æ°ï¿½ï¿½ onclickï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     private void OnExitClick()
     {
         PhotonNetwork.LeaveRoom();
     }
 
-    //Æ÷Åæ ·ë¿¡¼­ ÅðÀåÇßÀ» ¶§ È£ÃâµÇ´Â ÄÝ¹é ÇÔ¼ö
+    //ï¿½ï¿½ï¿½ï¿½ ï¿½ë¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ý¹ï¿½ ï¿½Ô¼ï¿½
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Lobby");
     }
 
-    //·ëÀ¸·Î »õ·Î¿î ³×Æ®¿öÅ© À¯Àú°¡ Á¢¼ÓÇßÀ» ¶§ È£ÃâµÇ´Â ÄÝ¹é ÇÔ¼ö
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¿ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ý¹ï¿½ ï¿½Ô¼ï¿½
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         SetRoomInfo();
@@ -72,7 +74,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
 
-    //·ë¿¡¼­ ³×Æ®¿öÅ© À¯Àú°¡ ÅðÀåÇßÀ»¶§ È£ÃâµÇ´Â ÄÝ¹é ÇÔ¼ö
+    //ï¿½ë¿¡ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ý¹ï¿½ ï¿½Ô¼ï¿½
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         SetRoomInfo();
@@ -80,5 +82,133 @@ public class GameManager : MonoBehaviourPunCallbacks
         msgList.text += msg;
     }
 
+    //HJ_work
+    //========================================================================
+    //1.ï¿½ï¿½ï¿½ï¿½, 2. ï¿½ï¿½ï¿½ï¿½, 3.Å¸ï¿½Ì¸ï¿½   , ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È®ï¿½ï¿½
 
+    public bool isPlayerReady = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private int readyCount = 0; //ï¿½ï¿½ï¿½ï¿½ ï¿½Î¿ï¿½ Ä«ï¿½ï¿½Æ®
+    public bool isEveryReady = false; //ï¿½ï¿½Î°ï¿½ ï¿½Øºï¿½ï¿½ß´ï¿½ï¿½ï¿½
+    public bool isGameStart = false;
+   
+
+    [SerializeField] private Button masterStartBtn = default;
+
+    public bool isHiding = false; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â½Ã°ï¿½
+
+    public bool isPlaying = false; //ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½?
+
+    [SerializeField] private float timeRemaining = 240;
+
+    [SerializeField] private TMP_Text timeText = default;
+
+    private void Start()
+    {
+        masterStartBtn = GameObject.Find("TestCanvasHJ").transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+    }
+    private void Update()
+    {
+        //HJ_
+        //ï¿½ï¿½ï¿½ ï¿½Î¿ï¿½ï¿½ï¿½ ï¿½Øºï¿½ ï¿½Ï·ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ°ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½Ë´Ï´ï¿½.
+        if (isEveryReady)
+        {
+            masterStartBtn.interactable = true;
+        }
+        else //ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ false ï¿½ï¿½ ï¿½ï¿½ï¿½Ñ·ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½.
+        {
+            masterStartBtn.interactable = false;
+        } //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ È°ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ 
+
+        if (isGameStart)
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                //ï¿½Ø¿ï¿½ï¿½ï¿½ isHiding 15ï¿½Ê·ï¿½ ï¿½Ê±ï¿½È­ ï¿½ï¿½ï¿½Ö±ï¿½ ï¿½ï¿½ ï¿½Å¶ï¿½ ï¿½ï¿½ï¿½Öµï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½ . ï¿½Ï´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                timeRemaining = 0;
+                timeText.text = string.Format("00:00");
+                isGameStart= false;
+                //TODO ï¿½ï¿½ï¿½â¼­ ï¿½Ð³ï¿½ ï¿½ï¿½ï¿½Ö°ï¿½ Ä³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+                // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä³ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö°Ô²ï¿½ ï¿½Ï¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+                //ï¿½×½ï¿½Æ®ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ isHigingï¿½ï¿½ trueï¿½ï¿½ ï¿½Ù²ï¿½ï¿½Ý´Ï´ï¿½.
+                
+                isHiding = true; 
+                timeRemaining = 15f;
+                return;
+                //ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ Å¸ï¿½Ì¸Ó°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+            }
+            Debug.Log("ï¿½ï¿½ï¿½Ó½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ã°ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ? 1");
+            DisplayTime(timeRemaining);
+        }
+        else if (isHiding) 
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+            }
+            else
+            {
+                Debug.Log("ï¿½ï¿½ï¿½à°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
+                timeRemaining = 0f;
+                timeText.text = string.Format("00:00");
+                isHiding = false;
+                isPlaying = true;
+                //ï¿½ï¿½ï¿½â¼­ï¿½ï¿½ï¿½Í´ï¿½ ï¿½ï¿½ï¿½Í°ï¿½ Ã£ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ÛµË´Ï´ï¿½.
+                //4ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+                timeRemaining = 240f;
+                return;
+                
+            }
+            Debug.Log("ï¿½ï¿½ï¿½à°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ = ï¿½Ì°ï¿½ ï¿½ï¿½ÂµÇ³ï¿½ 2");
+            DisplayTime(timeRemaining);
+        }
+        else if (!isHiding && isPlaying) // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ 
+        {
+            if (timeRemaining > 0)
+            {
+                timeRemaining -= Time.deltaTime;
+            }
+            //else if()// ï¿½ï¿½ï¿½â¼­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½ ï¿½ÎºÐ¿ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+            //{
+                //ï¿½ï¿½ï¿½ï¿½ ï¿½Â¸ï¿½ UI ï¿½ï¿½ Ã³ï¿½ï¿½
+            //}
+            else
+            {
+                timeRemaining = 0;
+                timeText.text = string.Format("00:00");
+                Debug.Log("ï¿½ï¿½ï¿½Í°ï¿½ Ã£ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½. ï¿½×¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Â¸ï¿½ï¿½Ô´Ï´ï¿½.");
+                isPlaying = false;
+                //ï¿½ï¿½ï¿½â¼­ ï¿½Â¸ï¿½ UI ï¿½Ë¾ï¿½Ã¢ ï¿½Ñ¹ï¿½ ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ 2ï¿½ÊµÚ¿ï¿½ ï¿½ï¿½ï¿½ panelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô²ï¿½ ï¿½ï¿½ï¿½Ö¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
+                return;
+            }
+            Debug.Log("ï¿½ï¿½ï¿½Í°ï¿½ Ã£ï¿½ï¿½ ï¿½Ã°ï¿½ï¿½ï¿½ ï¿½ï¿½=ï¿½ï¿½ï¿½ï¿½ ï¿½Ì°ï¿½ ï¿½ï¿½ÂµÇ¸ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.");
+            DisplayTime(timeRemaining);
+        }
+    }
+    //HJ_
+    //ï¿½Ã°ï¿½ Ç¥ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½Ô´Ï´ï¿½.
+    public void DisplayTime(float timeToDisplay)
+    {
+        timeToDisplay += 1;
+        float minutes = Mathf.FloorToInt(timeToDisplay / 60);
+        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
+        timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    //HJ_ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Øºï¿½ bool ï¿½ï¿½ ï¿½Ù²ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
+    public void ReadyGame()
+    {
+        isPlayerReady = true;
+        readyCount++;
+    }
+
+    public void PushGameStart()
+    {
+        isGameStart = true;
+        timeRemaining = 10f;
+    }
 }
