@@ -4,26 +4,32 @@ using System.Collections.Generic;
 using UnityEngine;
 
 // SJ_ 230915
-// PlayerBase »ó¼Ó
+// PlayerBase ï¿½ï¿½ï¿½
 public class Hunter : PlayerBase
 {
     /*
-    »ç°Å¸® Á¦ÇÑÀÌ Á¸ÀçÇÏ´Â ·¹ÀÌ¸¦ ½÷¼­ Å©·Î½ºÇì¾î·Î »ç¿ë
-    ·¹ÀÌÄ³½ºÆ®ÈýÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é, Á¦ÇÑ °Å¸®¸¸Å­ ¶³¾îÁø °÷À» Å©·Î½ºÇì¾î·Î »ç¿ë
+    ï¿½ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+    ï¿½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Å¸ï¿½ï¿½ï¿½Å­ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Î½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
 
-    Ä«¸Þ¶ó¿Í ¿À¸¥¼ÕÀº Å©·Î½ºÇì¾î¸¦ ¹Ù¶óº»´Ù
+    Ä«ï¿½Þ¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å©ï¿½Î½ï¿½ï¿½ï¿½î¸¦ ï¿½Ù¶óº»´ï¿½
      
     */
 
     // SJ_ 230915
-    // LEGACY : PlayerBase¿¡ Á¸Àç
+    // LEGACY : PlayerBaseï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     //private Transform myCamera;
     //private Rigidbody rigid;
     //private Animator animator;
-    //
+    
 
-    private GameObject crossHair;
     private RaycastHit hunterRayHit;
+
+    private float rightFuncCool = default;
+    private float QFuncCool = default;
+    private float skillTimer = default;
+
+    // SJ_ 230918
+    private GameObject dogRing;
 
     private void Start()
     {
@@ -35,21 +41,24 @@ public class Hunter : PlayerBase
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = GameObject.Find("CrossHair");
-
         // SJ_ 230915
-        // LEGACY : PlayerBase¿¡¼­ °¡Á®¿È
+        // LEGACY : PlayerBaseï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         //rigid = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
+        Debug.LogFormat("timer : {0}", skillTimer);
+        Debug.LogFormat("right : {0}", rightFuncCool);
+        Debug.LogFormat("q : {0}", QFuncCool);
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
         // SJ_ 230915
         //MoveHunter();
         Move();
         base.InputPlayer();
+        skillTimer += Time.deltaTime;
         // SJ_ 230915
 
         //Jump();
@@ -63,36 +72,52 @@ public class Hunter : PlayerBase
         }
     }
 
-    #region SJ_ »ó¼Ó¹Þ¾Æ¼­ µ¿ÀÛÇÏ´Â ÇÔ¼ö
+    #region SJ_ ï¿½ï¿½Ó¹Þ¾Æ¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
     // SJ_230915 
 
     protected override void Init()
     {
         base.Init();
 
+        // SJ_ 230918 ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½Ä¡
+        dogRing = this.gameObject.FindChildObj("DogRing");
+
         base.type = TYPE.HUNTER;
-        // { ½ºÅ³ ´ã±è 
+
+        // { ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ 
         skillSlot.SelSkill((int)type);
 
 
-        //  ½ºÅ³ ´ã±è }
+        //  ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ }
+        rightFuncCool = skillSlot.Slots[0].CoolTime;
+        QFuncCool = skillSlot.Slots[1].CoolTime;
 
 
 
         this.leftFunc = () => ThrowKnife();
         this.rigthFunc =
             () =>
-            {
-                GameObject obj = Instantiate
-                (ResourceManager.objs[skillSlot.Slots[0].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[0].ActivateSkill(obj);
+            {                
+                if(skillTimer > rightFuncCool)
+                {                    
+                    rightFuncCool += skillTimer;
+                    GameObject obj = Instantiate
+                (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
+                    skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
+                }
+                
             };
         this.QFunc =
             () =>
             {
-                GameObject obj = Instantiate
-                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[1].ActivateSkill(obj);
+                if(skillTimer > QFuncCool)
+                {
+                    skillTimer -= QFuncCool;
+                    GameObject obj = Instantiate
+                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
+                    skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
+                }
+                
             };
         this.jumpFunc = () => JumpHunter();
     }
@@ -141,11 +166,11 @@ public class Hunter : PlayerBase
         //}
     }
 
-    // TODO : °¢°¢ ÇåÅÍ¿Í ¸¶³à°¡ Á¡ÇÁ°¡ ¸¹ÀÌ ´Ù¸£´Ù¸é 
-    // Áö±Ý °°Àº ¹æ½ÄÀ¸·Î, ¾Æ´Ï¶ó¸é PalyerBase¿¡¼­ °øÅëÀûÀ¸·Î ¸¸µé °Í
+    // TODO : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¿ï¿½ ï¿½ï¿½ï¿½à°¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¸ï¿½ï¿½Ù¸ï¿½ 
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Æ´Ï¶ï¿½ï¿½ PalyerBaseï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     private void JumpHunter()
     {
-        // InputPlayer·Î ´ëÃ¼ 
+        // InputPlayerï¿½ï¿½ ï¿½ï¿½Ã¼ 
         //if (Input.GetButtonDown("Jump"))
         //{
         animator.SetBool("IsGround", false);

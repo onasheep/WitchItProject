@@ -4,17 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 // SJ_ 230915
-// PlayerBase »ó¼Ó
+// PlayerBase ìƒì†
 public class WitchController : PlayerBase
 {
 
     // SJ_ 230915
-    // LEGACY : PlayerBase¿¡ Á¸Àç
+    // LEGACY : PlayerBaseì— ì¡´ì¬
     //[SerializeField] private Rigidbody rigid;
     //[SerializeField] private Animator animator;
-    //[SerializeField] private Transform myCamera;
     //
     
     [SerializeField][Range(0, 100)] private int witchHealth = 50;
@@ -26,15 +26,21 @@ public class WitchController : PlayerBase
     private bool isJump = false;
     public bool isDead = false;
 
+    // SJ_230918
+    // ë§ˆë…€ ìŠ¤í‚¬ ë°œì‚¬ ìœ„ì¹˜
+    private GameObject barrel = default;
+    private GameObject lookPoint = default;
+    private RaycastHit hit;
+
     void Start()
     {
         Init();
         
-        myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// °¡»ó Ä«¸Ş¶ó °¡Á®¿Í¹ö¸®±â!
-        //myCamera = GameObject.Find("Main Camera").transform; //¸ŞÀÎÄ«¸Ş¶ó¸¦ °¡Á®¿Í¹ö¸®±â
+        myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// ê°€ìƒ ì¹´ë©”ë¼ ê°€ì ¸ì™€ë²„ë¦¬ê¸°!
+        //myCamera = GameObject.Find("Main Camera").transform; //ë©”ì¸ì¹´ë©”ë¼ë¥¼ ê°€ì ¸ì™€ë²„ë¦¬ê¸°
         
         // SJ_ 230915
-        // LEGACY : PlayerBase¿¡¼­ °¡Á®¿È
+        // LEGACY : PlayerBaseì—ì„œ ê°€ì ¸ì˜´
         //rigid = GetComponent<Rigidbody>();
         //animator = GetComponent<Animator>();
 
@@ -43,7 +49,9 @@ public class WitchController : PlayerBase
     void Update()
     {
 
+
         base.InputPlayer();
+        
 
         //if (isDead) { return; }
         //if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
@@ -75,45 +83,57 @@ public class WitchController : PlayerBase
         {
             //JumpMove();
         }
-        //HJ_ TODO ¾Ö´Ï¸ŞÀÌ¼Ç Ãß°¡ÇÒ ¶§ »ç¿ë
+        //HJ_ TODO ì• ë‹ˆë©”ì´ì…˜ ì¶”ê°€í•  ë•Œ ì‚¬ìš©
         SetAnimation("MoveTotal");
         Turn();
     }
 
-    #region SJ_ »ó¼Ó¹Ş¾Æ¼­ µ¿ÀÛÇÏ´Â ÇÔ¼ö
+    #region SJ_ ìƒì†ë°›ì•„ì„œ ë™ì‘í•˜ëŠ” í•¨ìˆ˜
     // SJ_230915 
 
     protected override void Init()
     {
         base.Init();
-
+        barrel = this.gameObject.FindChildObj("Barrel");
+        lookPoint = this.gameObject.FindChildObj("CameraLookPoint");
         base.type = TYPE.WITCH;
-        // { ½ºÅ³ ´ã±è 
+        // { ìŠ¤í‚¬ ë‹´ê¹€ 
         skillSlot.SelSkill((int)type);
+        //  ìŠ¤í‚¬ ë‹´ê¹€ }
 
-        //  ½ºÅ³ ´ã±è }
+        //  ï¿½ï¿½Å³ ï¿½ï¿½ï¿½ }
 
         
 
 
-        // TODO : º¯½Å ±â´É ÇÔ¼ö Ãß°¡
-        //this.leftFunc = () => ThrowKnife();
+
+
+        // TODO : ë³€ì‹  ê¸°ëŠ¥ í•¨ìˆ˜ ì¶”ê°€
+        this.leftFunc =
+            () =>
+            {
+            
+            };
+
         this.rigthFunc =
             () =>
             {
                 GameObject obj = Instantiate(
-                    ResourceManager.objs[skillSlot.Slots[0].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[0].ActivateSkill(obj);
+                    ResourceManager.objs[RDefine.MUSHROOM_ORB], barrel.transform.position, Quaternion.identity);
+                skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);
             };
         this.QFunc =
             () =>
             {
-                GameObject obj = Instantiate(
-                    ResourceManager.objs[skillSlot.Slots[1].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[1].ActivateSkill(obj);
+                Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
+                    out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects"));
+                if (hit.collider != null)
+                {
+                    skillSlot.Slots[1].ActivateSkill(hit.collider.gameObject);
+                }
             };
         this.jumpFunc = () => JumpWitch();
-            
+
     }
     protected override void Move()
     {
@@ -124,10 +144,10 @@ public class WitchController : PlayerBase
     #endregion
 
     // SJ_ 230915
-    // Base¿¡ MoveÇÔ¼ö°¡ ÀÖ¾î ÇÔ¼ö ÀÌ¸§ º¯°æ
+    // Baseì— Moveí•¨ìˆ˜ê°€ ìˆì–´ í•¨ìˆ˜ ì´ë¦„ ë³€ê²½
     void MoveWitch()
     {
-        //==============================°øÅë ºÎºĞ »èÁ¦ ¿¹Á¤
+        //==============================ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         // 09/18 Jung
         //float moveDirectionZ = Input.GetAxisRaw("Vertical");
         //float moveDirectionX = Input.GetAxisRaw("Horizontal");
@@ -135,13 +155,13 @@ public class WitchController : PlayerBase
         Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
         Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
         // 09/18 Jung
-        //==============================º¯°æ Àü
+        //==============================ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         //Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
         //Vector3 moveHorizontal = new Vector3(1, 0, 0) * moveDirectionX;
         //Vector3 moveNormalized = (moveHorizontal + moveVertical).normalized;
         //Vector3 moveVelocity = moveNormalized * moveSpeed;
         //myRigid.velocity = moveVelocity;
-        //==============================º¯°æ ÈÄ
+        //==============================ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         Vector3 dirVelocity = moveDirection * MOVESPEED;
 
         dirVelocity.y = rigid.velocity.y;
@@ -160,18 +180,18 @@ public class WitchController : PlayerBase
 
     void Turn()
     {
-        //==============================°øÅë ºÎºĞ »èÁ¦ ¿¹Á¤
+        //==============================ê³µí†µ ë¶€ë¶„ ì‚­ì œ ì˜ˆì •
         float moveDirectionX = Input.GetAxis("Horizontal");
         float moveDirectionZ = Input.GetAxis("Vertical");
 
         Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
         Vector3 moveDirection = forwardLook * moveDirectionZ + myCamera.right * moveDirectionX;
-        //==============================º¯°æ Àü
+        //==============================ë³€ê²½ ì „
         //if (!(moveDirectionX == 0f && moveDirectionZ == 0f))
         //{
         //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(moveDirectionX, 0, moveDirectionZ)), Time.deltaTime * rotationSpeed);
         //}
-        //==============================º¯°æ ÈÄ
+        //==============================ë³€ê²½ í›„
         moveDirection += myCamera.right * moveDirectionX;
         Vector3 targetDirection = moveDirection;
         targetDirection.y = 0f;
@@ -185,8 +205,8 @@ public class WitchController : PlayerBase
         //==============================
     }
 
-    // TODO : °¢°¢ ÇåÅÍ¿Í ¸¶³à°¡ Á¡ÇÁ°¡ ¸¹ÀÌ ´Ù¸£´Ù¸é 
-    // Áö±İ °°Àº ¹æ½ÄÀ¸·Î, ¾Æ´Ï¶ó¸é PalyerBase¿¡¼­ °øÅëÀûÀ¸·Î ¸¸µé °Í
+    // TODO : ê°ê° í—Œí„°ì™€ ë§ˆë…€ê°€ ì í”„ê°€ ë§ì´ ë‹¤ë¥´ë‹¤ë©´ 
+    // ì§€ê¸ˆ ê°™ì€ ë°©ì‹ìœ¼ë¡œ, ì•„ë‹ˆë¼ë©´ PalyerBaseì—ì„œ ê³µí†µì ìœ¼ë¡œ ë§Œë“¤ ê²ƒ
     private void JumpWitch()
     {
         isJump = true;

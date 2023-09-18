@@ -13,15 +13,15 @@ public abstract class PlayerBase : MonoBehaviour
 
     protected float damage = default;
 
-    // { Delegate·Î »ç¿ëµÉ UnityActionµé 
+    // { Delegateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ UnityActionï¿½ï¿½ 
     protected UnityAction moveFunc = default;
     protected UnityAction jumpFunc = default;
     protected UnityAction leftFunc = default;
     protected UnityAction rigthFunc = default;
     protected UnityAction QFunc = default;
-    //  Delegate·Î »ç¿ëµÉ UnityActionµé } 
+    //  Delegateï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ UnityActionï¿½ï¿½ } 
 
-    // { Hunter Witch °øÅë »çÇ×
+    // { Hunter Witch ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     protected Transform myCamera = default;
     protected GameObject crossHair = default;
     protected Rigidbody rigid = default;
@@ -43,7 +43,7 @@ public abstract class PlayerBase : MonoBehaviour
 
     protected TYPE type = TYPE.NONE;
 
-    //  Hunter Witch °øÅë »çÇ× }
+    //  Hunter Witch ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ }
 
 
     protected virtual void Init()
@@ -56,9 +56,9 @@ public abstract class PlayerBase : MonoBehaviour
 
     protected virtual void InputPlayer()
     {
-        // TODO : ´õ ÁÁÀº ÀÔ·Â ¹Þ´Â ¹æ½ÄÀÌ ÀÖ´Ù¸é º¯°æ
+        // TODO : ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½Þ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´Ù¸ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-        // TODO : ÃßÈÄ ÀÔ·Â ¹æÁö
+        // TODO : ï¿½ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½
         //if( isDead == true) {  return; }
 
         // 09/18 Jung
@@ -91,7 +91,7 @@ public abstract class PlayerBase : MonoBehaviour
 
     protected virtual void Move()
     {
-        // TODO : defaultÀÎ °æ¿ì ¹æ¾î·ÎÁ÷ ±âº»Àû ¿òÁ÷ÀÓ ³Ö±â
+        // TODO : defaultï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
         //    if(moveFunc == default)
         //    {
         //        this.moveFunc = () => 
@@ -107,12 +107,12 @@ public abstract class PlayerBase : MonoBehaviour
         // 9/18 Jung
     }
 
-    // TODO : ÇüÁØ, ¼®È¯ 
-    // ÀÌ¿ÕÀÌ¸é Á¡ÇÁ´Â µÑ´Ù Å« Â÷ÀÌ°¡ ¾øÀ¸¹Ç·Î,
-    // °øÅëÀûÀÎ ÇüÅÂÀÇ ÇÔ¼ö·Î Â¥¼­ ¿©±â¿¡¼­ Ã³¸® ÇÒ ¼ö ÀÖµµ·Ï
+    // TODO : ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½È¯ 
+    // ï¿½Ì¿ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ´ï¿½ Å« ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½,
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ Â¥ï¿½ï¿½ ï¿½ï¿½ï¿½â¿¡ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½
     protected virtual void Jump()
     {
-        // TODO : defaultÀÎ °æ¿ì ¹æ¾î·ÎÁ÷ ±âº»Àû ¿òÁ÷ÀÓ ³Ö±â
+        // TODO : defaultï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
         //if (jumpFunc == default)
         //{
         //    this.jumpFunc = () =>

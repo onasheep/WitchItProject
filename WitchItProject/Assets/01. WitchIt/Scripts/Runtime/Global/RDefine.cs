@@ -22,6 +22,7 @@ public static class RDefine
     public const string EFFECT_SMOKE = "Effect_Smoke";
     public const string EFFECT_ORB = "Effect_Orb";
     public const string MUSHROOM_OBJ = "Mushroom";
+    public const string MUSHROOM_ORB = "Mushroom_Orb";
     public const string EYE_OBJ = "Eye";
     //  ¸¶³à ½ºÅ³ ÇÁ¸®ÆÕ }
 
