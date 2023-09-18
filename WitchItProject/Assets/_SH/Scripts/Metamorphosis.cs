@@ -56,6 +56,32 @@ public class Metamorphosis : MonoBehaviour
         }
     }
 
+    private void PossesionToObj(GameObject obj_)
+    {
+        obj_.AddComponent<Cube>();
+
+        if (currBody == witchBody)
+        {
+            currBody.SetActive(false);
+
+            lookPoint.transform.SetParent(obj_.transform);
+            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+
+            currBody = obj_;
+        }
+        else
+        {
+            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+            lookPoint.transform.SetParent(obj_.transform);
+            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+
+            Destroy(prevBody_);
+
+            currBody = obj_;
+        }
+    }
+
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_, transform);
@@ -68,7 +94,7 @@ public class Metamorphosis : MonoBehaviour
             currBody.SetActive(false);
 
             lookPoint.transform.SetParent(newBody_.transform);
-            lookPoint.transform.localPosition = Vector3.zero;
+            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
 
             currBody = newBody_;
         }
@@ -77,7 +103,7 @@ public class Metamorphosis : MonoBehaviour
             GameObject prevBody_ = lookPoint.transform.parent.gameObject;
 
             lookPoint.transform.SetParent(newBody_.transform);
-            lookPoint.transform.localPosition = Vector3.zero;
+            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
 
             Destroy(prevBody_);
 
@@ -92,6 +118,14 @@ public class Metamorphosis : MonoBehaviour
             if (hit.collider != null)
             {
                 MetamorphosisToObj(hit.collider.gameObject);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (hit.collider != null)
+            {
+                PossesionToObj(hit.collider.gameObject);
             }
         }
     }

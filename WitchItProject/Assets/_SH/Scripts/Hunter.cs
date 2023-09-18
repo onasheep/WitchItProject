@@ -17,7 +17,7 @@ public class Hunter : PlayerBase
 
     // SJ_ 230915
     // LEGACY : PlayerBase에 존재
-    private Transform myCamera;
+    //private Transform myCamera;
     //private Rigidbody rigid;
     //private Animator animator;
     //
@@ -56,8 +56,8 @@ public class Hunter : PlayerBase
         //ThrowKnife();
 
         LimitCameraAngle();
-    
-        if(rigid.velocity.magnitude > 5f)
+
+        if (rigid.velocity.magnitude > 5f)
         {
             rigid.velocity = rigid.velocity.normalized * 5f;
         }
@@ -74,7 +74,7 @@ public class Hunter : PlayerBase
         // { 스킬 담김 
         skillSlot.SelSkill((int)type);
 
-        
+
         //  스킬 담김 }
 
 
@@ -98,11 +98,9 @@ public class Hunter : PlayerBase
     }
     protected override void Move()
     {
-
         this.moveFunc = () => MoveHunter();
 
         base.Move();
-
     }
 
 
@@ -112,7 +110,6 @@ public class Hunter : PlayerBase
     {
         RotateVertical();
         RotateHorizontal();
-
 
         if (hunterRayHit.collider != null)
         {
@@ -128,12 +125,12 @@ public class Hunter : PlayerBase
     {
         //if (Input.GetButtonDown("Fire1"))
         //{
-            Bullet obj_ = BulletPool.GetObject();
+        Bullet obj_ = BulletPool.GetObject();
 
-            obj_.transform.position = myCamera.position + myCamera.forward;
-            obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
+        obj_.transform.position = myCamera.position + myCamera.forward;
+        obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
 
-            animator.SetTrigger("Shot");
+        animator.SetTrigger("Shot");
         //}
         //else if (Input.GetButton("Fire1"))
         //{
@@ -151,30 +148,27 @@ public class Hunter : PlayerBase
         // InputPlayer로 대체 
         //if (Input.GetButtonDown("Jump"))
         //{
-            animator.SetBool("IsGround", false);
-            animator.SetTrigger("Jump");
-       
-        rigid.AddForce(transform.up * 6, ForceMode.Impulse);
+        animator.SetBool("IsGround", false);
+        animator.SetTrigger("Jump");
+
+        rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
         //}
     }
 
     private void MoveHunter()
     {
-        float verticalInput = Input.GetAxis("Vertical");
-        float horizontalInput = Input.GetAxis("Horizontal");
+        rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
+        rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
 
-        rigid.AddForce(transform.forward * verticalInput * 15,ForceMode.Force);
-        rigid.AddForce(transform.right * horizontalInput * 15, ForceMode.Force);
-
-        animator.SetFloat("InputVertical", verticalInput);
-        animator.SetFloat("InputHorizontal", horizontalInput);
+        animator.SetFloat("InputVertical", verticalMove);
+        animator.SetFloat("InputHorizontal", horizontalMove);
     }
 
     private void RotateVertical()
     {
-        float mouseVerticalMove = Input.GetAxis("Mouse Y");
+        float mouseVerticalMove = Input.GetAxis("Mouse X");
 
-        myCamera.Rotate(Vector3.right * mouseVerticalMove * -5);
+        transform.Rotate(Vector3.up * mouseVerticalMove * 5);
     }
 
     private void LimitCameraAngle()
@@ -198,9 +192,9 @@ public class Hunter : PlayerBase
 
     private void RotateHorizontal()
     {
-        float mouseHorizontalMove = Input.GetAxis("Mouse X");
+        float mouseHorizontalMove = Input.GetAxis("Mouse Y");
 
-        transform.Rotate(Vector3.up * mouseHorizontalMove * 5);
+        myCamera.Rotate(Vector3.right * mouseHorizontalMove * -5);
     }
 
     private void OnCollisionStay(Collision collision)
