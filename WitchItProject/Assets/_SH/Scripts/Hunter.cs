@@ -17,13 +17,19 @@ public class Hunter : PlayerBase
 
     // SJ_ 230915
     // LEGACY : PlayerBase에 존재
-    private Transform myCamera;
+    //private Transform myCamera;
     //private Rigidbody rigid;
     //private Animator animator;
-    //
+    
 
-    private GameObject crossHair;
     private RaycastHit hunterRayHit;
+
+    private float rightFuncCool = default;
+    private float QFuncCool = default;
+    private float skillTimer = default;
+
+    // SJ_ 230918
+    private GameObject dogRing;
 
     private void Start()
     {
@@ -35,7 +41,6 @@ public class Hunter : PlayerBase
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = GameObject.Find("CrossHair");
-
         // SJ_ 230915
         // LEGACY : PlayerBase에서 가져옴
         //rigid = GetComponent<Rigidbody>();
@@ -44,12 +49,16 @@ public class Hunter : PlayerBase
 
     private void Update()
     {
+        Debug.LogFormat("timer : {0}", skillTimer);
+        Debug.LogFormat("right : {0}", rightFuncCool);
+        Debug.LogFormat("q : {0}", QFuncCool);
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
         // SJ_ 230915
         //MoveHunter();
         Move();
         base.InputPlayer();
+        skillTimer += Time.deltaTime;
         // SJ_ 230915
 
         //Jump();
@@ -70,29 +79,43 @@ public class Hunter : PlayerBase
     {
         base.Init();
 
+        // SJ_ 230918 늑대 발사 위치
+        dogRing = this.gameObject.FindChildObj("DogRing");
+
         base.type = TYPE.HUNTER;
+
         // { 스킬 담김 
         skillSlot.SelSkill((int)type);
-
-        
         //  스킬 담김 }
+        rightFuncCool = skillSlot.Slots[0].CoolTime;
+        QFuncCool = skillSlot.Slots[1].CoolTime;
 
 
 
         this.leftFunc = () => ThrowKnife();
         this.rigthFunc =
             () =>
-            {
-                GameObject obj = Instantiate
-                (ResourceManager.objs[skillSlot.Slots[0].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[0].ActivateSkill(obj);
+            {                
+                if(skillTimer > rightFuncCool)
+                {                    
+                    rightFuncCool += skillTimer;
+                    GameObject obj = Instantiate
+                (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
+                    skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
+                }
+                
             };
         this.QFunc =
             () =>
             {
-                GameObject obj = Instantiate
-                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], this.transform.position, Quaternion.identity);
-                skillSlot.Slots[1].ActivateSkill(obj);
+                if(skillTimer > QFuncCool)
+                {
+                    skillTimer -= QFuncCool;
+                    GameObject obj = Instantiate
+                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
+                    skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
+                }
+                
             };
         this.jumpFunc = () => JumpHunter();
     }

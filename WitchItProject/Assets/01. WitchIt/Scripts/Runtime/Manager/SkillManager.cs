@@ -23,11 +23,15 @@ public class SkillManager
         Skill_Beartrap skill_beartrap = new Skill_Beartrap();
 
         Skill_Mushroom skill_mushroom = new Skill_Mushroom();
+        Skill_Possesion skill_possesion = new Skill_Possesion();
+
 
         HunterSkill.Add(skill_wolf.SkillType,skill_wolf);
         HunterSkill.Add(skill_cross.SkillType, skill_cross);
         HunterSkill.Add(skill_beartrap.SkillType, skill_beartrap);
     
         WitchSkill.Add(skill_mushroom.SkillType, skill_mushroom);
+        WitchSkill.Add(skill_possesion.SkillType, skill_possesion);
+
     }
 }

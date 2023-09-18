@@ -26,11 +26,12 @@ public class SkillSlot
 
         // TODO : 선택된 Hunter Witch에 따라 다른 Dictionary를 가져오고 
         // 선택된 Skill 이름을 받아 Key 값을 통해 Skill 을 불러내 초기화하고 slot에 넣어 준다.
-        skillManager.HunterSkill["Beartrap"].Init(playerController_);
+        
         skillManager.HunterSkill["Wolf"].Init(playerController_);
         skillManager.HunterSkill["Cross"].Init(playerController_);
 
         skillManager.WitchSkill["Mushroom"].Init(playerController_);
+        skillManager.WitchSkill["Possesion"].Init(playerController_);
 
        
     }
@@ -42,6 +43,7 @@ public class SkillSlot
         if(type == 0)
         {
             Slots[0] = skillManager.WitchSkill["Mushroom"];
+            Slots[1] = skillManager.WitchSkill["Possesion"];
         
         }
         else if(type == 1)

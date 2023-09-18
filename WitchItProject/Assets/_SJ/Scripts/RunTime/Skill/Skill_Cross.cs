@@ -6,17 +6,18 @@ using UnityEngine;
 public class Skill_Cross : SkillBase
 {
 
-    public Skill_Cross(string skillType_ = RDefine.CROSS_OBJ, float moveSpeed_ = 15f)
+    public Skill_Cross(string skillType_ = RDefine.CROSS_OBJ, float moveSpeed_ = 15f,float coolTime_ = 10f)
     {
         SkillType = skillType_;
         MoveSpeed = moveSpeed_;
+        CoolTime = coolTime_;
     }
 
     public override void ActivateSkill
-        (GameObject object_)
+        (GameObject object_, Vector3 dir)
     {
         object_.GetComponent<Rigidbody>().AddForce
-            (Vector3.forward * MoveSpeed, ForceMode.Impulse);
+            (dir * MoveSpeed, ForceMode.Impulse);
     }
 }
 

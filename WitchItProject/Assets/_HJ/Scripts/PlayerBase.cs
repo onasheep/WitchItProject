@@ -43,7 +43,7 @@ public abstract class PlayerBase : MonoBehaviour
     protected virtual void Init()
     {
         skillSlot = new SkillSlot(this);
-        
+
         rigid = this.GetComponent<Rigidbody>(); 
         animator = this.GetComponent<Animator>();
     }
@@ -56,22 +56,18 @@ public abstract class PlayerBase : MonoBehaviour
         //if( isDead == true) {  return; }
         
         if(Input.GetButtonDown("Fire1"))
-        {
-            if(leftFunc == null)
-            {
-                return;
-            }
-            this.leftFunc.Invoke();            
+        {                        
+            this.leftFunc.Invoke();
         }
-        if(Input.GetButtonDown("Fire2"))
+        else if (Input.GetButtonDown("Fire2"))
         {
             this.rigthFunc.Invoke();
         }
-        if(Input.GetKeyDown(KeyCode.Q))
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             this.QFunc.Invoke();
-        }        
-        if(Input.GetKeyDown(KeyCode.Space))
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
         {
             this.jumpFunc.Invoke();
         }
