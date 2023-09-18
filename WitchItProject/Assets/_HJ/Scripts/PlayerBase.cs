@@ -28,8 +28,13 @@ public abstract class PlayerBase : MonoBehaviour
     protected Animator animator = default;
     protected SkillSlot skillSlot = default;
 
-    protected float moveSpeed = default;
-    protected float jumpForce = default;
+    protected const float MOVESPEED = 5f;
+    protected const float JUMPFORCE = 5f;
+
+    // 09/18 Jung
+    protected float verticalMove = default;
+    protected float horizontalMove = default;
+    // 09/18 Jung
 
     protected enum TYPE
     {
@@ -40,38 +45,44 @@ public abstract class PlayerBase : MonoBehaviour
 
     //  Hunter Witch 공통 사항 }
 
+
     protected virtual void Init()
     {
         skillSlot = new SkillSlot(this);
-        
-        rigid = this.GetComponent<Rigidbody>(); 
+
+        rigid = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
     }
-    
+
     protected virtual void InputPlayer()
     {
         // TODO : 더 좋은 입력 받는 방식이 있다면 변경
 
         // TODO : 추후 입력 방지
         //if( isDead == true) {  return; }
-        
-        if(Input.GetButtonDown("Fire1"))
+
+        // 09/18 Jung
+        verticalMove = Input.GetAxisRaw("Vertical");
+        horizontalMove = Input.GetAxisRaw("Horizontal");
+        // 09/18 Jung
+
+        if (Input.GetButtonDown("Fire1"))
         {
-            if(leftFunc == null)
+            if (leftFunc == null)
             {
                 return;
             }
-            this.leftFunc.Invoke();            
+            this.leftFunc.Invoke();
         }
-        if(Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2"))
         {
             this.rigthFunc.Invoke();
         }
-        if(Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             this.QFunc.Invoke();
-        }        
-        if(Input.GetKeyDown(KeyCode.Space))
+        }
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             this.jumpFunc.Invoke();
         }
@@ -85,7 +96,15 @@ public abstract class PlayerBase : MonoBehaviour
         //    {
         //        this.moveFunc = () => 
         //    }
-        this.moveFunc.Invoke(); 
+        this.moveFunc.Invoke();
+
+        // 9/18 Jung
+        rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
+        rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
+
+        animator.SetFloat("InputVertical", verticalMove);
+        animator.SetFloat("InputHorizontal", horizontalMove);
+        // 9/18 Jung
     }
 
     // TODO : 형준, 석환 
@@ -94,9 +113,13 @@ public abstract class PlayerBase : MonoBehaviour
     protected virtual void Jump()
     {
         // TODO : default인 경우 방어로직 기본적 움직임 넣기
-        //    if(jumpFunc == default)
+        //if (jumpFunc == default)
+        //{
+        //    this.jumpFunc = () =>
         //    {
-        //        this.jumpFunc = () => 
-        //    }
+        //rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+
+        //    };
+        //}
     }
 }

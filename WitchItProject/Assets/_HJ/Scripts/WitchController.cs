@@ -14,7 +14,7 @@ public class WitchController : PlayerBase
     // LEGACY : PlayerBase에 존재
     //[SerializeField] private Rigidbody rigid;
     //[SerializeField] private Animator animator;
-    [SerializeField] private Transform myCamera;
+    //[SerializeField] private Transform myCamera;
     //
     
     [SerializeField][Range(0, 100)] private int witchHealth = 50;
@@ -73,7 +73,7 @@ public class WitchController : PlayerBase
         }
         else
         {
-            JumpMove();
+            //JumpMove();
         }
         //HJ_ TODO 애니메이션 추가할 때 사용
         SetAnimation("MoveTotal");
@@ -92,11 +92,6 @@ public class WitchController : PlayerBase
         skillSlot.SelSkill((int)type);
 
         //  스킬 담김 }
-
-        // { 자체적으로 초기화해야 할 변수들 
-        moveSpeed = 5f;
-        jumpForce = 5f;
-        //  자체적으로 초기화해야 할 변수들 }
 
         
 
@@ -133,11 +128,13 @@ public class WitchController : PlayerBase
     void MoveWitch()
     {
         //==============================공통 부분 삭제 예정
-        float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        float moveDirectionX = Input.GetAxisRaw("Horizontal");
+        // 09/18 Jung
+        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
+        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
         Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
-        Vector3 moveDirection = forwardLook * moveDirectionZ + myCamera.right * moveDirectionX;
+        Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
+        // 09/18 Jung
         //==============================변경 전
         //Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
         //Vector3 moveHorizontal = new Vector3(1, 0, 0) * moveDirectionX;
@@ -145,7 +142,7 @@ public class WitchController : PlayerBase
         //Vector3 moveVelocity = moveNormalized * moveSpeed;
         //myRigid.velocity = moveVelocity;
         //==============================변경 후
-        Vector3 dirVelocity = moveDirection * moveSpeed;
+        Vector3 dirVelocity = moveDirection * MOVESPEED;
 
         dirVelocity.y = rigid.velocity.y;
         rigid.velocity = dirVelocity;
@@ -196,7 +193,7 @@ public class WitchController : PlayerBase
         // myAnimator.SetBool("Jumping", false);
 
 
-        rigid.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
     }
 
     void JumpMove()
@@ -207,11 +204,12 @@ public class WitchController : PlayerBase
         Vector3 moveHorizontal = new Vector3(1, 0, 0) * moveDirectionX;
         Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
 
-        Vector3 moveVelocity = (moveHorizontal + moveVertical).normalized * moveSpeed;
+        Vector3 moveVelocity = (moveHorizontal + moveVertical).normalized * MOVESPEED;
 
         rigid.AddForce(moveVelocity, ForceMode.Force);
 
     }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
