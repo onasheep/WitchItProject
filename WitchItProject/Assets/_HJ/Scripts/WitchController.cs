@@ -238,4 +238,20 @@ public class WitchController : PlayerBase
         }
     }
 
+
+    //HJ=======================================================================
+    //230919 작업 게임매니저의 witchCount 줄여주고 늘려주는 함수 추가
+    void GetWitch()
+    {
+        //마녀가 생성될 때 이 함수를 써서 늘려줍니다.
+        FindObjectOfType<GameManager>().witchCount += 1;
+    }
+
+    void DieWitch()
+    {
+        FindObjectOfType<GameManager>().witchCount -= 1;
+    }
+
+
+
 }

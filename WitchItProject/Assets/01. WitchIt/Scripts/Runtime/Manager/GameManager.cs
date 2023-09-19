@@ -6,7 +6,9 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
+
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -17,34 +19,29 @@ public class GameManager : MonoBehaviourPunCallbacks
     public Button exitBtn;
 
     
+    //HJ__230919 
+    //Awake 테스트를위해 아래에 생성했기에 잠시 비활성화 해둡니다.
+    //void Awake()
+    //{
 
-    void Awake()
-    {
+    //    ResourceManager.Init();
+    //    //CreatePlayer();
+    //    ////접속 정보 추출 및 표시
+    //    //SetRoomInfo();
+    //    ////EXIT 버튼 이벤트 연결
+    //    //exitBtn.onClick.AddListener(() => OnExitClick());
+    //}
 
-        ResourceManager.Init();
-        //CreatePlayer();
-        ////���� ���� ���� �� ǥ��
-        //SetRoomInfo();
-        ////EXIT ��ư �̺�Ʈ ����
-        //exitBtn.onClick.AddListener(() => OnExitClick());
-    }
+    //HJ_ 230919 변경 
+    //void CreatePlayer()
+    //{
+    //    Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+    //    //int idx = UnityEngine.Random.Range(1, points.Length);
+   
+    //    //PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
+    //}
 
-    // Update is called once per frame
-    void Update()
-    {
-        // { ~~~ ���� ���� / sj_h
-        // } ~~~ ���� ���� / sj_h
-    }
-
-    void CreatePlayer()
-    {
-        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        int idx = UnityEngine.Random.Range(1, points.Length);
-
-        PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
-    }
-
-    //�� ���� ������ ���
+    //룸 접속 정보를 출력
     void SetRoomInfo()
     {
         Room room = PhotonNetwork.CurrentRoom;
@@ -53,19 +50,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         
     }
 
-    //exit ��ư�� onclick�� ������ �Լ�
+    //exit 버튼의 onclick에 연결할 함수
     private void OnExitClick()
     {
         PhotonNetwork.LeaveRoom();
     }
 
-    //���� �뿡�� �������� �� ȣ��Ǵ� �ݹ� �Լ�
+    //포톤 룸에서 퇴장했을 때 호출되는 콜백 함수
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("Lobby");
     }
 
-    //������ ���ο� ��Ʈ��ũ ������ �������� �� ȣ��Ǵ� �ݹ� �Լ�
+    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         SetRoomInfo();
@@ -74,7 +71,7 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
 
-    //�뿡�� ��Ʈ��ũ ������ ���������� ȣ��Ǵ� �ݹ� �Լ�
+    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         SetRoomInfo();
@@ -84,40 +81,62 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     //HJ_work
     //========================================================================
-    //1.����, 2. ����, 3.Ÿ�̸�   , ���� �� Ȯ��
+    //1.승패, 2. 진영, 3.타이머   , 마녀 수 확인
+    [SerializeField] private GameObject witchPrefab;
+    [SerializeField] private GameObject hunterPrefab;
 
-    public bool isPlayerReady = false; //���� �÷��̾� ���� ����
-    [SerializeField] private int readyCount = 0; //���� �ο� ī��Ʈ
-    public bool isEveryReady = false; //��ΰ� �غ��ߴ���
+
+    public bool isPlayerReady = false;  //포톤 플레이어 레디 상태
+    [SerializeField] private int playerCount = 0; //게임에 들어온 인원 
+    [SerializeField] private int readyCount = 0; //포톤 인원 카운트 룸에 들어오든지 아니면 맵에 들어올때  이걸 늘려줍니다.
+    public bool isEveryReady = false; //모두가 준비했는지
     public bool isGameStart = false;
-   
+
+    public int chooseWH = 0; // 이 값으로 헌터가 몇명 있고 나머지 마녀로 해줌
+    public int huterCount = 0; //헌터의 수 입니다.
 
     [SerializeField] private Button masterStartBtn = default;
 
-    public bool isHiding = false; //���� ���½ð�
+    public bool isHiding = false; //마녀 숨는시간
+    public bool isPlaying = false; //게임중인지
 
-    public bool isPlaying = false; //��� �ʿ��������?
+    public int witchCount = 0; //마녀의 수 입니다.
 
-    [SerializeField] private float timeRemaining = 240;
-
+    [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
 
+    Hashtable initialProps = new Hashtable() { { "isHunter", false } };
+    //PhotonNetwork.LocalPlayer.SetCustomProperties(initialProps);
+
+    void Awake()
+    {
+        ResourceManager.Init();
+        //CreatePlayer();
+        ////접속 정보 추출 및 표시
+        //SetRoomInfo();
+        ////EXIT 버튼 이벤트 연결
+        //exitBtn.onClick.AddListener(() => OnExitClick());
+    }
+    
     private void Start()
     {
+       
+        CreatePlayer();
         masterStartBtn = GameObject.Find("TestCanvasHJ").transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+
     }
     private void Update()
     {
         //HJ_
-        //��� �ο��� �غ� �Ϸ��ϸ� �������� ���� ��ư�� Ȱ��ȭ �˴ϴ�.
-        if (isEveryReady)
+        //모든 인원이 준비를 완료하면 마스터의 시작 버튼이 활성화 됩니다.
+        if (isEveryReady)//&& readyCount >= maxPlayerCount )
         {
             masterStartBtn.interactable = true;
         }
-        else //�� ���� ��쿡�� false �� ���ѷ��� �մϴ�.
+        else //그 외의 경우에는 false 로 놔둘려고 합니다.
         {
             masterStartBtn.interactable = false;
-        } //���� ���� Ȱ��ȭ ���� 
+        } //게임 시작 활성화 관련 
 
         if (isGameStart)
         {
@@ -127,21 +146,21 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.Log("���ӽ��� ���� �� ���ð� Ÿ�̸� �������ϴ�.");
-                //�ؿ��� isHiding 15�ʷ� �ʱ�ȭ ���ֱ� �� �Ŷ� ���ֵ� �� �� ���� �մϴ� . �ϴ��� ����
+                Debug.Log("게임시작 시작 전 대기시간 타이머 끝났습니다.");
+                //밑에서 isHiding 15초로 초기화 해주긴 할 거라 없애도 될 것 같긴 합니다 . 일단은 남김
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
                 isGameStart= false;
-                //TODO ���⼭ �г� ���ְ� ĳ���� �����ָ� �� �� �����ϴ�.
-                // �� ������ ������ �������� ĳ���͸� ������ �� �ְԲ� �ϸ� �� �� �����ϴ�.
-                //�׽�Ʈ�̱� ������ isHiging�� true�� �ٲ��ݴϴ�.
-                
+                //TODO 여기서 패널 꺼주고 캐릭터 보여주면 될 것 같습니다.
+                // 그 다음에 프리즈 해제해준 캐릭터를 움직일 수 있게끔 하면 될 것 같습니다.
+                //테스트이긴 하지만 isHiging를 true로 바꿔줍니다.
+
                 isHiding = true; 
                 timeRemaining = 15f;
                 return;
-                //���⼭���� ���� �� ���ð� Ÿ�̸Ӱ� �����ϴ�.
+                //여기서부터 시작 전 대기시간 타이머가 끝납니다.
             }
-            Debug.Log("���ӽ��� ���� �� ���ð� Ÿ�̸� ������ ������ ����� ���� ? 1");
+            //TODO 여기로 오는지 한번 디버그 찍어보기
             DisplayTime(timeRemaining);
         }
         else if (isHiding) 
@@ -152,45 +171,45 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                Debug.Log("���డ ���� �ð��� �������ϴ�.");
+                Debug.Log("마녀가 숨는 시간이 끝났습니다.");
                 timeRemaining = 0f;
                 timeText.text = string.Format("00:00");
                 isHiding = false;
                 isPlaying = true;
-                //���⼭���ʹ� ���Ͱ� ã�� �ð��� ���۵˴ϴ�.
-                //4���� �־����ϴ�.
+                //여기서부터는 헌터가 찾는 시간이 시작됩니다.
+                //4분이 주어집니다.
                 timeRemaining = 240f;
                 return;
                 
             }
-            Debug.Log("���డ ���� �ð� = �̰� ��µǳ� 2");
+            //TODO 여기로 오는지 한번 디버그 찍어보기
             DisplayTime(timeRemaining);
         }
-        else if (!isHiding && isPlaying) // ���� �ð��� ������ ������ �������̶�� 
+        else if (!isHiding && isPlaying) // 숨는 시간이 끝났고 게임을 진행중이라면 
         {
+            if(witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
+            {
+            //헌터 승리 UI 와 처리
+            }
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
             }
-            //else if()// ���⼭ ������ ���� �� �� �ִ� ����� ã�Ƽ� �� ���� 0�� �Ǹ� �� �κп� �Լ��� ����ǰ� ���ָ� �� �� �����ϴ�.
-            //{
-                //���� �¸� UI �� ó��
-            //}
             else
             {
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
-                Debug.Log("���Ͱ� ã�� �ð��� �������ϴ�. �׸��� ������ �¸��Դϴ�.");
+                Debug.Log("헌터가 찾는 시간이 끝났습니다. 그리고 마녀의 승리입니다.");
                 isPlaying = false;
-                //���⼭ �¸� UI �˾�â �ѹ� ����ְ� 2�ʵڿ� ��� panel�� �����Բ� ���ָ� �� �� �����ϴ�.
+                //여기서 승리 UI 팝업창 한번 띄어주고 2초뒤에 결과 panel이 나오게끔 해주면 될 것 같습니다.
                 return;
             }
-            Debug.Log("���Ͱ� ã�� �ð��� ��=���� �̰� ��µǸ� �� ���� ��������.");
+            //TODO 여기로 오는지 한번 디버그 찍어보기
             DisplayTime(timeRemaining);
         }
     }
     //HJ_
-    //�ð� ǥ�� �Լ��Դϴ�.
+    //시간 표시 함수입니다.
     public void DisplayTime(float timeToDisplay)
     {
         timeToDisplay += 1;
@@ -199,7 +218,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         timeText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
     }
 
-    //HJ_ �÷��̾� �غ� bool �� �ٲ��ִ� �Լ�
+    //HJ_ 플레이어 준비 bool 값 바꿔주는 함수
     public void ReadyGame()
     {
         isPlayerReady = true;
@@ -210,5 +229,52 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         isGameStart = true;
         timeRemaining = 10f;
+        //TODO 들어온 인원들 진영을 선택해줘야합니다.
+        //진영 선택하는 함수를 골라줍니다.
+        //ChooseRandomTeam();
+        //TODO 혹은 애초에 처음부터 진영을 골라주면 이건 안해줘도 됩니다.
     }
+
+    //HJ_ 230919 변경 
+    [PunRPC]
+    void CreatePlayer()
+    {
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        int witchSpawnPoint = 1;
+        int hunterSpawnPoint = 2;
+
+        
+        if (UnityEngine.Random.Range(0, 10) > 1 && chooseWH != 1)
+        {
+            PhotonNetwork.Instantiate(hunterPrefab.name, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+            //chooseWH = 1;
+            PhotonNetwork.LocalPlayer.SetCustomProperties(initialProps);
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(witchPrefab.name, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+        }
+        
+    }
+   
+
+
+    //public void ChooseRandomTeam()
+    //{
+    //    for(int i = 0; i < 5/*게임 최대 참여 인원까지 돌려서 해줍니다. */; i++)
+    //    {
+    //        chooseWH = UnityEngine.Random.Range(0, 1);
+    //        if(chooseWH == 1)
+    //        {
+    //            //헌터 프리팹을 선택해서 건네줍니다.
+    //            //그리고 나머지 다른 애들한테는 마녀 프리팹을 건네줍니다.
+    //            break;
+    //        }
+    //        else
+    //        {
+    //            //마녀 프리팹을 건네줍니다.
+    //        }
+    //    }
+    //    //TODO 각각의 포톤 뷰가 달려있는 캐릭터에게 값을 전달해줍니다.
+    //}
 }
