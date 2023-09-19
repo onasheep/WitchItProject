@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,14 +7,10 @@ using UnityEngine.UI;
 public class GraphicsMenu : MonoBehaviour
 {
 
-    //public Dropdown resolutionDropdown;
-    //public Dropdown qualityDropdown;
-    //public Dropdown textureDropdown;
-    //public Dropdown aaDropdown;
-    //public Slider volumeSlider;
-
+    #region Variables 
     // 오디오 조절 
     public AudioMixer audioMixer;
+    //public Slider volumeSlider;
 
     // FPS 출력 
     public TMP_Text fpsText;
@@ -30,9 +25,15 @@ public class GraphicsMenu : MonoBehaviour
     public TMP_Dropdown resoultionsDropdown;
     private List<Resolution> resolutions =  default;
     private int resolutionNum = default;
-    private FullScreenMode screenMode; 
+    private FullScreenMode screenMode;
     //
-    
+
+    // 안티얼리어싱 브이싱크
+    public Toggle vsyncToggle;
+    public TMP_Dropdown antiAliasingDropdown;    
+    private int aniAliasingNum = default;
+    #endregion
+
     private void Start()
     {       
         Init();
@@ -43,20 +44,24 @@ public class GraphicsMenu : MonoBehaviour
         SetFpsText();
     }
 
-   public void Init()
+    #region Initialize
+
+    public void Init()
     {
 
-        resolutions = new List<Resolution>();
         fpsRect = fpsText.GetComponent<RectTransform>();
 
+        #region 해상도 초기화
         // { 해상도 초기화 
+        resolutions = new List<Resolution>();
+
         for (int i = 0; i < Screen.resolutions.Length; i++)
         {
             if (Screen.resolutions[i].refreshRate == 60)
             {
                 resolutions.Add(Screen.resolutions[i]);
             }
-        }
+        }       // Loop : 지원 해상도 정리
         
         resoultionsDropdown.options.Clear();
 
@@ -73,19 +78,57 @@ public class GraphicsMenu : MonoBehaviour
                 resoultionsDropdown.value = optionNum;
             }
             optionNum++;
-        }
+        }       // Loop : 지원 해상도 드롭다운 추가
+
         resoultionsDropdown.RefreshShownValue();
 
+        // { 현재 모니터 해상도로 초기 해상도 설정
         Screen.SetResolution(resolutions[resoultionsDropdown.value].width, resolutions[resoultionsDropdown.value].height,
          FullScreenMode.FullScreenWindow, 60);
-        //fullScreenToggle.isOn = Screen.fullScreenMode.Equals(FullScreenMode.FullScreenWindow) ? true : false;
-        // } 해상도 초기화 
-    }
+        // } 현재 모니터 해상도로 초기 해상도 설정
 
-    public void OnApplicationQuit()
-    {
-        Application.Quit();
-    }
+        // } 해상도 초기화 
+        #endregion
+
+        #region 안티엘리어싱 초기화
+        // { 안티엘리어싱 초기화
+        antiAliasingDropdown.options.Clear();
+        for (int i = 0; i < 4; i++)
+        {
+            TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
+            switch(i)
+            {
+                case 0:
+                    option.text = "Disabled";
+                    break;
+                case 1:
+                    option.text = "2x Multi Sampling";
+                    break;
+                case 2:
+                    option.text = "4x Multi Sampling";
+                    break;
+                case 3:
+                    option.text = "8x Multi Sampling";
+                    break;
+            }
+            antiAliasingDropdown.options.Add(option);
+            antiAliasingDropdown.value = 0;
+
+        }       // Loop : 안티엘리어싱 드롭다운 추가
+        antiAliasingDropdown.RefreshShownValue();
+        // } 안티엘리어싱 초기화
+        #endregion
+
+        #region Vsync Anialiasing 초기화        
+        vsyncToggle.isOn = false;
+        QualitySettings.vSyncCount = 0;
+        QualitySettings.antiAliasing = 0;
+        #endregion
+
+ 
+    }       // Init()
+
+    // 프레임 초기화 
     public void SetFpsText()
     {
         // 게임중 해상도가 변경되면 그에 대응해서 위치 이동?? 
@@ -105,7 +148,11 @@ public class GraphicsMenu : MonoBehaviour
         fpsText.rectTransform.position = rect.position;
     }       // SetFpsText()
 
+    #endregion
+
     #region DropDownOptionChange
+
+
     public void DropdownOptionChange(int idx)
     {
         resolutionNum = idx;
@@ -113,154 +160,56 @@ public class GraphicsMenu : MonoBehaviour
 
     public void AnitiAliasingOptionChange(int idx)
     {
-        resolutionNum = idx;
+        aniAliasingNum = idx;
     }
 
     #endregion
 
     #region CheckBoxChange
-    public void OnFpsText(bool isFps)
-    {
-        fpsText.enabled = isFps;
-    }
-
-    public void SetVsnc(bool isVsnc)
-    {        
-        QualitySettings.vSyncCount = isVsnc ? 1 : 0;
-    }
-    #endregion
-
-    public void SetResoultion()
-    {
-        Screen.SetResolution(resolutions[resolutionNum].width,
-        resolutions[resolutionNum].height, screenMode, resolutions[resolutionNum].refreshRate);
-    }
-
-   
-
     public void SetFullScreen(bool isFullScreen)
     {
         // 토글로 전체화면, 창모드 
         // 경계없는 창모드 설정하려면 드롭 다운으로 구현 추가 예정
-        screenMode = isFullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;        
+        screenMode = isFullScreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
+    }       // SetFullScreen()
+    public void OnFpsText(bool isFps)
+    {
+        fpsText.enabled = isFps;
+    }       // OnFpsText()
+
+    public void SetVsnc(bool isVsnc)
+    {
+        QualitySettings.vSyncCount = isVsnc ? 1 : 0;
+        Debug.LogFormat("{0}", QualitySettings.vSyncCount);
+
+    }       // SetVsnc()
+    #endregion
+
+
+
+    // Apply 버튼 클릭시 동작 
+    public void SetResoultion()
+    {
+        Screen.SetResolution(resolutions[resolutionNum].width,
+        resolutions[resolutionNum].height, screenMode, resolutions[resolutionNum].refreshRate);
+
+        QualitySettings.antiAliasing = aniAliasingNum;
+    }       // SetResoultion()
+
+    // Back 버튼 클릭시 동작
+    // 추후 Ui끄는 기능으로 변경 
+    public void OnApplicationQuit()
+    {
+        Application.Quit();
     }
+
+
 
     //public void SetVolume(float volume)
     //{
     //    audioMixer.SetFloat("Volume", volume);
     //    currentVolume = volume;
     //}
-    //public void SetFullscreen(bool isFullscreen)
-    //{
-    //    Screen.fullScreen = isFullscreen;
-    //}
-
-    //public void SetQuality(int qualityIndex)
-    //{
-    //    if (qualityIndex != 6) // if the user is not using 
-    //                           //any of the presets
-    //        QualitySettings.SetQualityLevel(qualityIndex);
-    //    switch (qualityIndex)
-    //    {
-    //        case 0: // quality level - very low
-    //            textureDropdown.value = 3;
-    //            aaDropdown.value = 0;
-    //            break;
-    //        case 1: // quality level - low
-    //            textureDropdown.value = 2;
-    //            aaDropdown.value = 0;
-    //            break;
-    //        case 2: // quality level - medium
-    //            textureDropdown.value = 1;
-    //            aaDropdown.value = 0;
-    //            break;
-    //        case 3: // quality level - high
-    //            textureDropdown.value = 0;
-    //            aaDropdown.value = 0;
-    //            break;
-    //        case 4: // quality level - very high
-    //            textureDropdown.value = 0;
-    //            aaDropdown.value = 1;
-    //            break;
-    //        case 5: // quality level - ultra
-    //            textureDropdown.value = 0;
-    //            aaDropdown.value = 2;
-    //            break;
-    //    }
-
-    //    qualityDropdown.value = qualityIndex;
-    //}
 
 
-    //public void ExitGame()
-    //{
-    //    Application.Quit();
-    //}
-    //public void SaveSettings()
-    //{
-    //    PlayerPrefs.SetInt("QualitySettingPreference",
-    //               qualityDropdown.value);
-    //    PlayerPrefs.SetInt("ResolutionPreference",
-    //               resolutionDropdown.value);
-    //    PlayerPrefs.SetInt("TextureQualityPreference",
-    //               textureDropdown.value);
-    //    PlayerPrefs.SetInt("AntiAliasingPreference",
-    //               aaDropdown.value);
-    //    PlayerPrefs.SetInt("FullscreenPreference",
-    //               Convert.ToInt32(Screen.fullScreen));
-    //    PlayerPrefs.SetFloat("VolumePreference",
-    //               currentVolume);
-    //}
-
-    //public void SetTextureQuality(int textureIndex)
-    //{
-    //    QualitySettings.masterTextureLimit = textureIndex;
-    //    qualityDropdown.value = 6;
-    //}
-    //public void SetAntiAliasing(int aaIndex)
-    //{
-    //    QualitySettings.antiAliasing = aaIndex;
-    //    qualityDropdown.value = 6;
-    //}
-    //public void SetResolution(int resolutionIndex)
-    //{
-    //    Resolution resolution = resolutions[resolutionIndex];
-    //    Screen.SetResolution(resolution.width,
-    //              resolution.height, Screen.fullScreen);
-    //}
-    //public void LoadSettings(int currentResolutionIndex)
-    //{
-    //    if (PlayerPrefs.HasKey("QualitySettingPreference"))
-    //        qualityDropdown.value =
-    //                     PlayerPrefs.GetInt("QualitySettingPreference");
-    //    else
-    //        qualityDropdown.value = 3;
-    //    if (PlayerPrefs.HasKey("ResolutionPreference"))
-    //        resolutionDropdown.value =
-    //                     PlayerPrefs.GetInt("ResolutionPreference");
-    //    else
-    //        resolutionDropdown.value = currentResolutionIndex;
-    //    if (PlayerPrefs.HasKey("TextureQualityPreference"))
-    //        textureDropdown.value =
-    //                     PlayerPrefs.GetInt("TextureQualityPreference");
-    //    else
-    //        textureDropdown.value = 0;
-    //    if (PlayerPrefs.HasKey("AntiAliasingPreference"))
-    //        aaDropdown.value =
-    //                     PlayerPrefs.GetInt("AntiAliasingPreference");
-    //    else
-    //        aaDropdown.value = 1;
-    //    if (PlayerPrefs.HasKey("FullscreenPreference"))
-    //        Screen.fullScreen =
-    //        Convert.ToBoolean(PlayerPrefs.GetInt("FullscreenPreference"));
-    //    else
-    //        Screen.fullScreen = true;
-    //    if (PlayerPrefs.HasKey("VolumePreference"))
-    //        volumeSlider.value =
-    //                    PlayerPrefs.GetFloat("VolumePreference");
-    //    else
-    //        volumeSlider.value =
-    //                    PlayerPrefs.GetFloat("VolumePreference");
-    //}
-    
 }
