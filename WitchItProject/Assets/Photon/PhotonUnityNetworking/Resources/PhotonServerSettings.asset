@@ -39,6 +39,9 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
+  - CreatePlayer
+  - MakeHunter
+  - MakeWitch
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
