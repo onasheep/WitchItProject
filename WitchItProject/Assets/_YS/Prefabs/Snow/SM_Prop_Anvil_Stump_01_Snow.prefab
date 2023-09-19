@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4348330025427217427}
   - component: {fileID: 4348330025430599595}
   - component: {fileID: 4348330025429380523}
+  - component: {fileID: 7117024409394035700}
   - component: {fileID: -5308486858495135865}
   m_Layer: 0
   m_Name: SM_Prop_Anvil_Stump_01_Snow
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7117024409394035700
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348330025427447247}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 8295ecc0be1760240b069a074e47480f, type: 3}
 --- !u!54 &-5308486858495135865
 Rigidbody:
   m_ObjectHideFlags: 0

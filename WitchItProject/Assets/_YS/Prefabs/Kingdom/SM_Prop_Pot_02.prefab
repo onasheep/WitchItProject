@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7719388620198727475}
   - component: {fileID: 7751522025822535367}
   - component: {fileID: -7569521746318262519}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Pot_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

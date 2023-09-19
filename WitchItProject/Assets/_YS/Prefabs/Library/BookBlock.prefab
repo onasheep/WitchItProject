@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1490317582155442237}
   - component: {fileID: 1478524565826803263}
   - component: {fileID: 1459045800585601813}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BookBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}

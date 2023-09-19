@@ -11,9 +11,7 @@ GameObject:
   - component: {fileID: 5436686705026333634}
   - component: {fileID: 5436686705025045142}
   - component: {fileID: 5436686705024008362}
-  - component: {fileID: 5446968050967493404}
-  - component: {fileID: 5446221839720306782}
-  - component: {fileID: 5446002131750460602}
+  - component: {fileID: -6752655445251749981}
   - component: {fileID: 444402440105136290}
   m_Layer: 0
   m_Name: SM_Prop_Bench_01_Snow
@@ -87,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5446968050967493404
+--- !u!64 &-6752655445251749981
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,35 +98,7 @@ MeshCollider:
   serializedVersion: 4
   m_Convex: 1
   m_CookingOptions: 30
-  m_Mesh: {fileID: 43824604658502692, guid: fbf82a821775dca4b8a51685f45427f6, type: 2}
---- !u!64 &5446221839720306782
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5436686705026056326}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43653754560115328, guid: fbf82a821775dca4b8a51685f45427f6, type: 2}
---- !u!64 &5446002131750460602
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5436686705026056326}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43410136700269154, guid: fbf82a821775dca4b8a51685f45427f6, type: 2}
+  m_Mesh: {fileID: 4300000, guid: 6ee9364fe395ee146aab6dc00af59c84, type: 3}
 --- !u!54 &444402440105136290
 Rigidbody:
   m_ObjectHideFlags: 0

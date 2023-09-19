@@ -16,6 +16,7 @@ public class BulletPool : MonoBehaviour
         instance = this;
 
         bulletPrefab = (GameObject)Resources.Load("Bullet");
+        //bulletPrefab = (GameObject)Resources.Load("Projectile 2");
 
         Initialize(30);
     }

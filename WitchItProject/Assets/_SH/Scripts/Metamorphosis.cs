@@ -18,7 +18,7 @@ public class Metamorphosis : MonoBehaviour
         playerCamera = GameObject.Find("WitchCamera").transform;
         lookPoint = GameObject.Find("CameraLookPoint");
 
-        witchBody = GameObject.Find("WitchCharacter");
+        witchBody = GameObject.Find("Character_Female_Witch");
         currBody = witchBody;
     }
 
@@ -40,13 +40,17 @@ public class Metamorphosis : MonoBehaviour
             }
             else if (!witchBody.activeInHierarchy)
             {
-                witchBody.transform.position = lookPoint.transform.position;
+                transform.position = lookPoint.transform.position;
+                //witchBody.transform.position = lookPoint.transform.position;
 
                 witchBody.SetActive(true);
 
+                GetComponent<Rigidbody>().useGravity = true;
+                GetComponent<Collider>().enabled = true;
+
                 GameObject prevBody_ = lookPoint.transform.parent.gameObject;
 
-                lookPoint.transform.SetParent(witchBody.transform);
+                lookPoint.transform.SetParent(transform);
                 lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
 
                 Destroy(prevBody_);
@@ -54,6 +58,8 @@ public class Metamorphosis : MonoBehaviour
                 currBody = witchBody;
             }
         }
+
+        GetComponent<WitchController>().isMetamor = false;
     }
 
     private void PossesionToObj(GameObject obj_)
@@ -64,6 +70,9 @@ public class Metamorphosis : MonoBehaviour
         {
             currBody.SetActive(false);
 
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().enabled = false;
+
             lookPoint.transform.SetParent(obj_.transform);
             lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
 
@@ -80,11 +89,13 @@ public class Metamorphosis : MonoBehaviour
 
             currBody = obj_;
         }
+
+        GetComponent<WitchController>().isMetamor = true;
     }
 
     private void MetamorphosisToObj(GameObject obj_)
     {
-        GameObject newBody_ = Instantiate(obj_, transform);
+        GameObject newBody_ = Instantiate(obj_);
 
         newBody_.transform.position = lookPoint.transform.position;
         newBody_.AddComponent<Cube>();
@@ -93,6 +104,9 @@ public class Metamorphosis : MonoBehaviour
         {
             currBody.SetActive(false);
 
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().enabled = false;
+
             lookPoint.transform.SetParent(newBody_.transform);
             lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
 
@@ -109,6 +123,8 @@ public class Metamorphosis : MonoBehaviour
 
             currBody = newBody_;
         }
+
+        GetComponent<WitchController>().isMetamor = true;
     }
 
     private void ShootRay()

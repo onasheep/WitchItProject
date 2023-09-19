@@ -7,20 +7,11 @@ using UnityEngine;
 // PlayerBase ���
 public class Hunter : PlayerBase
 {
-    /*
-    ��Ÿ� ������ �����ϴ� ���̸� ���� ũ�ν����� ���
-    ����ĳ��Ʈ���� �������� ������, ���� �Ÿ���ŭ ������ ���� ũ�ν����� ���
-
-    ī�޶�� �������� ũ�ν��� �ٶ󺻴�
-     
-    */
-
     // SJ_ 230915
     // LEGACY : PlayerBase�� ����
     //private Transform myCamera;
     //private Rigidbody rigid;
     //private Animator animator;
-    
 
     private RaycastHit hunterRayHit;
 
@@ -166,8 +157,6 @@ public class Hunter : PlayerBase
         //}
     }
 
-    // TODO : ���� ���Ϳ� ���డ ������ ���� �ٸ��ٸ� 
-    // ���� ���� �������, �ƴ϶�� PalyerBase���� ���������� ���� ��
     private void JumpHunter()
     {
         // InputPlayer�� ��ü 
@@ -182,8 +171,8 @@ public class Hunter : PlayerBase
 
     private void MoveHunter()
     {
-        rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
-        rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
+        rigid.AddForce(transform.forward * verticalMove * MOVESPEED, ForceMode.Force);
+        rigid.AddForce(transform.right * horizontalMove * MOVESPEED, ForceMode.Force);
 
         animator.SetFloat("InputVertical", verticalMove);
         animator.SetFloat("InputHorizontal", horizontalMove);

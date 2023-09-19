@@ -11,10 +11,8 @@ GameObject:
   - component: {fileID: 9056064931745130815}
   - component: {fileID: 9056064931748605233}
   - component: {fileID: 9056064931747470561}
-  - component: {fileID: 9027647897830759575}
-  - component: {fileID: 9027655013410352019}
-  - component: {fileID: 9027529805312313865}
   - component: {fileID: -75438806256335539}
+  - component: {fileID: 667562426390829613}
   m_Layer: 0
   m_Name: SM_Prop_Crate_Base_01_Snow
   m_TagString: Untagged
@@ -87,48 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &9027647897830759575
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9056064931745238563}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43918796613535156, guid: 69dd5185ff0d4b6419aa946268a19937, type: 2}
---- !u!64 &9027655013410352019
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9056064931745238563}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43184141756072794, guid: 69dd5185ff0d4b6419aa946268a19937, type: 2}
---- !u!64 &9027529805312313865
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9056064931745238563}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43464107400939510, guid: 69dd5185ff0d4b6419aa946268a19937, type: 2}
 --- !u!54 &-75438806256335539
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -145,3 +101,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &667562426390829613
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056064931745238563}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 52840b8f67fa77e41be36999c693dc30, type: 3}

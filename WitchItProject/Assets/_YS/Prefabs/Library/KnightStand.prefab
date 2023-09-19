@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2408224396292176691}
   - component: {fileID: 2399990651408072539}
   - component: {fileID: 2448561971477285573}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: KnightStand
   m_TagString: Untagged
   m_Icon: {fileID: 0}

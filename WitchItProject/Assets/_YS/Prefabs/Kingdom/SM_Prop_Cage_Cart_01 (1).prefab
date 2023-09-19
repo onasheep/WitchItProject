@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 6545352997435210737}
   - component: {fileID: 6584566254830865673}
   - component: {fileID: 7778351100530653847}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Cage_Cart_01 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

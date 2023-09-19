@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8097613972586799262}
   - component: {fileID: 8129709217947665184}
   - component: {fileID: 4088019758569911811}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Dish_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

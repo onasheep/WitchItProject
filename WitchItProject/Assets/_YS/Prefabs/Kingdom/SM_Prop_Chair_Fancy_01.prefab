@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4715356050441052396}
   - component: {fileID: 4738005880382681808}
   - component: {fileID: 8397926320675181356}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Chair_Fancy_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

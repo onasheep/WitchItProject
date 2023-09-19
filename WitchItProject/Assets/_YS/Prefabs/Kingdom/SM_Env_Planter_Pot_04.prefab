@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6305988275156298564}
   - component: {fileID: 6283325757711894612}
   - component: {fileID: -7043525319924583196}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Env_Planter_Pot_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}

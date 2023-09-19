@@ -29,13 +29,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         //exitBtn.onClick.AddListener(() => OnExitClick());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        // { ~~~ ���� ���� / sj_h
-        // } ~~~ ���� ���� / sj_h
-    }
-
     void CreatePlayer()
     {
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
@@ -106,6 +99,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         masterStartBtn = GameObject.Find("TestCanvasHJ").transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
     }
+
     private void Update()
     {
         //HJ_

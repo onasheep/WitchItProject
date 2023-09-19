@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1234501637860308442}
   - component: {fileID: 1245188803044039816}
   - component: {fileID: 1253448355032471016}
+  - component: {fileID: 7799696744451059985}
   - component: {fileID: 1210597454195752419}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_HoneyJar_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,6 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &7799696744451059985
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1240626774527192292}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 96e0cc1b2d78fe24f800c2638576e37b, type: 3}
 --- !u!54 &1210597454195752419
 Rigidbody:
   m_ObjectHideFlags: 0

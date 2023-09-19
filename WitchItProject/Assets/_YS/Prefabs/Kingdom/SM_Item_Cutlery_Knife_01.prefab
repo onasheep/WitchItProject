@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2195832731572668865}
   - component: {fileID: 2219594828114631727}
   - component: {fileID: 3811355738484250357}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Cutlery_Knife_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

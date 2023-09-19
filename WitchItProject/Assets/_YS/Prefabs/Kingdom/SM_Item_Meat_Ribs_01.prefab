@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 115515997538813315}
   - component: {fileID: 84915861595700553}
   - component: {fileID: -3814404887204714668}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Meat_Ribs_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

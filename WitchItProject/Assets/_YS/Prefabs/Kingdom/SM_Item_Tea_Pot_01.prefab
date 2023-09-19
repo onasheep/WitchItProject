@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4593205029490845245}
   - component: {fileID: 4542314603414464031}
   - component: {fileID: 307975538758699707}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Tea_Pot_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

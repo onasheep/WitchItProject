@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 4984691783970242424}
   - component: {fileID: 5016155014707964746}
   - component: {fileID: -5319243921695091714}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Bucket_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

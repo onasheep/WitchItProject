@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2307755756373259402}
   - component: {fileID: 2357312084589837338}
   - component: {fileID: 1594813584050956585}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Cheese_Wheel_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

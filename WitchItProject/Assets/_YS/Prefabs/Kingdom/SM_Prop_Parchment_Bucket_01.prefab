@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4838273783647342393}
   - component: {fileID: 4869032103949869985}
   - component: {fileID: 2954637122230914170}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Parchment_Bucket_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

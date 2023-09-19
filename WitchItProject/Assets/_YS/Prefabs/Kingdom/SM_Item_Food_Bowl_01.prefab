@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8731489306213230491}
   - component: {fileID: 8761922062220661557}
   - component: {fileID: -5469247424257354499}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Food_Bowl_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

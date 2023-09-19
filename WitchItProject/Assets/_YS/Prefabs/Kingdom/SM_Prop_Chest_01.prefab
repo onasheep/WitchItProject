@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 7926720507520555480}
   - component: {fileID: 7977696993332152570}
   - component: {fileID: 3293327644717959643}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Chest_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

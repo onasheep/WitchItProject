@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 72202768251068014}
   - component: {fileID: 81587488451353768}
   - component: {fileID: 114445014106608038}
-  m_Layer: 0
+  - component: {fileID: -3325245983695774576}
+  m_Layer: 6
   m_Name: SM_Prop_Table_Wood_10 (2) 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -98,3 +99,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43056665512412994, guid: 98646e9fb3bf4114bb715e05b4818c3c, type: 2}
+--- !u!54 &-3325245983695774576
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 104688746519012690}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

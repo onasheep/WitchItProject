@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 5755383687896596455}
   - component: {fileID: 5755383687895247631}
   - component: {fileID: 5755383687894258201}
-  - component: {fileID: 5708909938191881575}
-  - component: {fileID: 5709587493240155871}
   - component: {fileID: -2935205224427714056}
+  - component: {fileID: -7694251612808131872}
   m_Layer: 0
   m_Name: SM_Prop_Wheel_Barrow_01_Snow
   m_TagString: Untagged
@@ -86,34 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5708909938191881575
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5755383687896236987}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43648491549418970, guid: 38e5c6d0e559da24a8d895862baeb1bd, type: 2}
---- !u!64 &5709587493240155871
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5755383687896236987}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43971657636038852, guid: 38e5c6d0e559da24a8d895862baeb1bd, type: 2}
 --- !u!54 &-2935205224427714056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,3 +101,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &-7694251612808131872
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5755383687896236987}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 786ca84c503609d48b4b67bafd67a2a5, type: 3}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6342583392048891804}
   - component: {fileID: 6342583392047603790}
   - component: {fileID: 6404124684914278720}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: StoneChair
   m_TagString: Untagged
   m_Icon: {fileID: 0}

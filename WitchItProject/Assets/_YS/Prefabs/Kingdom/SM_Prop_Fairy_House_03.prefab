@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5011588607420902384}
   - component: {fileID: 4988957199185431592}
   - component: {fileID: 5033040599579899272}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Fairy_House_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -5,17 +5,15 @@ using UnityEngine;
 public class Cube : MonoBehaviour
 {
     public Transform myCamera;
-    //public GameObject followTarget;
 
     private Rigidbody rigid;
 
-    private Vector3 direction;
 
     private void Start()
     {
         myCamera = GameObject.Find("WitchCamera").transform;
-        //followTarget = FindObjectOfType<WitchController>().gameObject;
         rigid = GetComponent<Rigidbody>();
+
     }
 
     private void FixedUpdate()
@@ -43,12 +41,6 @@ public class Cube : MonoBehaviour
             // 축에 반시계방향으로 회전
             rigid.AddTorque(torqueAxis_ * -50);
         }
-
-        //Vector3 direction = (followTarget.transform.position - transform.position).normalized;
-
-        //Vector3 torqueAxis = new Vector3(direction.z, direction.y, -direction.x);
-
-        //rigid.AddTorque(torqueAxis * 10);
     }
 
     void MoveHorizontal()

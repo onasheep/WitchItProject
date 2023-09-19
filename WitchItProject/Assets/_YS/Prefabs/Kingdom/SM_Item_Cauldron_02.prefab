@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 1611937740832436397}
   - component: {fileID: 1650915488618909387}
   - component: {fileID: -8650163741782986118}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Cauldron_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

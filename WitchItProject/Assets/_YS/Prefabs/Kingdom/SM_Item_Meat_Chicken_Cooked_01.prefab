@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2376672205037898462}
   - component: {fileID: 2327287237480332186}
   - component: {fileID: 6222390300514650576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Meat_Chicken_Cooked_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

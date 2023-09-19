@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4802927602078989004}
   - component: {fileID: 4762503802259683430}
   - component: {fileID: 5658799575583221260}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Anvil_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

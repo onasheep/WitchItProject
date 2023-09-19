@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1477300554932845592}
   - component: {fileID: 1454805656841443952}
   - component: {fileID: -3544625015807861153}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Bench_Seat_03 (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

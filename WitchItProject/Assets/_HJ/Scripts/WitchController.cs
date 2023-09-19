@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -16,7 +17,7 @@ public class WitchController : PlayerBase
     //[SerializeField] private Rigidbody rigid;
     //[SerializeField] private Animator animator;
     //
-    
+
     [SerializeField][Range(0, 100)] private int witchHealth = 50;
     [SerializeField][Range(0f, 100f)] private float witchMana = 50f;
 
@@ -32,13 +33,27 @@ public class WitchController : PlayerBase
     private GameObject lookPoint = default;
     private RaycastHit hit;
 
+    // 09/19 Jung
+    // 변신한 물체에 따라 바뀔 예정 const X
+    private float healthMax = 100;
+    private float health;
+
+    // 변신 여부
+    public bool isMetamor = false;
+    // 09/19 Jung
+
     void Start()
     {
         Init();
-        
+        health = healthMax;
+
+        Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
+        Cursor.visible = false; // 마우스 커서를 숨김
+        Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
+
         myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
-        //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
-        
+                                                                                                     //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
+
         // SJ_ 230915
         // LEGACY : PlayerBase에서 가져옴
         //rigid = GetComponent<Rigidbody>();
@@ -51,7 +66,7 @@ public class WitchController : PlayerBase
 
 
         base.InputPlayer();
-        
+
 
         //if (isDead) { return; }
         //if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
@@ -103,7 +118,7 @@ public class WitchController : PlayerBase
 
         //  ��ų ��� }
 
-        
+
 
 
 
@@ -112,7 +127,7 @@ public class WitchController : PlayerBase
         this.leftFunc =
             () =>
             {
-            
+
             };
 
         this.rigthFunc =
@@ -152,8 +167,17 @@ public class WitchController : PlayerBase
         //float moveDirectionZ = Input.GetAxisRaw("Vertical");
         //float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
-        Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
-        Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
+        if (isMetamor) { /* Do Nothing */ }
+        else if (!isMetamor)
+        {
+            Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
+            Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
+
+            Vector3 dirVelocity = moveDirection * MOVESPEED;
+
+            dirVelocity.y = rigid.velocity.y;
+            rigid.velocity = dirVelocity;
+        }
         // 09/18 Jung
         //==============================���� ��
         //Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
@@ -162,10 +186,6 @@ public class WitchController : PlayerBase
         //Vector3 moveVelocity = moveNormalized * moveSpeed;
         //myRigid.velocity = moveVelocity;
         //==============================���� ��
-        Vector3 dirVelocity = moveDirection * MOVESPEED;
-
-        dirVelocity.y = rigid.velocity.y;
-        rigid.velocity = dirVelocity;
         //==============================
     }
 
@@ -238,4 +258,9 @@ public class WitchController : PlayerBase
         }
     }
 
+    public void TakeDamage()
+    {
+        // 데미지는 5?
+        health -= 5;
+    }
 }

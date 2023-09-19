@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3348621778789015517}
   - component: {fileID: 3372848340603137101}
   - component: {fileID: 956328504858304017}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Wood_Pile_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}

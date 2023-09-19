@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 5196374551803506072}
   - component: {fileID: 5236022433941673004}
   - component: {fileID: 6291647837321711354}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Item_Bottle_Clear_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

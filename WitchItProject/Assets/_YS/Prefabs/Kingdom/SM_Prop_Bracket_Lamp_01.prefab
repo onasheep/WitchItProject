@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6258544458857864986}
   - component: {fileID: 6268524806394733360}
   - component: {fileID: 6218225619001300576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SM_Prop_Bracket_Lamp_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

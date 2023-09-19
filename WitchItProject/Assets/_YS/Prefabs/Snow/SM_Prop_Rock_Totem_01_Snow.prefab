@@ -11,9 +11,8 @@ GameObject:
   - component: {fileID: 2125232225018653062}
   - component: {fileID: 2125232225015778238}
   - component: {fileID: 2125232225016366770}
-  - component: {fileID: 2133501482694015558}
-  - component: {fileID: 2133082219429832744}
   - component: {fileID: -6443167108971959246}
+  - component: {fileID: 1802266869150535752}
   m_Layer: 0
   m_Name: SM_Prop_Rock_Totem_01_Snow
   m_TagString: Untagged
@@ -86,34 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2133501482694015558
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2125232225018821178}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43923110926375108, guid: 4d1d5a098a0da7e4c871c6e5274f08df, type: 2}
---- !u!64 &2133082219429832744
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2125232225018821178}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43337368573282210, guid: 4d1d5a098a0da7e4c871c6e5274f08df, type: 2}
 --- !u!54 &-6443167108971959246
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -130,3 +101,17 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &1802266869150535752
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2125232225018821178}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 454b39f65d6ae1f47962565d7173e84c, type: 3}

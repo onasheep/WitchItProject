@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3656940924385684685}
   - component: {fileID: 3666320852248811445}
   - component: {fileID: 3629087408725801607}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Globe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
