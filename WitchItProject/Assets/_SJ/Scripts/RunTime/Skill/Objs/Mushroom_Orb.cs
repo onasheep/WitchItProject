@@ -27,13 +27,7 @@ public class Mushroom_Orb : MonoBehaviour
 
                 for (int i = 0; i < 4; i++)
                 {
-                    GameObject mushroom = Instantiate(ResourceManager.objs[RDefine.MUSHROOM_OBJ], this.transform.position, Quaternion.identity);
-                    float x = Random.Range(-1f, 1f);
-                    float z = Random.Range(-1f, 1f);
-                    Vector3 RandDir = (this.transform.position + new Vector3(x,  + 1f, z)).normalized;
-
-                    mushroom.GetComponent<Rigidbody>().AddForce(RandDir * 3f, ForceMode.Impulse);
-
+                    GameObject mushroom = Instantiate(ResourceManager.objs[RDefine.MUSHROOM_OBJ], this.transform.position, Quaternion.identity);              
                 }
                 Destroy(this.gameObject);
             }

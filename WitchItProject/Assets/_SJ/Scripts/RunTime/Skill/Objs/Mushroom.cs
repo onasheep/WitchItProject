@@ -17,11 +17,11 @@ public class Mushroom : MonoBehaviour
 
         isEnable = true;
 
-        //float x = Random.Range(-1f, 1f);
-        //float z = Random.Range(-1f, 1f);
-        //Vector3 RandDir = new Vector3(x, this.transform.position.y + 2f, z);
-        
-        //rigid.AddForce(RandDir * 3f, ForceMode.Impulse);
+        float x = Random.Range(-1f, 1f);
+        float z = Random.Range(-1f, 1f);
+        Vector3 RandDir = new Vector3(x, this.transform.position.y + 2f, z);
+
+        rigid.AddForce(RandDir * 3f, ForceMode.Impulse);
 
         Invoke("DestroyMushroom", existTime);
     }

@@ -124,11 +124,11 @@ public class WitchController : PlayerBase
 
 
         // TODO : 변신 기능 함수 추가
-        this.leftFunc =
-            () =>
-            {
-
-            };
+        //this.leftFunc =
+        //    () =>
+        //    {
+                
+        //    };
 
         this.rigthFunc =
             () =>
@@ -164,8 +164,8 @@ public class WitchController : PlayerBase
     {
         //==============================���� �κ� ���� ����
         // 09/18 Jung
-        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
+        float moveDirectionZ = Input.GetAxisRaw("Vertical");
+        float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
         if (isMetamor) { /* Do Nothing */ }
         else if (!isMetamor)
