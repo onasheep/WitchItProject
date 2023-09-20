@@ -21,7 +21,7 @@ public class WitchCameraControl : MonoBehaviour
     void Start()
     {
         //목표 타겟을 찾아옵니다.
-        target = GameObject.Find("Witch").transform.GetChild(0).transform.GetChild(2).transform;
+        target = GameObject.Find("WitchCharacter").transform.GetChild(2).transform;
         myCamera = GetComponent<CinemachineVirtualCamera>(); //카메라 컴포넌트 받아오기
         
         myCamera.Follow = target; // 카메라가 따라다닐 타겟 지정

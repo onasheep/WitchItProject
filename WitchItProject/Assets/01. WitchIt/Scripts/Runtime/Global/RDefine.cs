@@ -2,10 +2,17 @@
 //Reference Define
 public static class RDefine
 {
-    // TODO : 리소스로 사용할 프리팹 이름 
+    // { 플레이어 프리팹
+    public const string PLAYER_HUNTER = "HunterCharacter";
+    public const string PLAYER_WITCH = "WitchCharacter";
 
+    // } 플레이어 프리팹
+
+
+    // TODO : 리소스로 사용할 프리팹 이름 
     public const string OBJ_PATH = "Objs";
     public const string EFFECT_PATH = "Effects";
+    public const string PLAYER_PATH = "Players";
 
 
     // { 헌터 스킬 프리팹 

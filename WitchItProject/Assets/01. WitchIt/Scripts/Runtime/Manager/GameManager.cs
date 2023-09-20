@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         ResourceManager.Init();
+
         hostCanvasObj = GameObject.Find("TestHostCanvasHJ");
         clientCanvasObj = GameObject.Find("TestClientCanvasHJ");
 
@@ -265,14 +266,13 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         
         if (UnityEngine.Random.Range(0, 10) > 1 )
-        {
-            PhotonNetwork.Instantiate(hunterPrefab.name, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-            //chooseWH = 1;
-            
+        {            
+            PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+            //chooseWH = 1;            
         }
         else
         {
-            PhotonNetwork.Instantiate(witchPrefab.name, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+            PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
         }
     }
 }
