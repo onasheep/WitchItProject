@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_YS/Scenes/SnowMap.unity
+    guid: fe0f3f53860ce2c4b853b340ebab586f
   m_configObjects: {}
