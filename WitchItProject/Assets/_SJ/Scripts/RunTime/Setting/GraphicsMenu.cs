@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class GraphicsMenu : MonoBehaviour
 {
@@ -32,8 +34,17 @@ public class GraphicsMenu : MonoBehaviour
     public Toggle vsyncToggle;
     public TMP_Dropdown antiAliasingDropdown;    
     private int aniAliasingNum = default;
-    #endregion
 
+    // 감마
+    private PostProcessVolume volume;
+    private ColorGrading colorGrading;
+    public Slider gammaSlider;
+    public TMP_Text gammaText;
+    private float gammaNum;
+
+
+    #endregion
+    
     private void Start()
     {       
         Init();
@@ -41,14 +52,15 @@ public class GraphicsMenu : MonoBehaviour
 
     private void Update()
     {
-        SetFpsText();
+        SetFpsText();       
     }
 
     #region Initialize
 
     public void Init()
     {
-
+      
+        
         fpsRect = fpsText.GetComponent<RectTransform>();
 
         #region 해상도 초기화
@@ -57,18 +69,21 @@ public class GraphicsMenu : MonoBehaviour
 
         for (int i = 0; i < Screen.resolutions.Length; i++)
         {
-            if (Screen.resolutions[i].refreshRate == 60)
+
+            if (Screen.resolutions[i].width > 1000 && Screen.resolutions[i].refreshRate == 60)
             {
                 resolutions.Add(Screen.resolutions[i]);
             }
-        }       // Loop : 지원 해상도 정리
-        
+
+        }       // Loop : 지원 해상도 List에 추가
+
         resoultionsDropdown.options.Clear();
 
         int optionNum = 0;
 
         foreach (Resolution item in resolutions)
         {
+
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
             option.text = item.width + "x" + item.height + " " + item.refreshRate + "hz";
             resoultionsDropdown.options.Add(option);
@@ -78,6 +93,7 @@ public class GraphicsMenu : MonoBehaviour
                 resoultionsDropdown.value = optionNum;
             }
             optionNum++;
+
         }       // Loop : 지원 해상도 드롭다운 추가
 
         resoultionsDropdown.RefreshShownValue();
@@ -96,7 +112,7 @@ public class GraphicsMenu : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             TMP_Dropdown.OptionData option = new TMP_Dropdown.OptionData();
-            switch(i)
+            switch (i)
             {
                 case 0:
                     option.text = "Disabled";
@@ -125,17 +141,27 @@ public class GraphicsMenu : MonoBehaviour
         QualitySettings.antiAliasing = 0;
         #endregion
 
- 
+
+        #region 감마 초기화
+        
+        volume = Camera.main.GetComponent<PostProcessVolume>();
+        volume.profile.TryGetSettings(out colorGrading);
+        gammaNum = 0;
+        #endregion
+
+
+
+
     }       // Init()
 
-    // 프레임 초기화 
+    // FPS Text Info Initialize
     public void SetFpsText()
     {
         // 게임중 해상도가 변경되면 그에 대응해서 위치 이동?? 
         // 다만 그런 경우 앵커로 해결 하면 되지 않나?
-        width = Screen.width - (fpsRect.rect.width/2);
-        height = Screen.height - (fpsRect.rect.height/2);
-        Rect rect = new Rect(width, height, Screen.width,Screen.height);
+        width = Screen.width - (fpsRect.rect.width / 2);
+        height = Screen.height - (fpsRect.rect.height / 2);
+        Rect rect = new Rect(width, height, Screen.width, Screen.height);
         //
 
         float fps = 1.0f / Time.deltaTime;
@@ -183,21 +209,39 @@ public class GraphicsMenu : MonoBehaviour
         Debug.LogFormat("{0}", QualitySettings.vSyncCount);
 
     }       // SetVsnc()
+
     #endregion
 
+    #region SliderOptionChange
+    public void SliderOptionChange(float value)
+    {
+        gammaNum = value;
+        gammaText.text = string.Format("{0:F1}", gammaNum / 50f);
+        colorGrading.brightness.value = gammaNum;
+    }
+    #endregion
 
-
-    // Apply 버튼 클릭시 동작 
+    // Click Apply Button
     public void SetResoultion()
     {
+        // { Resolution Fullscreen Set
         Screen.SetResolution(resolutions[resolutionNum].width,
         resolutions[resolutionNum].height, screenMode, resolutions[resolutionNum].refreshRate);
+        // } Resolution Fullscreen Set
 
+        // { Antialiasing Set
         QualitySettings.antiAliasing = aniAliasingNum;
+        // } Antialiasing Set
+
+        //// { Gamma Set
+        //colorGrading.brightness.value = gammaNum;
+        //// } Gamma Set
+
     }       // SetResoultion()
 
-    // Back 버튼 클릭시 동작
-    // 추후 Ui끄는 기능으로 변경 
+
+    // Click Back Button
+    // TODO : Change to Quit Setting
     public void OnApplicationQuit()
     {
         Application.Quit();

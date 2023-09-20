@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         ResourceManager.Init();
 
+
         hostCanvasObj = GameObject.Find("TestHostCanvasHJ");
         clientCanvasObj = GameObject.Find("TestClientCanvasHJ");
 
