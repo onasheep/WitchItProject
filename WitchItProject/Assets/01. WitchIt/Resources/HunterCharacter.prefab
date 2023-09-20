@@ -2418,7 +2418,7 @@ GameObject:
   - component: {fileID: 1824492478944499782}
   - component: {fileID: 4469333240192143489}
   - component: {fileID: 1335851817429894617}
-  - component: {fileID: -8456067707633730615}
+  - component: {fileID: 2363051985498093577}
   m_Layer: 8
   m_Name: HunterCharacter
   m_TagString: Hunter
@@ -2564,7 +2564,7 @@ MonoBehaviour:
   ShowParameterInspector: 1
   m_SynchronizeParameters:
   - Type: 4
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: IsGround
   - Type: 9
     SynchronizeType: 0
@@ -2573,15 +2573,15 @@ MonoBehaviour:
     SynchronizeType: 0
     Name: Shot
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: InputVertical
   - Type: 1
-    SynchronizeType: 0
+    SynchronizeType: 1
     Name: InputHorizontal
   m_SynchronizeLayers:
   - SynchronizeType: 0
     LayerIndex: 0
---- !u!114 &-8456067707633730615
+--- !u!114 &2363051985498093577
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

@@ -1,4 +1,5 @@
 using Cinemachine;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -17,6 +18,10 @@ public class WitchController : PlayerBase
     //[SerializeField] private Rigidbody rigid;
     //[SerializeField] private Animator animator;
     //
+    
+    //HJ__0920 포톤 테스트 추가
+    private PhotonView myPv;
+    //=====================
 
     [SerializeField][Range(0, 100)] private int witchHealth = 50;
     [SerializeField][Range(0f, 100f)] private float witchMana = 50f;
@@ -42,10 +47,14 @@ public class WitchController : PlayerBase
     public bool isMetamor = false;
     // 09/19 Jung
 
-    void Start()
+    private void OnEnable()
     {
         Init();
         health = healthMax;
+        
+        // HJ_ 230920 
+        myPv = GetComponent<PhotonView>();
+        //
 
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
@@ -61,9 +70,14 @@ public class WitchController : PlayerBase
 
     }
 
+    private void OnDisable()
+    {
+        //TODO
+        //죽었을 때 관전으로 갈 수 있는 기능 넣을 예정
+    }
+
     void Update()
     {
-
 
         base.InputPlayer();
 
@@ -84,8 +98,23 @@ public class WitchController : PlayerBase
         //}
     }
 
+    protected override void InputPlayer()
+    {
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
+        base.InputPlayer();
+    }
+
     private void FixedUpdate()
     {
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
         if (isDead) { return; }
         if (isJump == false)
         {

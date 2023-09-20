@@ -1,3 +1,4 @@
+using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,6 +14,9 @@ public class Hunter : PlayerBase
     //private Rigidbody rigid;
     //private Animator animator;
 
+    //HJ__0920 포톤 테스트 추가
+    private PhotonView myPv;
+    //=====================
     private RaycastHit hunterRayHit;
 
     private float rightFuncCool = default;
@@ -22,10 +26,14 @@ public class Hunter : PlayerBase
     // SJ_ 230918
     private GameObject dogRing;
 
-    private void Start()
+    private void OnEnable()
     {
         // SJ_ 230915
         Init();
+        //
+
+        // HJ_ 230920 
+        myPv = GetComponent<PhotonView>();
         //
 
         myCamera = GameObject.Find("HunterCamera").transform;
@@ -40,16 +48,31 @@ public class Hunter : PlayerBase
 
     private void Update()
     {
-        Debug.LogFormat("timer : {0}", skillTimer);
-        Debug.LogFormat("right : {0}", rightFuncCool);
-        Debug.LogFormat("q : {0}", QFuncCool);
+
+        //if (!photonView.IsMine)
+        //{
+        //    return;
+        //}
+
+        //Debug.LogFormat("timer : {0}", skillTimer);
+        //Debug.LogFormat("right : {0}", rightFuncCool);
+        //Debug.LogFormat("q : {0}", QFuncCool);
+
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
+
 
         // SJ_ 230915
         //MoveHunter();
-        Move();
+        //HJ__
+
         base.InputPlayer();
         skillTimer += Time.deltaTime;
+
         // SJ_ 230915
 
         //Jump();
@@ -61,6 +84,16 @@ public class Hunter : PlayerBase
         {
             rigid.velocity = rigid.velocity.normalized * 5f;
         }
+    }
+
+    protected override void InputPlayer()
+    {
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
+        base.InputPlayer();
     }
 
     #region SJ_ ��ӹ޾Ƽ� �����ϴ� �Լ�
@@ -88,27 +121,27 @@ public class Hunter : PlayerBase
         this.leftFunc = () => ThrowKnife();
         this.rigthFunc =
             () =>
-            {                
-                if(skillTimer > rightFuncCool)
-                {                    
+            {
+                if (skillTimer > rightFuncCool)
+                {
                     rightFuncCool += skillTimer;
                     GameObject obj = Instantiate
                 (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
                     skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
                 }
-                
+
             };
         this.QFunc =
             () =>
             {
-                if(skillTimer > QFuncCool)
+                if (skillTimer > QFuncCool)
                 {
                     skillTimer -= QFuncCool;
                     GameObject obj = Instantiate
                   (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
                     skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
                 }
-                
+
             };
         this.jumpFunc = () => JumpHunter();
     }
@@ -124,6 +157,14 @@ public class Hunter : PlayerBase
     #endregion
     private void FixedUpdate()
     {
+        //HJ 포톤 붙이기
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        Move();
+
         RotateVertical();
         RotateHorizontal();
 
@@ -139,6 +180,7 @@ public class Hunter : PlayerBase
 
     private void ThrowKnife()
     {
+        Debug.Log("칼던짐");
         //if (Input.GetButtonDown("Fire1"))
         //{
         Bullet obj_ = BulletPool.GetObject();

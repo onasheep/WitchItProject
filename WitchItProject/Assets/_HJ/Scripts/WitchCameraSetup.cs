@@ -4,37 +4,37 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WitchCameraControl : MonoBehaviourPun
+public class WitchCameraSetup : MonoBehaviourPun
 {
-    [SerializeField] private CinemachineVirtualCamera myCamera;
-    [SerializeField] private CinemachineFramingTransposer myBody;
-    [SerializeField] private CinemachinePOV myAim;
-
-    [SerializeField][Range(0f,10f)] private float defaultCameraDistance;
+    CinemachineVirtualCamera witchCam = default;
+    [SerializeField] private CinemachineFramingTransposer myBody = default;
+    GameObject hunterCam = default;
+    Transform lookPoint = default;
+    [SerializeField][Range(0f, 10f)] private float defaultCameraDistance;
     [SerializeField][Range(0f, 10f)] private float maxCameraDistance = 1f;
     [SerializeField][Range(0f, 10f)] private float minCameraDistance = 8f;
-
-
-    [SerializeField] private Transform target;
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        //목표 타겟을 찾아옵니다.
-        target = GameObject.Find("WitchCharacter").transform.GetChild(2).transform;
-        myCamera = GetComponent<CinemachineVirtualCamera>(); //카메라 컴포넌트 받아오기
-        
-        myCamera.Follow = target; // 카메라가 따라다닐 타겟 지정
-        myCamera.LookAt = target; // 중심으로 회전할 타겟 지정
+        hunterCam = GameObject.Find("HunterCamera");
+        witchCam = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>();
 
-        myBody =  myCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        myAim = myCamera.GetCinemachineComponent<CinemachinePOV>();
-        
-        //초기 카메라 거리 설정(일회용)
-        defaultCameraDistance = 6f; 
-        myBody.m_CameraDistance = defaultCameraDistance;
+        lookPoint = GameObject.Find("CameraLookPoint").transform;
+       
+        hunterCam.SetActive(false);
+        // 만약 자신이 로컬플레이어라면
+        if (photonView.IsMine)
+        {
+            //씬에 있는 시네머신 가상 카메라를 찾고
+            //witchCam.Follow = transform;
+            //witchCam.LookAt = transform;
 
+
+            witchCam.Follow = lookPoint;
+            witchCam.LookAt = lookPoint;
+
+        }
+
+        myBody = witchCam.GetCinemachineComponent<CinemachineFramingTransposer>();
 
         //damping 설정
         myBody.m_XDamping = 0f;
@@ -42,13 +42,15 @@ public class WitchCameraControl : MonoBehaviourPun
         myBody.m_ZDamping = 0f;
     }
 
-    // Update is called once per frame
     void Update()
     {
-      
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         Zoom();
     }
-
     //HJ_
     // 카메라 distance 값을 직접 조절해주는 스크립트입니다.
     void Zoom()

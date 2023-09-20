@@ -22,7 +22,7 @@ public static class ResourceManager
         // TODO : 추후 리소스 폴더 내부에서 폴더로 또 나눠지는 경우 "path" 지정 
         GameObject[] effectResource = Resources.LoadAll<GameObject>(RDefine.EFFECT_PATH);
         GameObject[] objResources = Resources.LoadAll<GameObject>(RDefine.OBJ_PATH);
-        GameObject[] playerResources = Resources.LoadAll<GameObject>("Player");
+        GameObject[] playerResources = Resources.LoadAll<GameObject>(RDefine.PLAYER_PATH);
         #region [TEST] 받아온 리소스들을 한번의 작업으로 다른 Dictionary로 넣으려 함 
         // TEST : 
         //List<GameObject[]> resourcesList = new List<GameObject[]>();

@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,7 +6,7 @@ using UnityEngine.Events;
 
 
 // SJ_ 
-public abstract class PlayerBase : MonoBehaviour
+public abstract class PlayerBase : MonoBehaviourPun
 {
 
     protected float hp = default;
@@ -56,6 +57,11 @@ public abstract class PlayerBase : MonoBehaviour
 
     protected virtual void InputPlayer()
     {
+        //HJ 230920__
+        //if (!photonView.IsMine)
+        //{
+        //    return;
+        //}
         // TODO : �� ���� �Է� �޴� ����� �ִٸ� ����
 
         // TODO : ���� �Է� ����
