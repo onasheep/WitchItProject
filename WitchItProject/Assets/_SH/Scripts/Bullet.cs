@@ -51,7 +51,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Witch"))
+        if (collision.gameObject.GetComponent<WitchController>() != null)
         {
             collision.gameObject.GetComponent<WitchController>().TakeDamage();
         }

@@ -25,6 +25,9 @@ public class Hunter : PlayerBase
         Init();
         //
 
+        Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
+        Cursor.visible = false; // 마우스 커서를 숨김
+
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);

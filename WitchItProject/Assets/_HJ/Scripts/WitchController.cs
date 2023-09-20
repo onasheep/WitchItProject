@@ -47,7 +47,7 @@ public class WitchController : PlayerBase
 
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
-        //Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
+        Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
 
         myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
 
