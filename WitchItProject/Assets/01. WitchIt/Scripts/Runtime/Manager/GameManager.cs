@@ -85,6 +85,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject witchPrefab;
     [SerializeField] private GameObject hunterPrefab;
 
+    [SerializeField] private GameObject hostCanvasObj;
+    [SerializeField] private GameObject clientCanvasObj;
+
+
+    [SerializeField] private Button masterStartBtn = default;
+    [SerializeField] private Button clientReadyBtn = default;
 
     public bool isPlayerReady = false;  //포톤 플레이어 레디 상태
     [SerializeField] private int playerCount = 0; //게임에 들어온 인원 
@@ -92,25 +98,41 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool isEveryReady = false; //모두가 준비했는지
     public bool isGameStart = false;
 
-    public int chooseWH = 0; // 이 값으로 헌터가 몇명 있고 나머지 마녀로 해줌
+    public int totalWHCount = 0; // 이 값으로 헌터가 몇명 있고 나머지 마녀로 해줌
     public int huterCount = 0; //헌터의 수 입니다.
+    public int witchCount = 0; //마녀의 수 입니다.
 
-    [SerializeField] private Button masterStartBtn = default;
+    public bool isHunter = false; //헌터인지
+    public bool isWitch = false; //마녀인지
+
 
     public bool isHiding = false; //마녀 숨는시간
     public bool isPlaying = false; //게임중인지
 
-    public int witchCount = 0; //마녀의 수 입니다.
 
     [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
 
-    Hashtable initialProps = new Hashtable() { { "isHunter", false } };
-    //PhotonNetwork.LocalPlayer.SetCustomProperties(initialProps);
-
     void Awake()
     {
         ResourceManager.Init();
+        hostCanvasObj = GameObject.Find("TestHostCanvasHJ");
+        clientCanvasObj = GameObject.Find("TestClientCanvasHJ");
+
+        masterStartBtn = hostCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+        clientReadyBtn = clientCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+        //호스트라면 
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("이거 호스트일떄 실행되는거임");
+            clientCanvasObj.SetActive(false);
+        }
+        else
+        {
+            Debug.Log("클라이언트일때 실행되는거임");
+
+            hostCanvasObj.SetActive(false);
+        }
         //CreatePlayer();
         ////접속 정보 추출 및 표시
         //SetRoomInfo();
@@ -120,24 +142,24 @@ public class GameManager : MonoBehaviourPunCallbacks
     
     private void Start()
     {
-       
-        CreatePlayer();
-        masterStartBtn = GameObject.Find("TestCanvasHJ").transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
-
+        //CreatePlayer();
     }
 
     private void Update()
     {
         //HJ_
         //모든 인원이 준비를 완료하면 마스터의 시작 버튼이 활성화 됩니다.
-        if (isEveryReady)//&& readyCount >= maxPlayerCount )
+        if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         {
-            masterStartBtn.interactable = true;
+            if (isEveryReady)//&& readyCount >= playerCount )
+            {
+                masterStartBtn.interactable = true;
+            }
+            else //그 외의 경우에는 false 로 놔둘려고 합니다.
+            {
+                masterStartBtn.interactable = false;
+            } //게임 시작 활성화 관련 
         }
-        else //그 외의 경우에는 false 로 놔둘려고 합니다.
-        {
-            masterStartBtn.interactable = false;
-        } //게임 시작 활성화 관련 
 
         if (isGameStart)
         {
@@ -231,9 +253,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         isGameStart = true;
         timeRemaining = 10f;
         //TODO 들어온 인원들 진영을 선택해줘야합니다.
-        //진영 선택하는 함수를 골라줍니다.
-        //ChooseRandomTeam();
-        //TODO 혹은 애초에 처음부터 진영을 골라주면 이건 안해줘도 됩니다.
     }
 
     //HJ_ 230919 변경 
@@ -245,37 +264,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         int hunterSpawnPoint = 2;
 
         
-        if (UnityEngine.Random.Range(0, 10) > 1 && chooseWH != 1)
+        if (UnityEngine.Random.Range(0, 10) > 1 )
         {
             PhotonNetwork.Instantiate(hunterPrefab.name, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
             //chooseWH = 1;
-            PhotonNetwork.LocalPlayer.SetCustomProperties(initialProps);
+            
         }
         else
         {
             PhotonNetwork.Instantiate(witchPrefab.name, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
         }
-        
     }
-   
-
-
-    //public void ChooseRandomTeam()
-    //{
-    //    for(int i = 0; i < 5/*게임 최대 참여 인원까지 돌려서 해줍니다. */; i++)
-    //    {
-    //        chooseWH = UnityEngine.Random.Range(0, 1);
-    //        if(chooseWH == 1)
-    //        {
-    //            //헌터 프리팹을 선택해서 건네줍니다.
-    //            //그리고 나머지 다른 애들한테는 마녀 프리팹을 건네줍니다.
-    //            break;
-    //        }
-    //        else
-    //        {
-    //            //마녀 프리팹을 건네줍니다.
-    //        }
-    //    }
-    //    //TODO 각각의 포톤 뷰가 달려있는 캐릭터에게 값을 전달해줍니다.
-    //}
 }
