@@ -121,26 +121,25 @@ public class Hunter : PlayerBase
     {
         base.Init();
 
-        // SJ_ 230918 ���� �߻� ��ġ
         dogRing = this.gameObject.FindChildObj("DogRing");
 
         base.type = TYPE.HUNTER;
 
         Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
 
-        // 현재 Culling Mask 값을 가져옵니다.
-        int currentCullingMask = main.cullingMask;
+        // SJ_ 석환씨가 말한 주석 
 
-        // 지정된 레이어를 해제하기 위해 해당 레이어 비트를 제거합니다.
-        int newCullingMask = currentCullingMask & ~(1 << LayerMask.NameToLayer("Hunter"));
+        //// 현재 Culling Mask 값을 가져옵니다.
+        //int currentCullingMask = main.cullingMask;
 
-        // 새로운 Culling Mask를 설정합니다.
-        main.cullingMask = newCullingMask;
+        //// 지정된 레이어를 해제하기 위해 해당 레이어 비트를 제거합니다.
+        //int newCullingMask = currentCullingMask & ~(1 << LayerMask.NameToLayer("Hunter"));
 
-        // { ��ų ��� 
+        //// 새로운 Culling Mask를 설정합니다.
+        //main.cullingMask = newCullingMask;
+
         skillSlot.SelSkill((int)type);
 
-        //  ��ų ��� }
         rightFuncCool = skillSlot.Slots[0].CoolTime;
         QFuncCool = skillSlot.Slots[1].CoolTime;
 
