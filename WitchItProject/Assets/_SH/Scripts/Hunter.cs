@@ -1,6 +1,3 @@
-using Photon.Pun.Demo.Cockpit;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 // SJ_ 230915
@@ -28,6 +25,9 @@ public class Hunter : PlayerBase
         Init();
         //
 
+        Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
+        Cursor.visible = false; // 마우스 커서를 숨김
+
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
@@ -40,9 +40,9 @@ public class Hunter : PlayerBase
 
     private void Update()
     {
-        Debug.LogFormat("timer : {0}", skillTimer);
-        Debug.LogFormat("right : {0}", rightFuncCool);
-        Debug.LogFormat("q : {0}", QFuncCool);
+        //Debug.LogFormat("timer : {0}", skillTimer);
+        //Debug.LogFormat("right : {0}", rightFuncCool);
+        //Debug.LogFormat("q : {0}", QFuncCool);
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
         // SJ_ 230915
@@ -63,7 +63,7 @@ public class Hunter : PlayerBase
         }
     }
 
-    #region SJ_ ��ӹ޾Ƽ� �����ϴ� �Լ�
+    #region SJ_ 
     // SJ_230915 
 
     protected override void Init()
@@ -88,27 +88,27 @@ public class Hunter : PlayerBase
         this.leftFunc = () => ThrowKnife();
         this.rigthFunc =
             () =>
-            {                
-                if(skillTimer > rightFuncCool)
-                {                    
+            {
+                if (skillTimer > rightFuncCool)
+                {
                     rightFuncCool += skillTimer;
                     GameObject obj = Instantiate
                 (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
                     skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
                 }
-                
+
             };
         this.QFunc =
             () =>
             {
-                if(skillTimer > QFuncCool)
+                if (skillTimer > QFuncCool)
                 {
                     skillTimer -= QFuncCool;
                     GameObject obj = Instantiate
                   (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
                     skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
                 }
-                
+
             };
         this.jumpFunc = () => JumpHunter();
     }
@@ -162,10 +162,13 @@ public class Hunter : PlayerBase
         // InputPlayer�� ��ü 
         //if (Input.GetButtonDown("Jump"))
         //{
-        animator.SetBool("IsGround", false);
-        animator.SetTrigger("Jump");
+        if (animator.GetBool("IsGround"))
+        {
+            animator.SetBool("IsGround", false);
+            animator.SetTrigger("Jump");
 
-        rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+            rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+        }
         //}
     }
 
@@ -213,17 +216,14 @@ public class Hunter : PlayerBase
 
     private void OnCollisionStay(Collision collision)
     {
-        if (animator.GetBool("IsGround") == false)
+        foreach (ContactPoint contact in collision.contacts)
         {
-            foreach (ContactPoint contact in collision.contacts)
-            {
-                Vector3 point = contact.point;
+            Vector3 point = contact.point;
 
-                if (point.y <= transform.position.y)
-                {
-                    animator.SetBool("IsGround", true);
-                    break;
-                }
+            if (point.y <= transform.position.y + 0.5f)
+            {
+                animator.SetBool("IsGround", true);
+                break;
             }
         }
     }

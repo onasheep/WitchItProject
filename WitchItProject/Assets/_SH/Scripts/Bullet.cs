@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -53,7 +51,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Witch"))
+        if (collision.gameObject.GetComponent<WitchController>() != null)
         {
             collision.gameObject.GetComponent<WitchController>().TakeDamage();
         }

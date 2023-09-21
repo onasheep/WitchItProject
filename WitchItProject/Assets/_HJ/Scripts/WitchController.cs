@@ -1,11 +1,6 @@
 using Cinemachine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 // SJ_ 230915
 // PlayerBase 상속
@@ -40,6 +35,9 @@ public class WitchController : PlayerBase
 
     // 변신 여부
     public bool isMetamor = false;
+
+    private GameObject witchBody;
+    private GameObject currBody;
     // 09/19 Jung
 
     void Start()
@@ -52,7 +50,11 @@ public class WitchController : PlayerBase
         Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
 
         myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
-                                                                                                     //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
+
+        witchBody = GameObject.Find("Character_Female_Witch");
+        currBody = witchBody;
+
+        //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
 
         // SJ_ 230915
         // LEGACY : PlayerBase에서 가져옴
@@ -63,7 +65,8 @@ public class WitchController : PlayerBase
 
     void Update()
     {
-
+        Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
+            out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects"));
 
         base.InputPlayer();
 
@@ -124,11 +127,14 @@ public class WitchController : PlayerBase
 
 
         // TODO : 변신 기능 함수 추가
-        //this.leftFunc =
-        //    () =>
-        //    {
-                
-        //    };
+        this.leftFunc =
+            () =>
+            {
+                if (hit.collider != null)
+                {
+                    MetamorphosisToObj(hit.collider.gameObject);
+                }
+            };
 
         this.rigthFunc =
             () =>
@@ -140,11 +146,9 @@ public class WitchController : PlayerBase
         this.QFunc =
             () =>
             {
-                Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
-                    out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects"));
                 if (hit.collider != null)
                 {
-                    skillSlot.Slots[1].ActivateSkill(hit.collider.gameObject);
+                    PossesionToObj(hit.collider.gameObject);
                 }
             };
         this.jumpFunc = () => JumpWitch();
@@ -229,11 +233,32 @@ public class WitchController : PlayerBase
     // 지금 같은 방식으로, 아니라면 PalyerBase에서 공통적으로 만들 것
     private void JumpWitch()
     {
-        isJump = true;
-        // myAnimator.SetBool("Jumping", false);
+        if (isMetamor) { /* Do Nothing */ }
+        else if (!isMetamor)
+        {
+            if (!isJump)
+            {
+                isJump = true;
+                // myAnimator.SetBool("Jumping", false);
 
 
-        rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+                rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+            }
+        }
+    }
+
+    private void OnCollisionStay(Collision collision)
+    {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            Vector3 point = contact.point;
+
+            if (point.y <= transform.position.y + 0.5f)
+            {
+                isJump = false;
+                break;
+            }
+        }
     }
 
     void JumpMove()
@@ -278,6 +303,124 @@ public class WitchController : PlayerBase
     }
 
 
+    private void CancelMetamorphosis()
+    {
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (witchBody.activeInHierarchy)
+            {
+                return;
+            }
+            else if (!witchBody.activeInHierarchy)
+            {
+                transform.position = lookPoint.transform.position;
+                //witchBody.transform.position = lookPoint.transform.position;
+
+                witchBody.SetActive(true);
+
+                GetComponent<Rigidbody>().useGravity = true;
+                GetComponent<Collider>().enabled = true;
+
+                rigid.velocity = Vector3.zero;
+                rigid.angularVelocity = Vector3.zero;
+
+                GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+                lookPoint.transform.SetParent(transform);
+                lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
+
+                Destroy(prevBody_);
+
+                currBody = witchBody;
+            }
+        }
+
+        GetComponent<WitchController>().isMetamor = false;
+    }
+
+    private void PossesionToObj(GameObject obj_)
+    {
+        obj_.AddComponent<Cube>();
+
+        if (currBody == witchBody)
+        {
+            currBody.SetActive(false);
+
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().enabled = false;
+
+            lookPoint.transform.SetParent(obj_.transform);
+            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+
+            currBody = obj_;
+        }
+        else
+        {
+            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+            lookPoint.transform.SetParent(obj_.transform);
+            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+
+            Destroy(prevBody_);
+
+            currBody = obj_;
+        }
+
+        GetComponent<WitchController>().isMetamor = true;
+    }
+
+    private void MetamorphosisToObj(GameObject obj_)
+    {
+        GameObject newBody_ = Instantiate(obj_);
+
+        newBody_.transform.position = lookPoint.transform.position;
+        newBody_.AddComponent<Cube>();
+
+        if (currBody == witchBody)
+        {
+            currBody.SetActive(false);
+
+            GetComponent<Rigidbody>().useGravity = false;
+            GetComponent<Collider>().enabled = false;
+
+            lookPoint.transform.SetParent(newBody_.transform);
+            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
+
+            currBody = newBody_;
+        }
+        else
+        {
+            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+
+            lookPoint.transform.SetParent(newBody_.transform);
+            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
+
+            Destroy(prevBody_);
+
+            currBody = newBody_;
+        }
+
+        GetComponent<WitchController>().isMetamor = true;
+    }
+
+    private void ShootRay()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            if (hit.collider != null)
+            {
+                MetamorphosisToObj(hit.collider.gameObject);
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (hit.collider != null)
+            {
+                PossesionToObj(hit.collider.gameObject);
+            }
+        }
+    }
 
 
 }
