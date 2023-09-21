@@ -5,16 +5,16 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.Rendering.PostProcessing;
+using UnityEditor;
 
 public class GraphicsMenu : MonoBehaviour
 {
 
     #region Variables 
-    // 오디오 조절 
+    [Header ("Audio")]
     public AudioMixer audioMixer;
-    //public Slider volumeSlider;
-
-    // FPS 출력 
+    
+    [Header("FPS")]
     public TMP_Text fpsText;
     private RectTransform fpsRect = default;    
     private float width;
@@ -22,25 +22,25 @@ public class GraphicsMenu : MonoBehaviour
     private int size = 15;
     private Color color = Color.black;
 
-    // 해상도 조절
+    [Header("Resolution")]
     public Toggle fullScreenToggle;
     public TMP_Dropdown resoultionsDropdown;
     private List<Resolution> resolutions =  default;
     private int resolutionNum = default;
     private FullScreenMode screenMode;
-    //
-
-    // 안티얼리어싱 브이싱크
+    
+    [Header("Vsync")]
     public Toggle vsyncToggle;
     public TMP_Dropdown antiAliasingDropdown;    
     private int aniAliasingNum = default;
 
-    // 감마
+    [Header("Gamma")]
     private PostProcessVolume volume;
     private ColorGrading colorGrading;
     public Slider gammaSlider;
     public TMP_Text gammaText;
     private float gammaNum;
+    
 
 
     #endregion
@@ -140,8 +140,7 @@ public class GraphicsMenu : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         QualitySettings.antiAliasing = 0;
         #endregion
-
-
+        
         #region 감마 초기화
         
         volume = Camera.main.GetComponent<PostProcessVolume>();
@@ -216,7 +215,7 @@ public class GraphicsMenu : MonoBehaviour
     public void SliderOptionChange(float value)
     {
         gammaNum = value;
-        gammaText.text = string.Format("{0:F1}", gammaNum / 50f);
+        gammaText.text = string.Format("{0:F1}",gammaNum/ 50f);
         colorGrading.brightness.value = gammaNum;
     }
     #endregion
