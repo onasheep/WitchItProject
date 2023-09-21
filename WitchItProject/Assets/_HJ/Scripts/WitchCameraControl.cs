@@ -1,9 +1,10 @@
 using Cinemachine;
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WitchCameraControl : MonoBehaviour
+public class WitchCameraControl : MonoBehaviourPun
 {
     [SerializeField] private CinemachineVirtualCamera myCamera;
     [SerializeField] private CinemachineFramingTransposer myBody;
@@ -44,6 +45,7 @@ public class WitchCameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+      
         Zoom();
     }
 

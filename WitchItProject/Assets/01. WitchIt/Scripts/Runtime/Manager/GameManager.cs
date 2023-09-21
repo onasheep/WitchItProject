@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
-
+using Photon.Pun.UtilityScripts;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -69,6 +69,16 @@ public class GameManager : MonoBehaviourPunCallbacks
         string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> is joined room";
         msgList.text += msg;
 
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        //int witchSpawnPoint = 1;
+        int hunterSpawnPoint = 2;
+
+        //if (photonView.IsMine)
+        //{
+        //    // 현재 접속한 플레이어가 로컬 플레이어인 경우에만 캐릭터를 생성합니다.
+        //    PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
+        //}
+        Debug.Log("유저가 접속");
     }
 
     //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
@@ -113,6 +123,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
 
+
     void Awake()
     {
         ResourceManager.Init();
@@ -123,6 +134,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         masterStartBtn = hostCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
         clientReadyBtn = clientCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
+        
+        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        ////int witchSpawnPoint = 1;
+        //int hunterSpawnPoint = 2;
+        ////if (photonView.IsMine) { }
+        //GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+        //int temp = player.GetComponent<PhotonView>().ViewID;
+
+        //Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
+
         //호스트라면 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -135,17 +156,42 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             hostCanvasObj.SetActive(false);
         }
-        //CreatePlayer();
+        CreatePlayer();
         ////접속 정보 추출 및 표시
-        //SetRoomInfo();
+        SetRoomInfo();
         ////EXIT 버튼 이벤트 연결
-        //exitBtn.onClick.AddListener(() => OnExitClick());
+        exitBtn.onClick.AddListener(() => OnExitClick());
+   
     }
-    
+
     private void Start()
     {
-        //CreatePlayer();
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        //int witchSpawnPoint = 1;
+        int hunterSpawnPoint = 2;
+        //if (photonView.IsMine) { }
+        GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation); //헌터 생성입니다.
+        int temp = player.GetComponent<PhotonView>().ViewID;
+
+        Debug.LogFormat("{0}", player.GetComponent<PhotonView>().ViewID);
+        Debug.LogFormat("{0}", PhotonNetwork.IsMasterClient);
+
+        Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
+
     }
+    //public override void OnJoinedRoom()
+    //{
+
+    //        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+    //        //int witchSpawnPoint = 1;
+    //        int hunterSpawnPoint = 2;
+    //        //if (photonView.IsMine) { }
+    //        GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+    //        int temp = player.GetComponent<PhotonView>().ViewID;
+
+    //        Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
+
+    //}
 
     private void Update()
     {
@@ -244,6 +290,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     //HJ_ 플레이어 준비 bool 값 바꿔주는 함수
+    [PunRPC]
     public void ReadyGame()
     {
         isPlayerReady = true;
@@ -258,22 +305,31 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     //HJ_ 230919 변경 
-    [PunRPC]
     void CreatePlayer()
     {
-        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        int witchSpawnPoint = 1;
-        int hunterSpawnPoint = 2;
-
+        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        //int witchSpawnPoint = 1;
+        //int hunterSpawnPoint = 2;
         
-        if (UnityEngine.Random.Range(0, 10) > 1 )
-        {            
-            PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-            //chooseWH = 1;            
-        }
-        else
-        {
-            PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
-        }
+
+        //if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
+        //{
+        //    //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+
+        //}
+        //else
+        //{
+        //    PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+        //}
+
+        //    if (UnityEngine.Random.Range(0, 10) > 1 )
+        //{            
+        //    PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+        //    //chooseWH = 1;            
+        //}
+        //else
+        //{
+        //    PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+        //}
     }
 }

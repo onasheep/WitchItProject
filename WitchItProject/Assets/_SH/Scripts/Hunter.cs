@@ -1,3 +1,7 @@
+using Photon.Pun;
+using Photon.Pun.Demo.Cockpit;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 // SJ_ 230915
@@ -10,6 +14,9 @@ public class Hunter : PlayerBase
     //private Rigidbody rigid;
     //private Animator animator;
 
+    //HJ__0920 포톤 테스트 추가
+    private PhotonView myPv;
+    //=====================
     private RaycastHit hunterRayHit;
 
     private float rightFuncCool = default;
@@ -19,8 +26,14 @@ public class Hunter : PlayerBase
     // SJ_ 230918
     private GameObject dogRing;
 
-    private void Start()
+    private void OnEnable()
     {
+        //HJ
+        if(!photonView.IsMine)
+        {
+            return;
+        }
+
         // SJ_ 230915
         Init();
         //
@@ -28,6 +41,10 @@ public class Hunter : PlayerBase
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
 
+        // HJ_ 230920 
+        myPv = GetComponent<PhotonView>();
+        //
+        
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
@@ -40,16 +57,31 @@ public class Hunter : PlayerBase
 
     private void Update()
     {
+
+        //if (!photonView.IsMine)
+        //{
+        //    return;
+        //}
+
         //Debug.LogFormat("timer : {0}", skillTimer);
         //Debug.LogFormat("right : {0}", rightFuncCool);
         //Debug.LogFormat("q : {0}", QFuncCool);
+
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
+
 
         // SJ_ 230915
         //MoveHunter();
-        Move();
+        //HJ__
+
         base.InputPlayer();
         skillTimer += Time.deltaTime;
+
         // SJ_ 230915
 
         //Jump();
@@ -63,7 +95,17 @@ public class Hunter : PlayerBase
         }
     }
 
-    #region SJ_ 
+    protected override void InputPlayer()
+    {
+        if (!myPv.IsMine)
+        {
+            return;
+        }
+
+        base.InputPlayer();
+    }
+
+    #region SJ_ ��ӹ޾Ƽ� �����ϴ� �Լ�
     // SJ_230915 
 
     protected override void Init()
@@ -124,6 +166,14 @@ public class Hunter : PlayerBase
     #endregion
     private void FixedUpdate()
     {
+        //HJ 포톤 붙이기
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
+        Move();
+
         RotateVertical();
         RotateHorizontal();
 
@@ -139,6 +189,7 @@ public class Hunter : PlayerBase
 
     private void ThrowKnife()
     {
+        Debug.Log("칼던짐");
         //if (Input.GetButtonDown("Fire1"))
         //{
         Bullet obj_ = BulletPool.GetObject();
