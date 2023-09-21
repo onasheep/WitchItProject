@@ -1,6 +1,15 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\WitchItProject",
+    "\\WitchItProject\\Assets",
+    "\\WitchItProject\\Assets\\01. WitchIt",
+    "\\WitchItProject\\Assets\\01. WitchIt\\Scripts\\Runtime",
+    "\\WitchItProject\\Assets\\01. WitchIt\\Scripts\\Runtime\\Manager",
+    "\\WitchItProject\\Assets\\_HJ",
+    "\\WitchItProject\\Assets\\_YS",
+    "\\WitchItProject\\Assets\\_YS\\Scripts"
   ],
+  "SelectedNode": "\\WitchItProject\\Assets\\_YS\\Scripts\\PhotonManager.cs",
   "PreviewInSolutionExplorer": false
 }

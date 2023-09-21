@@ -132,11 +132,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
 
         //마스터 클라이언트인 경우에 룸에 입장한 후 전투 씬을 로딩
-        //if(PhotonNetwork.IsMasterClient)
-        //{
-        //    PhotonNetwork.LoadLevel("TestGameMap");
-        //}
-        PhotonNetwork.LoadLevel("TestGameMap");
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel("TestGameMap");
+        }
+        //PhotonNetwork.LoadLevel("TestGameMap");
     }
 
     //룸 목록을 수신하는 콜백 함수

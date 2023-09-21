@@ -28,14 +28,19 @@ public class Hunter : PlayerBase
 
     private void OnEnable()
     {
+        //HJ
+        if(!photonView.IsMine)
+        {
+            return;
+        }
+
         // SJ_ 230915
         Init();
         //
-
         // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
         //
-
+        
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
