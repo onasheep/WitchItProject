@@ -29,7 +29,7 @@ public class Hunter : PlayerBase
     private void OnEnable()
     {
         //HJ
-        if(!photonView.IsMine)
+        if (!photonView.IsMine)
         {
             return;
         }
@@ -44,7 +44,7 @@ public class Hunter : PlayerBase
         // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
         //
-        
+
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
@@ -117,9 +117,19 @@ public class Hunter : PlayerBase
 
         base.type = TYPE.HUNTER;
 
+        Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
+
+        // 현재 Culling Mask 값을 가져옵니다.
+        int currentCullingMask = main.cullingMask;
+
+        // 지정된 레이어를 해제하기 위해 해당 레이어 비트를 제거합니다.
+        int newCullingMask = currentCullingMask & ~(1 << LayerMask.NameToLayer("Hunter"));
+
+        // 새로운 Culling Mask를 설정합니다.
+        main.cullingMask = newCullingMask;
+
         // { ��ų ��� 
         skillSlot.SelSkill((int)type);
-
 
         //  ��ų ��� }
         rightFuncCool = skillSlot.Slots[0].CoolTime;
