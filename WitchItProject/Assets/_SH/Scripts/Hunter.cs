@@ -66,10 +66,19 @@ public class Hunter : PlayerBase
         //Debug.LogFormat("timer : {0}", skillTimer);
         //Debug.LogFormat("right : {0}", rightFuncCool);
         //Debug.LogFormat("q : {0}", QFuncCool);
-
-        if (!myPv.IsMine)
+        if (myPv != null)
         {
-            return;
+            if (!myPv.IsMine)
+            {
+                return;
+            }
+        }
+        else if (myPv == null)
+        {
+            if(!photonView.IsMine)
+            {
+                return;
+            }
         }
 
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
@@ -277,6 +286,21 @@ public class Hunter : PlayerBase
 
     private void OnCollisionStay(Collision collision)
     {
+        if (myPv != null)
+        {
+            if (!myPv.IsMine)
+            {
+                return;
+            }
+        }
+        else if (myPv == null)
+        {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+        }
+
         foreach (ContactPoint contact in collision.contacts)
         {
             Vector3 point = contact.point;

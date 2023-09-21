@@ -18,80 +18,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public Button exitBtn;
 
-    
-    //HJ__230919 
-    //Awake 테스트를위해 아래에 생성했기에 잠시 비활성화 해둡니다.
-    //void Awake()
-    //{
-
-    //    ResourceManager.Init();
-    //    //CreatePlayer();
-    //    ////접속 정보 추출 및 표시
-    //    //SetRoomInfo();
-    //    ////EXIT 버튼 이벤트 연결
-    //    //exitBtn.onClick.AddListener(() => OnExitClick());
-    //}
-
-    //HJ_ 230919 변경 
-    //void CreatePlayer()
-    //{
-    //    Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-    //    //int idx = UnityEngine.Random.Range(1, points.Length);
-   
-    //    //PhotonNetwork.Instantiate("Player", points[idx].position, points[idx].rotation, 0);
-    //}
-
-    //룸 접속 정보를 출력
-    void SetRoomInfo()
-    {
-        Room room = PhotonNetwork.CurrentRoom;
-        roomName.text = room.Name;
-        connectInfo.text = $"({room.PlayerCount}/{room.MaxPlayers})";
-        
-    }
-
-    //exit 버튼의 onclick에 연결할 함수
-    private void OnExitClick()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    //포톤 룸에서 퇴장했을 때 호출되는 콜백 함수
-    public override void OnLeftRoom()
-    {
-        SceneManager.LoadScene("Lobby");
-    }
-
-    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        SetRoomInfo();
-        string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> is joined room";
-        msgList.text += msg;
-
-        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        //int witchSpawnPoint = 1;
-        int hunterSpawnPoint = 2;
-
-        //if (photonView.IsMine)
-        //{
-        //    // 현재 접속한 플레이어가 로컬 플레이어인 경우에만 캐릭터를 생성합니다.
-        //    PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
-        //}
-        Debug.Log("유저가 접속");
-    }
-
-    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
-    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
-    {
-        SetRoomInfo();
-        string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> is left room";
-        msgList.text += msg;
-    }
-
-    //HJ_work
+    //HJ-----> 변수 위치 이동 0921
+    //HJ_work 해야될 일
     //========================================================================
-    //1.승패, 2. 진영, 3.타이머   , 마녀 수 확인
+    //1.승패, 2. 진영, 마녀 수 확인
     [SerializeField] private GameObject witchPrefab;
     [SerializeField] private GameObject hunterPrefab;
 
@@ -122,29 +52,15 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
-
-
     void Awake()
     {
         ResourceManager.Init();
-
-
         hostCanvasObj = GameObject.Find("TestHostCanvasHJ");
         clientCanvasObj = GameObject.Find("TestClientCanvasHJ");
 
         masterStartBtn = hostCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
         clientReadyBtn = clientCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
         
-        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        ////int witchSpawnPoint = 1;
-        //int hunterSpawnPoint = 2;
-        ////if (photonView.IsMine) { }
-        //GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-        //int temp = player.GetComponent<PhotonView>().ViewID;
-
-        //Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
-
-        //호스트라면 
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("이거 호스트일떄 실행되는거임");
@@ -156,43 +72,17 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             hostCanvasObj.SetActive(false);
         }
-        CreatePlayer();
+
         ////접속 정보 추출 및 표시
         SetRoomInfo();
         ////EXIT 버튼 이벤트 연결
         exitBtn.onClick.AddListener(() => OnExitClick());
-   
-    }
 
+    }
     private void Start()
     {
-        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        //int witchSpawnPoint = 1;
-        int hunterSpawnPoint = 2;
-        //if (photonView.IsMine) { }
-        GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation); //헌터 생성입니다.
-        int temp = player.GetComponent<PhotonView>().ViewID;
-
-        Debug.LogFormat("{0}", player.GetComponent<PhotonView>().ViewID);
-        Debug.LogFormat("{0}", PhotonNetwork.IsMasterClient);
-
-        Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
-
+        CreatePlayer();
     }
-    //public override void OnJoinedRoom()
-    //{
-
-    //        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-    //        //int witchSpawnPoint = 1;
-    //        int hunterSpawnPoint = 2;
-    //        //if (photonView.IsMine) { }
-    //        GameObject player = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-    //        int temp = player.GetComponent<PhotonView>().ViewID;
-
-    //        Debug.Log("이번 생성된 캐릭터의 아이디 : " + temp);
-
-    //}
-
     private void Update()
     {
         //HJ_
@@ -209,6 +99,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             } //게임 시작 활성화 관련 
         }
 
+        //HJ LeftAlt 누르고 있을때 마우스 포인트 보이게끔
+        if (Input.GetKey(KeyCode.LeftAlt))
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+
         if (isGameStart)
         {
             if (timeRemaining > 0)
@@ -221,12 +118,12 @@ public class GameManager : MonoBehaviourPunCallbacks
                 //밑에서 isHiding 15초로 초기화 해주긴 할 거라 없애도 될 것 같긴 합니다 . 일단은 남김
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
-                isGameStart= false;
+                isGameStart = false;
                 //TODO 여기서 패널 꺼주고 캐릭터 보여주면 될 것 같습니다.
                 // 그 다음에 프리즈 해제해준 캐릭터를 움직일 수 있게끔 하면 될 것 같습니다.
                 //테스트이긴 하지만 isHiging를 true로 바꿔줍니다.
 
-                isHiding = true; 
+                isHiding = true;
                 timeRemaining = 15f;
                 return;
                 //여기서부터 시작 전 대기시간 타이머가 끝납니다.
@@ -234,7 +131,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             //TODO 여기로 오는지 한번 디버그 찍어보기
             DisplayTime(timeRemaining);
         }
-        else if (isHiding) 
+        else if (isHiding)
         {
             if (timeRemaining > 0)
             {
@@ -251,16 +148,16 @@ public class GameManager : MonoBehaviourPunCallbacks
                 //4분이 주어집니다.
                 timeRemaining = 240f;
                 return;
-                
+
             }
             //TODO 여기로 오는지 한번 디버그 찍어보기
             DisplayTime(timeRemaining);
         }
         else if (!isHiding && isPlaying) // 숨는 시간이 끝났고 게임을 진행중이라면 
         {
-            if(witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
+            if (witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
             {
-            //헌터 승리 UI 와 처리
+                //헌터 승리 UI 와 처리
             }
             if (timeRemaining > 0)
             {
@@ -279,6 +176,44 @@ public class GameManager : MonoBehaviourPunCallbacks
             DisplayTime(timeRemaining);
         }
     }
+    //룸 접속 정보를 출력
+    void SetRoomInfo()
+    {
+        Room room = PhotonNetwork.CurrentRoom;
+        roomName.text = room.Name;
+        connectInfo.text = $"({room.PlayerCount}/{room.MaxPlayers})";
+
+    }
+    //exit 버튼의 onclick에 연결할 함수
+    private void OnExitClick()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    //포톤 룸에서 퇴장했을 때 호출되는 콜백 함수
+    public override void OnLeftRoom()
+    {
+        SceneManager.LoadScene("TestGorani");
+    }
+
+    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        SetRoomInfo();
+        string msg = $"\n<color=#00ff00>{newPlayer.NickName}</color> is joined room";
+        msgList.text += msg;
+
+        Debug.Log("유저가 접속");
+    }
+
+    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
+    public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
+    {
+        SetRoomInfo();
+        string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> is left room";
+        msgList.text += msg;
+    }
+    
     //HJ_
     //시간 표시 함수입니다.
     public void DisplayTime(float timeToDisplay)
@@ -307,25 +242,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     //HJ_ 230919 변경 
     void CreatePlayer()
     {
-        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         //int witchSpawnPoint = 1;
-        //int hunterSpawnPoint = 2;
-        
+        int hunterSpawnPoint = 2;
+        PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
 
         //if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         //{
-        //    //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+            //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
 
-        //}
-        //else
-        //{
-        //    PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
-        //}
-
-        //    if (UnityEngine.Random.Range(0, 10) > 1 )
-        //{            
-        //    PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-        //    //chooseWH = 1;            
         //}
         //else
         //{
