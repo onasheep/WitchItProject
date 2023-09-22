@@ -1,3 +1,4 @@
+using EPOOutline;
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using System.Collections;
@@ -83,7 +84,7 @@ public class Hunter : PlayerBase
         }
 
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
-
+    
 
         // SJ_ 230915
         //MoveHunter();

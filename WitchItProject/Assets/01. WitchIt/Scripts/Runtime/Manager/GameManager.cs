@@ -245,7 +245,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         //int witchSpawnPoint = 1;
         int hunterSpawnPoint = 2;
-        PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+        // TODO : Hunter로 변경하기 
+        // TEST : Witch 변신가능 오브젝트 아웃라인 테스트
+        PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
 
         //if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         //{
