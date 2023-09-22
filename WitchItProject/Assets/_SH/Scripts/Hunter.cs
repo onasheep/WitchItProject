@@ -3,6 +3,7 @@ using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 // SJ_ 230915
 // PlayerBase ���
