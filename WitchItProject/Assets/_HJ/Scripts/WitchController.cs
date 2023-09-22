@@ -1,4 +1,5 @@
 using Cinemachine;
+using EPOOutline;
 using Photon.Pun;
 using System;
 using Unity.VisualScripting;
@@ -72,10 +73,7 @@ public class WitchController : PlayerBase
 
         //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
 
-        // SJ_ 230915
-        // LEGACY : PlayerBase에서 가져옴
-        //rigid = GetComponent<Rigidbody>();
-        //animator = GetComponent<Animator>();
+
 
     }
 
@@ -85,10 +83,22 @@ public class WitchController : PlayerBase
         //죽었을 때 관전으로 갈 수 있는 기능 넣을 예정
     }
 
+
     void Update()
     {
-        Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
-            out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects"));
+        // { SJ_ 230922
+        if (Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
+            out hit, 15f, LayerMask.GetMask("ChangeableObjects")))
+        {
+            if (hit.transform.GetComponent<ChangeableObject>() == null)
+            {
+                return;
+            }
+
+            hit.transform.GetComponent<ChangeableObject>().SetOutline();
+        }
+        // } SJ_ 230922
+
 
         base.InputPlayer();
 
@@ -117,6 +127,8 @@ public class WitchController : PlayerBase
         }
 
         base.InputPlayer();
+
+        CancelMetamorphosis();
     }
 
     private void FixedUpdate()
@@ -159,16 +171,12 @@ public class WitchController : PlayerBase
         //  ��ų ��� }
 
 
-
-
-
-
-        // TODO : 변신 기능 함수 추가
         this.leftFunc =
             () =>
             {
                 if (hit.collider != null)
                 {
+                    
                     MetamorphosisToObj(hit.collider.gameObject);
                 }
             };

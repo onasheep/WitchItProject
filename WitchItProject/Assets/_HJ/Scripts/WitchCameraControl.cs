@@ -22,29 +22,29 @@ public class WitchCameraControl : MonoBehaviourPun
     // Start is called before the first frame update
     void Start()
     {
-        //¸ñÇ¥ Å¸°ÙÀ» Ã£¾Æ¿É´Ï´Ù.
+        //ï¿½ï¿½Ç¥ Å¸ï¿½ï¿½ï¿½ï¿½ Ã£ï¿½Æ¿É´Ï´ï¿½.
         target = GameObject.Find("WitchCharacter").transform.GetChild(2).transform;
-        myCamera = GetComponent<CinemachineVirtualCamera>(); //Ä«¸Þ¶ó ÄÄÆ÷³ÍÆ® ¹Þ¾Æ¿À±â
+        myCamera = GetComponent<CinemachineVirtualCamera>(); //Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½Þ¾Æ¿ï¿½ï¿½ï¿½
 
-        myCamera.Follow = target; // Ä«¸Þ¶ó°¡ µû¶ó´Ù´Ò Å¸°Ù ÁöÁ¤
-        myCamera.LookAt = target; // Áß½ÉÀ¸·Î È¸ÀüÇÒ Å¸°Ù ÁöÁ¤
+        myCamera.Follow = target; // Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½Ù´ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        myCamera.LookAt = target; // ï¿½ß½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
         //myCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = Vector3.zero;
         myBody = myCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         myAim = myCamera.GetCinemachineComponent<CinemachinePOV>();
         //myColl = myCamera.GetComponent<CinemachineCollider>();
 
-        //ÃÊ±â Ä«¸Þ¶ó °Å¸® ¼³Á¤(ÀÏÈ¸¿ë)
+        //ï¿½Ê±ï¿½ Ä«ï¿½Þ¶ï¿½ ï¿½Å¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½È¸ï¿½ï¿½)
         defaultCameraDistance = 6f;
         myBody.m_CameraDistance = defaultCameraDistance;
 
-        //damping ¼³Á¤
+        //damping ï¿½ï¿½ï¿½ï¿½
         myBody.m_XDamping = 0f;
         myBody.m_YDamping = 0f;
         myBody.m_ZDamping = 0f;
 
         // 9/22 Jung
-        // ÇüÁØÀÌ°¡ inspectorÃ¢¿¡¼­ ¼³Á¤ÇÑ °ªµé ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ inspectorÃ¢ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         //myAim.m_VerticalAxis.m_MaxSpeed = 1f;
         //myAim.m_VerticalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
 
@@ -65,13 +65,12 @@ public class WitchCameraControl : MonoBehaviourPun
 
     // Update is called once per frame
     void Update()
-    {
-
+    {      
         Zoom();
     }
 
     //HJ_
-    // Ä«¸Þ¶ó distance °ªÀ» Á÷Á¢ Á¶ÀýÇØÁÖ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.
+    // Ä«ï¿½Þ¶ï¿½ distance ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½Ô´Ï´ï¿½.
     void Zoom()
     {
         float wheelInput = Input.GetAxis("Mouse ScrollWheel");
@@ -92,5 +91,5 @@ public class WitchCameraControl : MonoBehaviourPun
                 myBody.m_CameraDistance = maxCameraDistance;
             }
         }
-    }//Zoom ÇÔ¼ö ³¡
+    }//Zoom ï¿½Ô¼ï¿½ ï¿½ï¿½
 }
