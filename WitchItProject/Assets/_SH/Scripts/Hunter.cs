@@ -129,7 +129,7 @@ public class Hunter : PlayerBase
 
         Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
 
-        // SJ_ 석환씨가 말한 주석 
+        // { SJ_ 석환씨가 말한 주석 
 
         //// 현재 Culling Mask 값을 가져옵니다.
         //int currentCullingMask = main.cullingMask;
@@ -140,6 +140,8 @@ public class Hunter : PlayerBase
         //// 새로운 Culling Mask를 설정합니다.
         //main.cullingMask = newCullingMask;
 
+        // } SJ_ 석환씨가 말한 주석 
+        
         skillSlot.SelSkill((int)type);
 
         rightFuncCool = skillSlot.Slots[0].CoolTime;

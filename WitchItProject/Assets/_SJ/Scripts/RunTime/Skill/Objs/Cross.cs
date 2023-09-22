@@ -25,6 +25,8 @@ public class Cross : MonoBehaviour
 
             this.gameObject.GetComponent<Rigidbody>().constraints
             = RigidbodyConstraints.FreezeAll;
+
+            this.transform.up = other.gameObject.transform.up;
             StartCoroutine(IncreaseCollider());
         }
     }
