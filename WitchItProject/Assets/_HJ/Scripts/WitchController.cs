@@ -1,6 +1,7 @@
 using Cinemachine;
 using Photon.Pun;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 // SJ_ 230915
@@ -58,7 +59,13 @@ public class WitchController : PlayerBase
         Cursor.visible = false; // 마우스 커서를 숨김
         Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
 
-        myCamera = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>().transform;// 가상 카메라 가져와버리기!
+        // 9/22 Jung
+        myCamera = GameObject.Find("WitchCamera").transform;// 가상 카메라 가져와버리기!
+        //myCamera = GameObject.Find("PersonalCamera").transform;// 가상 카메라 가져와버리기!
+        //myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
+        //myCamera.AddComponent<CinemachineCollider>();
+        //myCamera.AddComponent<WitchCameraControl>();
+        // 9/22 Jung
 
         witchBody = GameObject.Find("Character_Female_Witch");
         currBody = witchBody;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using Photon.Pun;
 using Photon.Pun.Demo.Cockpit;
 using System.Collections;
@@ -23,6 +24,8 @@ public class Hunter : PlayerBase
     private float QFuncCool = default;
     private float skillTimer = default;
 
+    private GameObject footFall = default;
+
     // SJ_ 230918
     private GameObject dogRing;
 
@@ -45,10 +48,15 @@ public class Hunter : PlayerBase
         myPv = GetComponent<PhotonView>();
         //
 
+        //myCamera = GameObject.Find("PersonalCamera").transform;
         myCamera = GameObject.Find("HunterCamera").transform;
+        myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = GameObject.Find("CrossHair");
+
+        footFall = GameObject.Find("Footfall");
+
         // SJ_ 230915
         // LEGACY : PlayerBase���� ������
         //rigid = GetComponent<Rigidbody>();
@@ -210,10 +218,10 @@ public class Hunter : PlayerBase
         Debug.Log("칼던짐");
         //if (Input.GetButtonDown("Fire1"))
         //{
-        Bullet obj_ = BulletPool.GetObject();
+        Bullet obj_ = BulletPool.GetBullet();
 
         obj_.transform.position = myCamera.position + myCamera.forward;
-        obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
+        obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
 
         animator.SetTrigger("Shot");
         //}
@@ -233,6 +241,8 @@ public class Hunter : PlayerBase
         //{
         if (animator.GetBool("IsGround"))
         {
+            footFall.SetActive(false);
+
             animator.SetBool("IsGround", false);
             animator.SetTrigger("Jump");
 
@@ -306,6 +316,9 @@ public class Hunter : PlayerBase
 
             if (point.y <= transform.position.y + 0.5f)
             {
+                // TODO
+                // 발걸음 이펙트 coroutine으로? 아니면 다른 방법?
+
                 animator.SetBool("IsGround", true);
                 break;
             }

@@ -9,8 +9,9 @@ public class WitchCameraControl : MonoBehaviourPun
     [SerializeField] private CinemachineVirtualCamera myCamera;
     [SerializeField] private CinemachineFramingTransposer myBody;
     [SerializeField] private CinemachinePOV myAim;
+    [SerializeField] private CinemachineCollider myColl;
 
-    [SerializeField][Range(0f,10f)] private float defaultCameraDistance;
+    [SerializeField][Range(0f, 10f)] private float defaultCameraDistance;
     [SerializeField][Range(0f, 10f)] private float maxCameraDistance = 1f;
     [SerializeField][Range(0f, 10f)] private float minCameraDistance = 8f;
 
@@ -24,28 +25,48 @@ public class WitchCameraControl : MonoBehaviourPun
         //목표 타겟을 찾아옵니다.
         target = GameObject.Find("WitchCharacter").transform.GetChild(2).transform;
         myCamera = GetComponent<CinemachineVirtualCamera>(); //카메라 컴포넌트 받아오기
-        
+
         myCamera.Follow = target; // 카메라가 따라다닐 타겟 지정
         myCamera.LookAt = target; // 중심으로 회전할 타겟 지정
 
-        myBody =  myCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        //myCamera.GetCinemachineComponent<CinemachineFramingTransposer>().m_TrackedObjectOffset = Vector3.zero;
+        myBody = myCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
         myAim = myCamera.GetCinemachineComponent<CinemachinePOV>();
-        
-        //초기 카메라 거리 설정(일회용)
-        defaultCameraDistance = 6f; 
-        myBody.m_CameraDistance = defaultCameraDistance;
+        //myColl = myCamera.GetComponent<CinemachineCollider>();
 
+        //초기 카메라 거리 설정(일회용)
+        defaultCameraDistance = 6f;
+        myBody.m_CameraDistance = defaultCameraDistance;
 
         //damping 설정
         myBody.m_XDamping = 0f;
         myBody.m_YDamping = 0f;
         myBody.m_ZDamping = 0f;
+
+        // 9/22 Jung
+        // 형준이가 inspector창에서 설정한 값들 설정
+        //myAim.m_VerticalAxis.m_MaxSpeed = 1f;
+        //myAim.m_VerticalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+
+        //myAim.m_VerticalAxis.m_MaxValue = 90f;
+        //myAim.m_VerticalAxis.m_MinValue = -9f;
+
+        //myAim.m_HorizontalAxis.m_MaxSpeed = 2f;
+        //myAim.m_HorizontalAxis.m_SpeedMode = AxisState.SpeedMode.InputValueGain;
+
+        //// Default, Ignore Raycast, Water, Ground, Wall, Board
+        //string[] layers = { "Default", "Ignore Raycast", "Water", "Ground", "Wall", "Board" };
+
+        //myColl.m_CollideAgainst = LayerMask.GetMask(layers);
+        //myColl.m_IgnoreTag = "Player";
+        //myColl.m_TransparentLayers = LayerMask.GetMask("Everything");
+        // 9/22 Jung
     }
 
     // Update is called once per frame
     void Update()
     {
-      
+
         Zoom();
     }
 
