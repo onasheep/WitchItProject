@@ -64,32 +64,55 @@ public class GameManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Debug.Log("이거 호스트일떄 실행되는거임");
+            timeText = hostCanvasObj.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
             clientCanvasObj.SetActive(false);
         }
         else
         {
             Debug.Log("클라이언트일때 실행되는거임");
-
+            timeText = clientCanvasObj.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.GetComponent<TMP_Text>();
             hostCanvasObj.SetActive(false);
         }
+
+        
 
         ////접속 정보 추출 및 표시
         SetRoomInfo();
         ////EXIT 버튼 이벤트 연결
         exitBtn.onClick.AddListener(() => OnExitClick());
 
+        // 버튼에 이벤트 연결해줍니다>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+        clientReadyBtn.onClick.AddListener(() => ReadyGame());
+
+        // 스타트 버튼에 이벤트 연결해줍니다>>>>>>>>>>>>>>>>>>>>>>>>>>
+        masterStartBtn.onClick.AddListener(() => PushGameStart());
+        
     }
     private void Start()
     {
-        CreatePlayer();
+        //CreateHunter();
+        //CreatePlayer();
     }
     private void Update()
     {
+       
+        if (isPlayerReady)
+        {
+            readyCount++;
+            isPlayerReady = false;
+        }
+       
         //HJ_
         //모든 인원이 준비를 완료하면 마스터의 시작 버튼이 활성화 됩니다.
         if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         {
-            if (isEveryReady)//&& readyCount >= playerCount )
+            //clientCanvasObj.SetActive(false);
+            //hostCanvasObj.SetActive(true);
+            if (readyCount == playerCount && playerCount != 0)
+            {
+                isEveryReady = true;
+            }
+            if (isEveryReady)
             {
                 masterStartBtn.interactable = true;
             }
@@ -98,6 +121,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 masterStartBtn.interactable = false;
             } //게임 시작 활성화 관련 
         }
+        //else
+        //{
+        //    //hostCanvasObj.SetActive(false);
+        //    //clientCanvasObj.SetActive(true);
+        //}
 
         //HJ LeftAlt 누르고 있을때 마우스 포인트 보이게끔
         if (Input.GetKey(KeyCode.LeftAlt))
@@ -106,15 +134,20 @@ public class GameManager : MonoBehaviourPunCallbacks
             Cursor.visible = true;
         }
 
+      
+
         if (isGameStart)
         {
+
+            //CountdownTimer.SetStartTime();
+
+
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
             }
             else
             {
-                Debug.Log("게임시작 시작 전 대기시간 타이머 끝났습니다.");
                 //밑에서 isHiding 15초로 초기화 해주긴 할 거라 없애도 될 것 같긴 합니다 . 일단은 남김
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
@@ -129,7 +162,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                 //여기서부터 시작 전 대기시간 타이머가 끝납니다.
             }
             //TODO 여기로 오는지 한번 디버그 찍어보기
-            DisplayTime(timeRemaining);
+            photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
+            //DisplayTime(timeRemaining);
         }
         else if (isHiding)
         {
@@ -151,7 +185,8 @@ public class GameManager : MonoBehaviourPunCallbacks
 
             }
             //TODO 여기로 오는지 한번 디버그 찍어보기
-            DisplayTime(timeRemaining);
+            photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
+            //DisplayTime(timeRemaining);
         }
         else if (!isHiding && isPlaying) // 숨는 시간이 끝났고 게임을 진행중이라면 
         {
@@ -173,7 +208,8 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return;
             }
             //TODO 여기로 오는지 한번 디버그 찍어보기
-            DisplayTime(timeRemaining);
+            photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
+            //DisplayTime(timeRemaining);
         }
     }
     //룸 접속 정보를 출력
@@ -187,9 +223,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     //exit 버튼의 onclick에 연결할 함수
     private void OnExitClick()
     {
+        //photonView.RPC("ExitPlayer", RpcTarget.MasterClient);
         PhotonNetwork.LeaveRoom();
     }
 
+   
     //포톤 룸에서 퇴장했을 때 호출되는 콜백 함수
     public override void OnLeftRoom()
     {
@@ -204,18 +242,23 @@ public class GameManager : MonoBehaviourPunCallbacks
         msgList.text += msg;
 
         Debug.Log("유저가 접속");
+        photonView.RPC("EnterPlayer", RpcTarget.MasterClient);
     }
 
     //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
         SetRoomInfo();
+
         string msg = $"\n<color=#ff0000>{otherPlayer.NickName}</color> is left room";
         msgList.text += msg;
+
+        photonView.RPC("ExitPlayer", RpcTarget.MasterClient);
     }
     
     //HJ_
     //시간 표시 함수입니다.
+    [PunRPC]
     public void DisplayTime(float timeToDisplay)
     {
         timeToDisplay += 1;
@@ -225,36 +268,69 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
 
     //HJ_ 플레이어 준비 bool 값 바꿔주는 함수
-    [PunRPC]
+    
     public void ReadyGame()
     {
+        if (!PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("ChangeReady", RpcTarget.MasterClient);
+        }
+    }
+    [PunRPC]
+    public void ChangeReady()
+    {
+        Debug.Log("왜 2번찍히지?");
         isPlayerReady = true;
-        readyCount++;
     }
 
-    public void PushGameStart()
+    [PunRPC]
+    public void SetStart()
     {
         isGameStart = true;
         timeRemaining = 10f;
         //TODO 들어온 인원들 진영을 선택해줘야합니다.
     }
+    //230922_HJ 변경한 것
+    [PunRPC]
+    public void PushGameStart()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC("SetStart", RpcTarget.MasterClient);
+        }
+    }
 
+    [PunRPC]
+    public void ChangeBool(bool test, bool test2)
+    {
+        test = test2;
+    }
+
+    //----------------------
     //HJ_ 230919 변경 
-    void CreatePlayer()
+    void CreateHunter()
     {
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         //int witchSpawnPoint = 1;
         int hunterSpawnPoint = 2;
         PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+    }
+    void CreateWitch()
+    {
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        int witchSpawnPoint = 1;
+        PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+    }
 
-        //if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
-        //{
-            //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
-
-        //}
-        //else
-        //{
-        //    PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
-        //}
+    //TODO 일단 밑에 두긴 하지만 함수 실행별로 내림차순으로 정리해놓을 필요 있음 흐름 외에 것들은 제일 하단에 두고
+    [PunRPC]
+    public void EnterPlayer()
+    {
+        playerCount++;
+    }
+    [PunRPC]
+    public void ExitPlayer()
+    {
+        playerCount--;
     }
 }

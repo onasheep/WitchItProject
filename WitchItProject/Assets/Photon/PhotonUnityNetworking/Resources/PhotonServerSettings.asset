@@ -44,6 +44,18 @@ MonoBehaviour:
   - MakeWitch
   - ReadyGame
   - ChatRPC
+  - EnterPlayer
+  - ExitPlayer
+  - AddReadyCount
+  - ChangeReady
+  - DisplayTime
+  - StartTimer
+  - TimerCoroution
+  - ChangeFalse
+  - ChangeTrue
+  - ChangeBool
+  - PushGameStart
+  - SetStart
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
