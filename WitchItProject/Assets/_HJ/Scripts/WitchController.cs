@@ -81,7 +81,7 @@ public class WitchController : PlayerBase
     {
         // { SJ_ 230922
         if (Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
-            out hit, Mathf.Infinity, LayerMask.GetMask("ChangeableObjects")))
+            out hit, 15f, LayerMask.GetMask("ChangeableObjects")))
         {
             if (hit.transform.GetComponent<ChangeableObject>() == null)
             {
@@ -91,24 +91,6 @@ public class WitchController : PlayerBase
             hit.transform.GetComponent<ChangeableObject>().SetOutline();
         }
         // } SJ_ 230922
-
-
-        //if(Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
-        //     out hit,15f, LayerMask.GetMask("ChangeableObjects")))
-        // {
-        //     Debug.LogFormat("{0}", hit.transform.name);
-
-        //     if (hit.transform.GetComponent<ChangeableObject>() == null)
-        //     {
-        //         return;
-        //     }
-
-        //     hit.transform.GetComponent<ChangeableObject>().SetOutline();
-        // }
-
-
-
-
 
 
         base.InputPlayer();
@@ -138,6 +120,8 @@ public class WitchController : PlayerBase
         }
 
         base.InputPlayer();
+
+        CancelMetamorphosis();
     }
 
     private void FixedUpdate()
@@ -180,16 +164,12 @@ public class WitchController : PlayerBase
         //  ��ų ��� }
 
 
-
-
-
-
-        // TODO : 변신 기능 함수 추가
         this.leftFunc =
             () =>
             {
                 if (hit.collider != null)
                 {
+                    
                     MetamorphosisToObj(hit.collider.gameObject);
                 }
             };
