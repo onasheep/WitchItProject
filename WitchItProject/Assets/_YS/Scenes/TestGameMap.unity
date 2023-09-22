@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1808488, g: 0.2263873, b: 0.30721074, a: 1}
+  m_IndirectSpecularColor: {r: 0.18084905, g: 0.22638777, b: 0.30721128, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -65487,6 +65487,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bulletPrefab: {fileID: 0}
   hitPrefab: {fileID: 0}
+  footfallPrefab: {fileID: 0}
 --- !u!1001 &1876046858
 PrefabInstance:
   m_ObjectHideFlags: 0
