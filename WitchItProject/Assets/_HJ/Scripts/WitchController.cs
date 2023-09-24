@@ -277,7 +277,9 @@ public class WitchController : PlayerBase
     // TODO : 각각 헌터와 마녀가 점프가 많이 다르다면 
     // 지금 같은 방식으로, 아니라면 PalyerBase에서 공통적으로 만들 것
     private void JumpWitch()
-    {
+    {  
+        if(!photonView.IsMine)
+        { return; }
         if (isMetamor) { /* Do Nothing */ }
         else if (!isMetamor)
         {

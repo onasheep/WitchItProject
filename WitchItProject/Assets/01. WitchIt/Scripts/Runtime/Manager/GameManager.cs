@@ -9,9 +9,13 @@ using UnityEngine.SceneManagement;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
 using Photon.Pun.UtilityScripts;
+using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    //HJ__
+    public int randNum = 0;
+
     public TMP_Text roomName;
     public TMP_Text connectInfo;
     public TMP_Text msgList;
@@ -27,7 +31,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private GameObject hostCanvasObj;
     [SerializeField] private GameObject clientCanvasObj;
+    [SerializeField] private GameObject roomInfoCanvasObj;
 
+    [SerializeField] private GameObject startPannel;
+    [SerializeField] private GameObject readyPannel;
 
     [SerializeField] private Button masterStartBtn = default;
     [SerializeField] private Button clientReadyBtn = default;
@@ -39,7 +46,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool isGameStart = false;
 
     public int totalWHCount = 0; // 이 값으로 헌터가 몇명 있고 나머지 마녀로 해줌
-    public int huterCount = 0; //헌터의 수 입니다.
+    public int hunterCount = 0; //헌터의 수 입니다.
     public int witchCount = 0; //마녀의 수 입니다.
 
     public bool isHunter = false; //헌터인지
@@ -57,6 +64,11 @@ public class GameManager : MonoBehaviourPunCallbacks
         ResourceManager.Init();
         hostCanvasObj = GameObject.Find("TestHostCanvasHJ");
         clientCanvasObj = GameObject.Find("TestClientCanvasHJ");
+        
+        roomInfoCanvasObj = GameObject.Find("CanvasRoomInfo");
+
+        startPannel = hostCanvasObj.transform.GetChild(1).gameObject;
+        readyPannel = clientCanvasObj.transform.GetChild(1).gameObject;
 
         masterStartBtn = hostCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
         clientReadyBtn = clientCanvasObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.GetComponent<Button>();
@@ -92,6 +104,10 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         //CreateHunter();
         //CreatePlayer();
+        roomInfoCanvasObj.SetActive(false);
+        
+        //CreateHunter();
+
     }
     private void Update()
     {
@@ -101,17 +117,30 @@ public class GameManager : MonoBehaviourPunCallbacks
             readyCount++;
             isPlayerReady = false;
         }
+
+        
+        //HJ___0924
        
+        Debug.LogFormat("이건 로컬 플레이어 액터넘버임 : {0}", PhotonNetwork.LocalPlayer.ActorNumber);
+
+        Debug.LogFormat("플레이어 리스트입니다. : {0}", PhotonNetwork.PlayerList.Length);
+        Debug.LogFormat("플레이어 카운터입니다 {0}", PhotonNetwork.CurrentRoom.PlayerCount);
+        //Debug.LogFormat("플레이어 i 번째 리스트{0}", PhotonNetwork.PlayerList[2]);
+        //Debug.LogFormat("플레이어 i 번째 리스트", PhotonNetwork.PlayerList[3]);
+
+
         //HJ_
         //모든 인원이 준비를 완료하면 마스터의 시작 버튼이 활성화 됩니다.
         if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         {
-            //clientCanvasObj.SetActive(false);
-            //hostCanvasObj.SetActive(true);
-            if (readyCount == playerCount && playerCount != 0)
+            //Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount); //이거 지금 룸에 플레이어 수입니다
+            clientCanvasObj.SetActive(false);
+            hostCanvasObj.SetActive(true);
+            if (readyCount == playerCount && playerCount != 0) //레디한 사람의 수가 
             {
                 isEveryReady = true;
             }
+
             if (isEveryReady)
             {
                 masterStartBtn.interactable = true;
@@ -121,26 +150,30 @@ public class GameManager : MonoBehaviourPunCallbacks
                 masterStartBtn.interactable = false;
             } //게임 시작 활성화 관련 
         }
-        //else
-        //{
-        //    //hostCanvasObj.SetActive(false);
-        //    //clientCanvasObj.SetActive(true);
-        //}
+        else
+        {
+            hostCanvasObj.SetActive(false);
+            clientCanvasObj.SetActive(true);
+        }
 
         //HJ LeftAlt 누르고 있을때 마우스 포인트 보이게끔
         if (Input.GetKey(KeyCode.LeftAlt))
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+            roomInfoCanvasObj.SetActive(true);
+        }
+        else 
+        {
+            roomInfoCanvasObj.SetActive(false);
         }
 
       
 
         if (isGameStart)
         {
-
-            //CountdownTimer.SetStartTime();
-
+            startPannel.SetActive(false);
+            readyPannel.SetActive(false);
 
             if (timeRemaining > 0)
             {
@@ -158,12 +191,16 @@ public class GameManager : MonoBehaviourPunCallbacks
 
                 isHiding = true;
                 timeRemaining = 15f;
+                RandomChoose();
+                
+                Debug.LogFormat("{0} <<< 랜덤 넘버", randNum);
+                Debug.LogFormat("{0} <<< 액터 넘버", PhotonNetwork.LocalPlayer.ActorNumber);
+                Debug.LogFormat("{0} <<< 아닌지 ", randNum != PhotonNetwork.LocalPlayer.ActorNumber);
+                
                 return;
                 //여기서부터 시작 전 대기시간 타이머가 끝납니다.
             }
-            //TODO 여기로 오는지 한번 디버그 찍어보기
             photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
-            //DisplayTime(timeRemaining);
         }
         else if (isHiding)
         {
@@ -184,16 +221,17 @@ public class GameManager : MonoBehaviourPunCallbacks
                 return;
 
             }
-            //TODO 여기로 오는지 한번 디버그 찍어보기
             photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
-            //DisplayTime(timeRemaining);
         }
         else if (!isHiding && isPlaying) // 숨는 시간이 끝났고 게임을 진행중이라면 
         {
             if (witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
             {
                 //헌터 승리 UI 와 처리
+                Debug.Log("헌터승리");
+                return;
             }
+
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
@@ -207,9 +245,7 @@ public class GameManager : MonoBehaviourPunCallbacks
                 //여기서 승리 UI 팝업창 한번 띄어주고 2초뒤에 결과 panel이 나오게끔 해주면 될 것 같습니다.
                 return;
             }
-            //TODO 여기로 오는지 한번 디버그 찍어보기
             photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
-            //DisplayTime(timeRemaining);
         }
     }
     //룸 접속 정보를 출력
@@ -231,10 +267,12 @@ public class GameManager : MonoBehaviourPunCallbacks
     //포톤 룸에서 퇴장했을 때 호출되는 콜백 함수
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("TestGorani");
+        PhotonNetwork.LoadLevel("TestGorani");
+      
+        //SceneManager.LoadScene("TestGorani");
     }
 
-    //룸에서 네트워크 유저가 퇴장했을때 호출되는 콜백 함수
+    //룸에서 네트워크 유저가입장했을때 호출되는 콜백 함수
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
         SetRoomInfo();
@@ -296,7 +334,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            photonView.RPC("SetStart", RpcTarget.MasterClient);
+            photonView.RPC("SetStart", RpcTarget.All);
         }
     }
 
@@ -322,6 +360,35 @@ public class GameManager : MonoBehaviourPunCallbacks
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         int witchSpawnPoint = 1;
         PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+    }
+
+    [PunRPC]
+    public void RandomNum()
+    {
+        randNum = UnityEngine.Random.Range(1, PhotonNetwork.CurrentRoom.PlayerCount);
+    }
+    //HJ++ 0924
+    public void RandomChoose()
+    {
+        photonView.RPC("RandomNum", RpcTarget.All);
+         
+        if (randNum == PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            CreateHunter();
+        }
+
+        if (randNum != PhotonNetwork.LocalPlayer.ActorNumber)
+        {
+            
+            CreateWitch();
+            photonView.RPC("AddWCount", RpcTarget.All);
+        }
+    }
+
+    [PunRPC]
+    public void AddWCount()
+    {
+        witchCount++;
     }
 
     //TODO 일단 밑에 두긴 하지만 함수 실행별로 내림차순으로 정리해놓을 필요 있음 흐름 외에 것들은 제일 하단에 두고

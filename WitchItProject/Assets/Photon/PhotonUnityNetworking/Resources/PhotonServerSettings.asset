@@ -56,6 +56,8 @@ MonoBehaviour:
   - ChangeBool
   - PushGameStart
   - SetStart
+  - RandomNum
+  - AddWCount
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
