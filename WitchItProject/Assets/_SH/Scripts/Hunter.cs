@@ -1,11 +1,8 @@
 using Cinemachine;
-using EPOOutline;
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 // SJ_ 230915
 // PlayerBase ���
@@ -156,7 +153,8 @@ public class Hunter : PlayerBase
         QFuncCool = skillSlot.Slots[1].CoolTime;
 
 
-
+        // SJ_230925
+        // TEST : Photone 생성으로 변경
         this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All);
         this.rigthFunc =
             () =>
@@ -164,11 +162,10 @@ public class Hunter : PlayerBase
                 if (skillTimer > rightFuncCool)
                 {
                     rightFuncCool += skillTimer;
-                    GameObject obj = Instantiate
-                (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
+                    GameObject obj = PhotonNetwork.Instantiate
+                (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
                     skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
                 }
-
             };
         this.QFunc =
             () =>
@@ -176,8 +173,8 @@ public class Hunter : PlayerBase
                 if (skillTimer > QFuncCool)
                 {
                     skillTimer -= QFuncCool;
-                    GameObject obj = Instantiate
-                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
+                    GameObject obj = PhotonNetwork.Instantiate
+                  (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
                     skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
                 }
 
@@ -222,15 +219,15 @@ public class Hunter : PlayerBase
     private void ThrowKnife()
     {
         Debug.Log("칼던짐");
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        Bullet obj_ = ObjPool.GetBullet();
 
+        Bullet obj_ = ObjPool.GetBullet();
+        
         obj_.transform.position = myCamera.position + myCamera.forward;
+
         obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
 
         animator.SetTrigger("Shot");
-        //}
+
         //else if (Input.GetButton("Fire1"))
         //{
         //    Bullet obj_ = BulletPool.GetObject();

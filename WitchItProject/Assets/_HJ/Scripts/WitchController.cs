@@ -34,6 +34,8 @@ public class WitchController : PlayerBase
     private GameObject barrel = default;
     private GameObject lookPoint = default;
     private RaycastHit hit;
+        
+
 
     // 09/19 Jung
     // 변신한 물체에 따라 바뀔 예정 const X
@@ -58,6 +60,8 @@ public class WitchController : PlayerBase
 
         Init();
         health = healthMax;
+
+        
 
         // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
@@ -122,6 +126,10 @@ public class WitchController : PlayerBase
 
         base.InputPlayer();
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            CancelMetamorphosis();
+        }
 
         //if (isDead) { return; }
         //if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
@@ -148,10 +156,7 @@ public class WitchController : PlayerBase
 
         base.InputPlayer();
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            CancelMetamorphosis();
-        }
+ 
     }
 
     private void FixedUpdate()
@@ -199,6 +204,7 @@ public class WitchController : PlayerBase
         barrel = this.gameObject.FindChildObj("Barrel");
         lookPoint = this.gameObject.FindChildObj("CameraLookPoint");
         base.type = TYPE.WITCH;
+
         // { 스킬 담김 
         skillSlot.SelSkill((int)type);
         //  스킬 담김 }
@@ -219,8 +225,9 @@ public class WitchController : PlayerBase
         this.rigthFunc =
             () =>
             {
-                GameObject obj = Instantiate(
-                    ResourceManager.objs[RDefine.MUSHROOM_ORB], barrel.transform.position, Quaternion.identity);
+                // TEST : 
+                GameObject obj = PhotonNetwork.Instantiate
+                (RDefine.MUSHROOM_ORB, barrel.transform.position, Quaternion.identity);
                 skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);
             };
         this.QFunc =
@@ -479,7 +486,9 @@ public class WitchController : PlayerBase
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_);
-        newBody_.layer = LayerMask.GetMask("Witch");
+        // SJ_ 230925
+        // GetMask => NameToLayer 
+        newBody_.layer = LayerMask.NameToLayer("Witch");
 
         newBody_.transform.position = lookPoint.transform.position;
         newBody_.AddComponent<Cube>();

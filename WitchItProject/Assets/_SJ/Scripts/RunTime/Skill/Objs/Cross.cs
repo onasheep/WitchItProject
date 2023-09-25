@@ -10,6 +10,8 @@ public class Cross : MonoBehaviour
     private float scale = 0f;
     private float time = 0f;
     private float maxRadius = 8f;
+
+    private bool isEnable = true;
     // Start is called before the first frame update
 
     private void OnTriggerEnter(Collider other)
@@ -19,15 +21,17 @@ public class Cross : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")
             || other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
-            // { 콜라이더 중복 충돌 예외 처리
-            this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-            //  콜라이더 중복 충돌 예외 처리 }
+            if (isEnable)
+            {
+                isEnable = false;
+                this.gameObject.GetComponent<Rigidbody>().constraints
+                 = RigidbodyConstraints.FreezeAll;
 
-            this.gameObject.GetComponent<Rigidbody>().constraints
-            = RigidbodyConstraints.FreezeAll;
+                this.transform.up = other.gameObject.transform.up;
 
-            this.transform.up = other.gameObject.transform.up;
-            StartCoroutine(IncreaseCollider());
+                StartCoroutine(IncreaseCollider());
+            }
+
         }
     }
 

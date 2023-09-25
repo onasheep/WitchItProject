@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using Photon.Pun;
 public class Mushroom_Orb : MonoBehaviour
 {
     private float existTime = 2f;
@@ -21,15 +21,16 @@ public class Mushroom_Orb : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")
             || other.gameObject.layer == LayerMask.NameToLayer("Wall"))
         {
+
             if(isEnable)
             {
                 isEnable = false;
 
                 for (int i = 0; i < 4; i++)
                 {
-                    GameObject mushroom = Instantiate(ResourceManager.objs[RDefine.MUSHROOM_OBJ], this.transform.position, Quaternion.identity);              
+                    GameObject mushroom = PhotonNetwork.Instantiate(RDefine.MUSHROOM_OBJ, this.transform.position, Quaternion.identity);              
                 }
-                Destroy(this.gameObject);
+                PhotonNetwork.Destroy(this.gameObject);
             }
             
         }        
