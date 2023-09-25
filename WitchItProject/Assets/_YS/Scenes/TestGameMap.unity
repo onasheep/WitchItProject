@@ -65848,6 +65848,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 0}
   hitPrefab: {fileID: 0}
   footfallPrefab: {fileID: 0}
+  metamorPrefab: {fileID: 0}
 --- !u!1001 &1876046858
 PrefabInstance:
   m_ObjectHideFlags: 0

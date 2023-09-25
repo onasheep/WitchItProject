@@ -35,6 +35,8 @@ public abstract class PlayerBase : MonoBehaviourPun
     // 09/18 Jung
     protected float verticalMove = default;
     protected float horizontalMove = default;
+
+    protected bool canSpawnFootfall = true;
     // 09/18 Jung
 
     protected enum TYPE
@@ -131,12 +133,11 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected IEnumerator Footfall()
     {
-        while (true)
-        {
-            Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
-            footfall_.transform.position = this.transform.position;
+        yield return new WaitForSeconds(0.5f);
 
-            yield return new WaitForSeconds(1.0f);
-        }
+        canSpawnFootfall = true;
+
+        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+        footfall_.transform.position = this.transform.position;
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static ObjPool;
 
 public class ObjPool : MonoBehaviour
 {
@@ -8,14 +9,19 @@ public class ObjPool : MonoBehaviour
 
     [SerializeField]
     private GameObject bulletPrefab;
+
     [SerializeField]
     private GameObject hitPrefab;
     [SerializeField]
     private GameObject footfallPrefab;
+    [SerializeField]
+    private GameObject metamorPrefab;
 
     Queue<Bullet> bulletQueue = new Queue<Bullet>();
+
     Queue<Effect> hitQueue = new Queue<Effect>();
     Queue<Effect> footfallQueue = new Queue<Effect>();
+    Queue<Effect> metamorQueue = new Queue<Effect>();
 
     public enum EffectNames
     {
@@ -30,8 +36,10 @@ public class ObjPool : MonoBehaviour
 
         //bulletPrefab = (GameObject)Resources.Load("Bullet");
         bulletPrefab = (GameObject)Resources.Load("Projectile");
+
         hitPrefab = (GameObject)Resources.Load("Hit");
         footfallPrefab = (GameObject)Resources.Load("Footfall");
+        metamorPrefab = (GameObject)Resources.Load("Metamorphosis");
 
         Initialize(30);
     }
@@ -41,8 +49,10 @@ public class ObjPool : MonoBehaviour
         for (int i = 0; i < initCount; i++)
         {
             bulletQueue.Enqueue(CreateNewBullet());
-            hitQueue.Enqueue(CreateNewEffect(hitPrefab));
-            footfallQueue.Enqueue(CreateNewEffect(footfallPrefab));
+
+            hitQueue.Enqueue(CreateNewEffect(EffectNames.Hit));
+            footfallQueue.Enqueue(CreateNewEffect(EffectNames.Footfall));
+            metamorQueue.Enqueue(CreateNewEffect(EffectNames.Metamor));
         }
     }
 
@@ -79,13 +89,33 @@ public class ObjPool : MonoBehaviour
         instance.bulletQueue.Enqueue(obj_);
     }
 
-
-    private Effect CreateNewEffect(GameObject targetPrefab_)
+    private Effect CreateNewEffect(Enum effectName_)
     {
-        Effect newObj_ = Instantiate(targetPrefab_).GetComponent<Effect>();
+        Effect newObj_;
+
+        switch (effectName_)
+        {
+            case EffectNames.Hit:
+                newObj_ = Instantiate(hitPrefab).GetComponent<Effect>();
+                break;
+
+            case EffectNames.Footfall:
+                newObj_ = Instantiate(footfallPrefab).GetComponent<Effect>();
+                break;
+                
+            case EffectNames.Metamor:
+                newObj_ = Instantiate(metamorPrefab).GetComponent<Effect>();
+                break;
+
+            default:
+                newObj_ = null;
+                break;
+        }
+
         newObj_.gameObject.SetActive(false);
         newObj_.transform.SetParent(transform);
         newObj_.transform.localPosition = Vector3.zero;
+
         return newObj_;
     }
     public static Effect GetEffect(Enum effectName_)
@@ -102,11 +132,12 @@ public class ObjPool : MonoBehaviour
                 }
                 else
                 {
-                    Effect newObj_ = instance.CreateNewEffect(instance.hitPrefab);
+                    Effect newObj_ = instance.CreateNewEffect(EffectNames.Hit);
                     newObj_.gameObject.SetActive(true);
                     newObj_.transform.SetParent(null);
                     return newObj_;
                 }
+
             case EffectNames.Footfall:
                 if (instance.footfallQueue.Count > 0)
                 {
@@ -117,46 +148,54 @@ public class ObjPool : MonoBehaviour
                 }
                 else
                 {
-                    Effect newObj_ = instance.CreateNewEffect(instance.footfallPrefab);
+                    Effect newObj_ = instance.CreateNewEffect(EffectNames.Footfall);
                     newObj_.gameObject.SetActive(true);
                     newObj_.transform.SetParent(null);
                     return newObj_;
                 }
+                
+            case EffectNames.Metamor:
+                if (instance.metamorQueue.Count > 0)
+                {
+                    Effect obj_ = instance.metamorQueue.Dequeue();
+                    obj_.gameObject.SetActive(true);
+                    obj_.transform.SetParent(null);
+                    return obj_;
+                }
+                else
+                {
+                    Effect newObj_ = instance.CreateNewEffect(EffectNames.Metamor);
+                    newObj_.gameObject.SetActive(true);
+                    newObj_.transform.SetParent(null);
+                    return newObj_;
+                }
+
             default:
                 return null;
         }
     }
     public static void ReturnObject(Effect obj_, Enum effectName_)
     {
+        obj_.gameObject.SetActive(false);
+        obj_.transform.SetParent(instance.transform);
+        obj_.transform.localPosition = Vector3.zero;
+
         switch (effectName_)
         {
             case EffectNames.Hit:
-                obj_.gameObject.SetActive(false);
-                obj_.transform.SetParent(instance.transform);
-                obj_.transform.localPosition = Vector3.zero;
                 instance.hitQueue.Enqueue(obj_);
                 break;
+
             case EffectNames.Footfall:
-                obj_.gameObject.SetActive(false);
-                obj_.transform.SetParent(instance.transform);
-                obj_.transform.localPosition = Vector3.zero;
                 instance.footfallQueue.Enqueue(obj_);
                 break;
-            default:
-                return;
-        }
-    }
+                
+            case EffectNames.Metamor:
+                instance.metamorQueue.Enqueue(obj_);
+                break;
 
-    public static GameObject GetPrefab(Enum effectName_)
-    {
-        switch (effectName_)
-        {
-            case EffectNames.Hit:
-                return instance.hitPrefab;
-            case EffectNames.Footfall:
-                return instance.footfallPrefab;
             default:
-                return null;
+                break;
         }
     }
 }
