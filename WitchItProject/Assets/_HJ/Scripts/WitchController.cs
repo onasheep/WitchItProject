@@ -148,7 +148,10 @@ public class WitchController : PlayerBase
 
         base.InputPlayer();
 
-        CancelMetamorphosis();
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            CancelMetamorphosis();
+        }
     }
 
     private void FixedUpdate()
@@ -409,8 +412,7 @@ public class WitchController : PlayerBase
 
     private void CancelMetamorphosis()
     {
-        if (Input.GetKeyDown(KeyCode.F))
-        {
+
             if (witchBody.activeInHierarchy)
             {
                 return;
@@ -437,7 +439,7 @@ public class WitchController : PlayerBase
 
                 currBody = witchBody;
             }
-        }
+        
 
         GetComponent<WitchController>().isMetamor = false;
     }
