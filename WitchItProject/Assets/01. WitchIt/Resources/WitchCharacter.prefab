@@ -1440,6 +1440,7 @@ GameObject:
   - component: {fileID: 4829386791629805656}
   - component: {fileID: 6561133770892635826}
   - component: {fileID: 2181252969271028222}
+  - component: {fileID: -1711596391325048408}
   m_Layer: 7
   m_Name: WitchCharacter
   m_TagString: Witch
@@ -1555,6 +1556,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 4829386791629805656}
   - {fileID: 6561133770892635826}
+  - {fileID: -1711596391325048408}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1614,6 +1616,18 @@ MonoBehaviour:
   defaultCameraDistance: 0
   maxCameraDistance: 1
   minCameraDistance: 8
+--- !u!114 &-1711596391325048408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4768873954757801179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbd47536f59219b44951619cb741dddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4768873954757802391
 GameObject:
   m_ObjectHideFlags: 0

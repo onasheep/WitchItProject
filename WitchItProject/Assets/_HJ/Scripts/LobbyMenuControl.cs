@@ -20,7 +20,7 @@ public class LobbyMenuControl : MonoBehaviour
     void Start()
     {
         firstPanel = transform.GetChild(0).gameObject;
-        secondPanel = transform.GetChild(1).gameObject;
+        //secondPanel = transform.GetChild(1).gameObject;
         myCanvas = GetComponent<Canvas>();
 
         //myBtnObjects = gameObject.transform.GetChild(0).gameObject.GetChildrenObjs();
@@ -43,7 +43,7 @@ public class LobbyMenuControl : MonoBehaviour
     public void PlayButton()
     {
         firstPanel.SetActive(false);
-        secondPanel.SetActive(true);
+        //secondPanel.SetActive(true);
     }
 
     public void BackButton()

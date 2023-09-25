@@ -98,45 +98,33 @@ public class GameManager : MonoBehaviourPunCallbacks
 
         // 스타트 버튼에 이벤트 연결해줍니다>>>>>>>>>>>>>>>>>>>>>>>>>>
         masterStartBtn.onClick.AddListener(() => PushGameStart());
-        
+
+        //====================================================
+
     }
     private void Start()
     {
-        //CreateHunter();
-        //CreatePlayer();
         roomInfoCanvasObj.SetActive(false);
-        
-        //CreateHunter();
-
     }
     private void Update()
     {
-       
+        int myPlayerIndex = Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
+        Debug.LogFormat("내 넘버{0}",myPlayerIndex);
         if (isPlayerReady)
         {
             readyCount++;
             isPlayerReady = false;
         }
 
-        
-        //HJ___0924
-       
-        Debug.LogFormat("이건 로컬 플레이어 액터넘버임 : {0}", PhotonNetwork.LocalPlayer.ActorNumber);
-
-        Debug.LogFormat("플레이어 리스트입니다. : {0}", PhotonNetwork.PlayerList.Length);
-        Debug.LogFormat("플레이어 카운터입니다 {0}", PhotonNetwork.CurrentRoom.PlayerCount);
-        //Debug.LogFormat("플레이어 i 번째 리스트{0}", PhotonNetwork.PlayerList[2]);
-        //Debug.LogFormat("플레이어 i 번째 리스트", PhotonNetwork.PlayerList[3]);
-
-
         //HJ_
         //모든 인원이 준비를 완료하면 마스터의 시작 버튼이 활성화 됩니다.
         if (PhotonNetwork.IsMasterClient) //0920변경점 호스트일때 추가
         {
-            //Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount); //이거 지금 룸에 플레이어 수입니다
+            Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount); //이거 지금 룸에 플레이어 수입니다
             clientCanvasObj.SetActive(false);
             hostCanvasObj.SetActive(true);
-            if (readyCount == playerCount && playerCount != 0) //레디한 사람의 수가 
+            
+            if (readyCount == PhotonNetwork.CurrentRoom.PlayerCount-1 && PhotonNetwork.CurrentRoom.PlayerCount != 0) //레디한 사람의 수가 
             {
                 isEveryReady = true;
             }
@@ -192,11 +180,6 @@ public class GameManager : MonoBehaviourPunCallbacks
                 isHiding = true;
                 timeRemaining = 15f;
                 RandomChoose();
-                
-                Debug.LogFormat("{0} <<< 랜덤 넘버", randNum);
-                Debug.LogFormat("{0} <<< 액터 넘버", PhotonNetwork.LocalPlayer.ActorNumber);
-                Debug.LogFormat("{0} <<< 아닌지 ", randNum != PhotonNetwork.LocalPlayer.ActorNumber);
-                
                 return;
                 //여기서부터 시작 전 대기시간 타이머가 끝납니다.
             }
@@ -362,28 +345,68 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
     }
 
-    [PunRPC]
     public void RandomNum()
     {
-        randNum = UnityEngine.Random.Range(1, PhotonNetwork.CurrentRoom.PlayerCount);
-    }
-    //HJ++ 0924
-    public void RandomChoose()
-    {
-        photonView.RPC("RandomNum", RpcTarget.All);
-         
-        if (randNum == PhotonNetwork.LocalPlayer.ActorNumber)
+        if (PhotonNetwork.IsMasterClient)
         {
-            CreateHunter();
-        }
-        else if (randNum != PhotonNetwork.LocalPlayer.ActorNumber)
-        {
-            
-            CreateWitch();
-            photonView.RPC("AddWCount", RpcTarget.All);
+            Debug.LogFormat("{0}", PhotonNetwork.PlayerList.Length);
+            randNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
+            photonView.RPC("MasterRandom", RpcTarget.MasterClient, randNum);
         }
     }
 
+    [PunRPC]
+    public void MasterRandom(int rand)
+    {
+        randNum = rand;
+        photonView.RPC("ApplyRandom", RpcTarget.AllBuffered, randNum);
+
+    }
+
+    [PunRPC]
+    public void ApplyRandom(int rand)
+    {
+        randNum = rand;
+    }
+        
+    //HJ++ 0924
+    public void RandomChoose()
+    {
+        //if (PhotonNetwork.IsMasterClient)
+        //    photonView.RPC("RandomNum", RpcTarget.All);
+
+
+        RandomNum();
+        //int myRandNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
+
+
+
+        int myPlayerIndex = Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer); //각 플레이어 번호
+
+
+        if (randNum == myPlayerIndex)
+        {
+            CreateHunter();
+            //photonView.RPC("BoolHunter", RpcTarget.All);
+        }
+        else if (randNum != myPlayerIndex)
+        {
+            CreateWitch();
+            photonView.RPC("AddWCount", RpcTarget.MasterClient);
+        }
+       
+        //if (isHunter == false && myPlayerIndex == PhotonNetwork.PlayerList.Length)
+        //{
+        //    CreateHunter();
+        //    photonView.RPC("BoolHunter", RpcTarget.All);
+        //}
+    }
+
+    [PunRPC]
+    public void BoolHunter()
+    {
+        isHunter = true;
+    }
     [PunRPC]
     public void AddWCount()
     {

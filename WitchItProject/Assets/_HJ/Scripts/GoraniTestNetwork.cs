@@ -4,6 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using TMPro;
+using ExitGames.Client.Photon;
 
 public class GoraniTestNetwork : MonoBehaviourPunCallbacks
 {
@@ -26,6 +28,8 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
     public Text[] ChatText;
     public InputField ChatInput;
 
+    public Button Startbutton;
+    public Text startBtnText;
     [Header("ETC")]
     public Text StatusText;
     public PhotonView PV;
@@ -133,6 +137,14 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
         RoomRenewal();
         ChatInput.text = "";
         for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
+        //if (PhotonNetwork.IsMasterClient)
+        //{
+        //    startBtnText.text = " waiting for players";
+        //}
+        //else
+        //{
+        //    startBtnText.text = "Ready";
+        //}
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message) { RoomInput.text = ""; CreateRoom(); }
@@ -161,7 +173,7 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
     #endregion
     public void StartGame()
     {
-        PhotonNetwork.AutomaticallySyncScene = true;
+        //PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.LoadLevel("TestGameMap");
     }
 
@@ -195,17 +207,17 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
     void AssignTeam(int sizeOfPlayer)
     {
         ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        if(sizeOfPlayer %2 == 0 )
+        if(sizeOfPlayer % 4 == 0 )
         {
-            hash.Add("Team", 0);
+            hash.Add("Hunter", 0);
         }
         else
         {
-            hash.Add("Team", 1);
+            hash.Add("Witch", 1);
         }
         PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
     }
     #endregion
     
-
+  
 }
