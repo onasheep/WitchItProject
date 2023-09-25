@@ -48187,6 +48187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fe1857c8c8b03e4581c7341162cda44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  randNum: 0
   roomName: {fileID: 0}
   connectInfo: {fileID: 0}
   msgList: {fileID: 0}
@@ -48195,6 +48196,9 @@ MonoBehaviour:
   hunterPrefab: {fileID: 0}
   hostCanvasObj: {fileID: 0}
   clientCanvasObj: {fileID: 0}
+  roomInfoCanvasObj: {fileID: 0}
+  startPannel: {fileID: 0}
+  readyPannel: {fileID: 0}
   masterStartBtn: {fileID: 0}
   clientReadyBtn: {fileID: 0}
   isPlayerReady: 0
@@ -48203,7 +48207,7 @@ MonoBehaviour:
   isEveryReady: 0
   isGameStart: 0
   totalWHCount: 0
-  huterCount: 0
+  hunterCount: 0
   witchCount: 0
   isHunter: 0
   isWitch: 0

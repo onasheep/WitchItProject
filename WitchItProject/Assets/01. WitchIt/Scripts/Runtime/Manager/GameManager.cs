@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         roomInfoCanvasObj.SetActive(false);
         if (PhotonNetwork.IsMasterClient)
         {
-            Debug.Log("이거 맞나?");
             randNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
             // RPC를 사용하여 다른 플레이어에게 randNum 값을 할당합니다.
             photonView.RPC("AssignRandNum", RpcTarget.AllBuffered, randNum);
@@ -115,8 +114,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
-        int myPlayerIndex = Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer);
-        Debug.LogFormat("내 넘버{0}",myPlayerIndex);
+       
         if (isPlayerReady)
         {
             readyCount++;
@@ -210,11 +208,19 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
         else if (!isHiding && isPlaying) // 숨는 시간이 끝났고 게임을 진행중이라면 
         {
-            if (witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
+            if (PhotonNetwork.IsMasterClient)
             {
-                //헌터 승리 UI 와 처리
-                Debug.Log("헌터승리");
-                return;
+                if (witchCount <= 0)// 여기서 마녀의 수를 셀 수 있는 방법을 찾아서 그 수가 0이 되면 이 부분에 함수가 실행되게 해주면 될 것 같습니다.
+                {
+                    //헌터 승리 UI 와 처리
+                    //헌터 승리 캔버스 띄어주고 RPC로 other에게 헌터 승리 함수 원격 실행 시켜야 함 
+                    //Debug.Log("헌터승리");
+                    WinH();
+                    photonView.RPC("WinH", RpcTarget.Others);
+                    SetOver();
+                    photonView.RPC("SetOver", RpcTarget.Others);
+                    return;
+                }
             }
             if(isWitch) //이게 true 되면 카운트 하나 줄여줌
             {
@@ -229,8 +235,15 @@ public class GameManager : MonoBehaviourPunCallbacks
             {
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
+                if(PhotonNetwork.IsMasterClient)
+                {
+                    WinW();
+                    photonView.RPC("WinW", RpcTarget.Others);
+                    SetOver();
+                    photonView.RPC("SetOver", RpcTarget.Others);
+                }
                 Debug.Log("헌터가 찾는 시간이 끝났습니다. 그리고 마녀의 승리입니다.");
-                isPlaying = false;
+                //isPlaying = false;
                 //여기서 승리 UI 팝업창 한번 띄어주고 2초뒤에 결과 panel이 나오게끔 해주면 될 것 같습니다.
                 return;
             }
@@ -299,6 +312,9 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             photonView.RPC("ChangeReady", RpcTarget.MasterClient);
         }
+            //HJ__0926 변경점
+            clientReadyBtn.interactable = false;
+            clientReadyBtn.gameObject.transform.GetChild(0).GetComponent<TMP_Text>().text = "Wait";
     }
     [PunRPC]
     public void ChangeReady()
@@ -314,7 +330,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         timeRemaining = 10f;
         //TODO 들어온 인원들 진영을 선택해줘야합니다.
     }
-    //230922_HJ 변경한 것
     [PunRPC]
     public void PushGameStart()
     {
@@ -323,7 +338,13 @@ public class GameManager : MonoBehaviourPunCallbacks
             photonView.RPC("SetStart", RpcTarget.All);
         }
     }
-
+    //HJ___0926
+    [PunRPC]
+    public void SetOver()
+    {
+        isPlaying = false;
+    }
+    
  
     //----------------------
     //HJ_ 230919 변경 
@@ -344,6 +365,19 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     }
 
+    //HJ__0926변경==========================
+    [PunRPC]
+    void WinH()
+    {
+        Debug.Log("헌터 승리");
+    }
+
+    [PunRPC]
+    void WinW()
+    {
+        Debug.Log("마녀 승리");
+    }
+    //======================================
     //HJ0925 변경
     [PunRPC]
     void AssignRandNum(int value)

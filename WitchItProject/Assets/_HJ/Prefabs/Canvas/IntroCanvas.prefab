@@ -226,3 +226,6 @@ MonoBehaviour:
   introCanvas: {fileID: 0}
   titleCanvas: {fileID: 0}
   introVideo: {fileID: 0}
+  pressCount: 0
+  isPress: 0
+  isIntro: 1
