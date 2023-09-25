@@ -219,6 +219,8 @@ public class Hunter : PlayerBase
     {
         Debug.Log("칼던짐");
 
+        Bullet obj_ = ObjPool.GetBullet();
+
         if (obj_ == null)
         {
             Debug.LogError("칼이 엄슴");
