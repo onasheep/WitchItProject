@@ -355,7 +355,11 @@ public class WitchController : PlayerBase
 
             if (point.y <= transform.position.y + 0.5f)
             {
-                StartCoroutine(Footfall());
+                if (canSpawnFootfall)
+                {
+                    StartCoroutine(Footfall());
+                    canSpawnFootfall = false;
+                }
 
                 isJump = false;
                 break;
@@ -447,7 +451,7 @@ public class WitchController : PlayerBase
     private void PossesionToObj(GameObject obj_)
     {
         obj_.AddComponent<Cube>();
-        obj_.layer = LayerMask.GetMask("Witch");
+        obj_.layer = LayerMask.NameToLayer("Witch");
 
         if (currBody == witchBody)
         {
@@ -479,10 +483,13 @@ public class WitchController : PlayerBase
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_);
-        newBody_.layer = LayerMask.GetMask("Witch");
+        newBody_.layer = LayerMask.NameToLayer("Witch");
 
         newBody_.transform.position = lookPoint.transform.position;
         newBody_.AddComponent<Cube>();
+
+        Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
+        smoke_.gameObject.transform.position = lookPoint.transform.position;
 
         if (currBody == witchBody)
         {

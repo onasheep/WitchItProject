@@ -35,12 +35,11 @@ public class Bullet : MonoBehaviour
         ObjPool.ReturnObject(this);
     }
 
-    [PunRPC]
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<WitchController>() != null)
         {
-            collision.gameObject.GetComponent<WitchController>().TakeDamage();
+            collision.gameObject.GetComponent<WitchController>().photonView.RPC("TakeDamage", RpcTarget.MasterClient);
         }
 
         Effect effect_ = ObjPool.GetEffect(ObjPool.EffectNames.Hit);

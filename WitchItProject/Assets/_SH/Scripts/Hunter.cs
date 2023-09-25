@@ -157,7 +157,7 @@ public class Hunter : PlayerBase
 
 
 
-        this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All);
+        this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
         this.rigthFunc =
             () =>
             {
@@ -219,15 +219,22 @@ public class Hunter : PlayerBase
     }
 
     [PunRPC]
-    private void ThrowKnife()
+    private void ThrowKnife(Vector3 start_, Quaternion direction_)
     {
         Debug.Log("칼던짐");
         //if (Input.GetButtonDown("Fire1"))
         //{
         Bullet obj_ = ObjPool.GetBullet();
 
-        obj_.transform.position = myCamera.position + myCamera.forward;
-        obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
+        if (obj_ == null)
+        {
+            Debug.LogError("칼이 엄슴");
+        }
+
+        //obj_.transform.position = myCamera.position + myCamera.forward;
+        obj_.transform.position = start_;
+        //obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
+        obj_.transform.rotation = direction_;
 
         animator.SetTrigger("Shot");
         //}
@@ -324,8 +331,11 @@ public class Hunter : PlayerBase
 
             if (point.y <= transform.position.y + 0.5f)
             {
-                // TODO
-                StartCoroutine(Footfall());
+                if (canSpawnFootfall)
+                {
+                    StartCoroutine(Footfall());
+                    canSpawnFootfall = false;
+                }
 
                 animator.SetBool("IsGround", true);
                 break;
