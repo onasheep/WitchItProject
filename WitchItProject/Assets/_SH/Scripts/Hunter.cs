@@ -1,11 +1,8 @@
 using Cinemachine;
-using EPOOutline;
 using Photon.Pun;
-using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
 
 // SJ_ 230915
 // PlayerBase ���
@@ -164,11 +161,10 @@ public class Hunter : PlayerBase
                 if (skillTimer > rightFuncCool)
                 {
                     rightFuncCool += skillTimer;
-                    GameObject obj = Instantiate
-                (ResourceManager.objs[skillSlot.Slots[0].SkillType], dogRing.transform.position, dogRing.transform.rotation);
+                    GameObject obj = PhotonNetwork.Instantiate
+                (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
                     skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
                 }
-
             };
         this.QFunc =
             () =>
@@ -176,8 +172,8 @@ public class Hunter : PlayerBase
                 if (skillTimer > QFuncCool)
                 {
                     skillTimer -= QFuncCool;
-                    GameObject obj = Instantiate
-                  (ResourceManager.objs[skillSlot.Slots[1].SkillType], myCamera.position + myCamera.forward, myCamera.transform.rotation);
+                    GameObject obj = PhotonNetwork.Instantiate
+                  (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
                     skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
                 }
 
@@ -222,9 +218,6 @@ public class Hunter : PlayerBase
     private void ThrowKnife(Vector3 start_, Quaternion direction_)
     {
         Debug.Log("칼던짐");
-        //if (Input.GetButtonDown("Fire1"))
-        //{
-        Bullet obj_ = ObjPool.GetBullet();
 
         if (obj_ == null)
         {
@@ -237,7 +230,7 @@ public class Hunter : PlayerBase
         obj_.transform.rotation = direction_;
 
         animator.SetTrigger("Shot");
-        //}
+
         //else if (Input.GetButton("Fire1"))
         //{
         //    Bullet obj_ = BulletPool.GetObject();

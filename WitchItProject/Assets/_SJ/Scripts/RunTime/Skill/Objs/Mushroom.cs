@@ -13,6 +13,7 @@ public class Mushroom : MonoBehaviour
 
     void Start()
     {
+
         rigid = GetComponent<Rigidbody>();
 
         isEnable = true;
@@ -25,7 +26,6 @@ public class Mushroom : MonoBehaviour
 
         Invoke("DestroyMushroom", existTime);
     }
-
 
     private void DestroyMushroom()
     {
@@ -46,15 +46,11 @@ public class Mushroom : MonoBehaviour
             if(isEnable)
             {
                 isEnable = false;
-                Debug.LogFormat("{0}", collision.gameObject.name);
 
-                //// { 콜라이더 중복 충돌 예외 처리
-                //this.gameObject.GetComponent<CapsuleCollider>().enabled = isEnable;
-                ////  콜라이더 중복 충돌 예외 처리 }
 
                 this.transform.up = collision.GetContact(0).normal;
 
-                this.transform.localScale *= 1.5f;
+                this.transform.localScale *= 1.3f;
                 Instantiate(ResourceManager.effects[RDefine.EFFECT_EXPLOSION_GREEN], this.transform);
 
                 rigid.constraints = RigidbodyConstraints.FreezeAll;
