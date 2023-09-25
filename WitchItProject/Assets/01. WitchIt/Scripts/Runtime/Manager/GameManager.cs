@@ -376,8 +376,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         {
             CreateHunter();
         }
-
-        if (randNum != PhotonNetwork.LocalPlayer.ActorNumber)
+        else if (randNum != PhotonNetwork.LocalPlayer.ActorNumber)
         {
             
             CreateWitch();

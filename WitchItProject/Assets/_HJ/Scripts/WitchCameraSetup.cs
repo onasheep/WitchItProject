@@ -20,10 +20,10 @@ public class WitchCameraSetup : MonoBehaviourPun
 
         lookPoint = GameObject.Find("CameraLookPoint").transform;
        
-        hunterCam.SetActive(false);
         // 만약 자신이 로컬플레이어라면
         if (photonView.IsMine)
         {
+            hunterCam.SetActive(false);
             //씬에 있는 시네머신 가상 카메라를 찾고
             //witchCam.Follow = transform;
             //witchCam.LookAt = transform;

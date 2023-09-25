@@ -81,7 +81,12 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
 
 
     #region 서버연결
-    void Awake() => Screen.SetResolution(960, 540, false);
+    void Awake()
+    {
+        //PhotonNetwork.ConnectUsingSettings();
+        Screen.SetResolution(960, 540, false);
+        PhotonNetwork.AutomaticallySyncScene = true; //씬 동기화 
+    }
 
     void Update()
     {
@@ -91,7 +96,7 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
 
     public void Connect() => PhotonNetwork.ConnectUsingSettings();
 
-    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby();
+    public override void OnConnectedToMaster() => PhotonNetwork.JoinLobby(); //로비에 조인합니다.
 
     public override void OnJoinedLobby()
     {
@@ -122,12 +127,12 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         //PhotonNetwork.LoadLevel("PlayMapTestHJ");
-        PhotonNetwork.LoadLevel("TestGameMap"); 
+        //PhotonNetwork.LoadLevel("TestGameMap"); 
         //변경
-        //RoomPanel.SetActive(true);
-        //RoomRenewal();
-        //ChatInput.text = "";
-        //for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
+        RoomPanel.SetActive(true);
+        RoomRenewal();
+        ChatInput.text = "";
+        for (int i = 0; i < ChatText.Length; i++) ChatText[i].text = "";
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message) { RoomInput.text = ""; CreateRoom(); }
@@ -185,4 +190,22 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
         }
     }
     #endregion
+
+    #region myFuntion
+    void AssignTeam(int sizeOfPlayer)
+    {
+        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+        if(sizeOfPlayer %2 == 0 )
+        {
+            hash.Add("Team", 0);
+        }
+        else
+        {
+            hash.Add("Team", 1);
+        }
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    }
+    #endregion
+    
+
 }
