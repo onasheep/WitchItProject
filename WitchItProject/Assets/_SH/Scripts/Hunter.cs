@@ -85,14 +85,14 @@ public class Hunter : PlayerBase
         }
         else if (myPv == null)
         {
-            if(!photonView.IsMine)
+            if (!photonView.IsMine)
             {
                 return;
             }
         }
 
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
-    
+
 
         // SJ_ 230915
         //MoveHunter();
@@ -116,7 +116,7 @@ public class Hunter : PlayerBase
 
     protected override void InputPlayer()
     {
-        if (!myPv.IsMine)
+        if (!photonView.IsMine)
         {
             return;
         }
@@ -149,7 +149,7 @@ public class Hunter : PlayerBase
         //main.cullingMask = newCullingMask;
 
         // } SJ_ 석환씨가 말한 주석 
-        
+
         skillSlot.SelSkill((int)type);
 
         rightFuncCool = skillSlot.Slots[0].CoolTime;
@@ -157,7 +157,7 @@ public class Hunter : PlayerBase
 
 
 
-        this.leftFunc = () => ThrowKnife();
+        this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All);
         this.rigthFunc =
             () =>
             {
@@ -184,6 +184,7 @@ public class Hunter : PlayerBase
             };
         this.jumpFunc = () => JumpHunter();
     }
+
     protected override void Move()
     {
         this.moveFunc = () => MoveHunter();
@@ -217,12 +218,13 @@ public class Hunter : PlayerBase
         }
     }
 
+    [PunRPC]
     private void ThrowKnife()
     {
         Debug.Log("칼던짐");
         //if (Input.GetButtonDown("Fire1"))
         //{
-        Bullet obj_ = BulletPool.GetBullet();
+        Bullet obj_ = ObjPool.GetBullet();
 
         obj_.transform.position = myCamera.position + myCamera.forward;
         obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
@@ -245,6 +247,8 @@ public class Hunter : PlayerBase
         //{
         if (animator.GetBool("IsGround"))
         {
+            StopCoroutine(Footfall());
+
             footFall.SetActive(false);
 
             animator.SetBool("IsGround", false);
@@ -321,7 +325,7 @@ public class Hunter : PlayerBase
             if (point.y <= transform.position.y + 0.5f)
             {
                 // TODO
-                // 발걸음 이펙트 coroutine으로? 아니면 다른 방법?
+                StartCoroutine(Footfall());
 
                 animator.SetBool("IsGround", true);
                 break;

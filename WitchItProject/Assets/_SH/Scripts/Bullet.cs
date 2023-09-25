@@ -1,3 +1,4 @@
+using Photon.Pun;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -21,6 +22,7 @@ public class Bullet : MonoBehaviour
         //fireDirection = transform.up;
         ShootThis();
     }
+
     private void ShootThis()
     {
         rigid.AddForce(fireDirection * 50, ForceMode.Force);
@@ -28,12 +30,12 @@ public class Bullet : MonoBehaviour
 
     public void DestroyThis()
     {
-
         rigid.velocity = Vector3.zero;
         rigid.angularVelocity = Vector3.zero;
-        BulletPool.ReturnObject(this);
+        ObjPool.ReturnObject(this);
     }
 
+    [PunRPC]
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.GetComponent<WitchController>() != null)
@@ -41,7 +43,7 @@ public class Bullet : MonoBehaviour
             collision.gameObject.GetComponent<WitchController>().TakeDamage();
         }
 
-        Effect effect_ = BulletPool.GetEffect(BulletPool.GetPrefab(0));
+        Effect effect_ = ObjPool.GetEffect(ObjPool.EffectNames.Hit);
         effect_.transform.position = collision.GetContact(0).point;
         effect_.transform.forward = collision.GetContact(0).normal;
 

@@ -15,7 +15,7 @@ public class WitchController : PlayerBase
     //[SerializeField] private Rigidbody rigid;
     //[SerializeField] private Animator animator;
     //
-    
+
     //HJ__0920 포톤 테스트 추가
     private PhotonView myPv;
     //=====================
@@ -49,9 +49,16 @@ public class WitchController : PlayerBase
 
     private void OnEnable()
     {
+        // 9/22 Jung
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+        // 9/22 Jung
+
         Init();
         health = healthMax;
-        
+
         // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
         //
@@ -62,19 +69,15 @@ public class WitchController : PlayerBase
 
         // 9/22 Jung
         myCamera = GameObject.Find("WitchCamera").transform;// 가상 카메라 가져와버리기!
-        //myCamera = GameObject.Find("PersonalCamera").transform;// 가상 카메라 가져와버리기!
-        //myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
-        //myCamera.AddComponent<CinemachineCollider>();
-        //myCamera.AddComponent<WitchCameraControl>();
+
+        myCamera.GetComponent<CinemachineVirtualCamera>().Follow = transform.GetChild(2);
+        myCamera.GetComponent<CinemachineVirtualCamera>().LookAt = transform.GetChild(2);
         // 9/22 Jung
 
         witchBody = GameObject.Find("Character_Female_Witch");
         currBody = witchBody;
 
         //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
-
-
-
     }
 
     private void OnDisable()
@@ -86,6 +89,23 @@ public class WitchController : PlayerBase
 
     void Update()
     {
+        // 9/22 Jung
+        if (myPv != null)
+        {
+            if (!myPv.IsMine)
+            {
+                return;
+            }
+        }
+        else if (myPv == null)
+        {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+        }
+        // 9/22 Jung
+
         // { SJ_ 230922
         if (Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
             out hit, 15f, LayerMask.GetMask("ChangeableObjects")))
@@ -121,7 +141,7 @@ public class WitchController : PlayerBase
 
     protected override void InputPlayer()
     {
-        if (!myPv.IsMine)
+        if (!photonView.IsMine)
         {
             return;
         }
@@ -133,10 +153,22 @@ public class WitchController : PlayerBase
 
     private void FixedUpdate()
     {
-        if (!myPv.IsMine)
+        // 9/22 Jung
+        if (myPv != null)
         {
-            return;
+            if (!myPv.IsMine)
+            {
+                return;
+            }
         }
+        else if (myPv == null)
+        {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+        }
+        // 9/22 Jung
 
         if (isDead) { return; }
         if (isJump == false)
@@ -176,7 +208,7 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    
+
                     MetamorphosisToObj(hit.collider.gameObject);
                 }
             };
@@ -285,6 +317,8 @@ public class WitchController : PlayerBase
         {
             if (!isJump)
             {
+                StopCoroutine(Footfall());
+
                 isJump = true;
                 // myAnimator.SetBool("Jumping", false);
 
@@ -294,19 +328,38 @@ public class WitchController : PlayerBase
         }
     }
 
+    // 9/22 Jung
     private void OnCollisionStay(Collision collision)
     {
+        if (myPv != null)
+        {
+            if (!myPv.IsMine)
+            {
+                return;
+            }
+        }
+        else if (myPv == null)
+        {
+            if (!photonView.IsMine)
+            {
+                return;
+            }
+        }
+
         foreach (ContactPoint contact in collision.contacts)
         {
             Vector3 point = contact.point;
 
             if (point.y <= transform.position.y + 0.5f)
             {
+                StartCoroutine(Footfall());
+
                 isJump = false;
                 break;
             }
         }
     }
+    // 9/22 Jung
 
     void JumpMove()
     {
@@ -322,13 +375,17 @@ public class WitchController : PlayerBase
 
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            isJump = false;
-        }
-    }
+    // 9/25 Jung: OnCollisionStay가 있으므로 주석처리 
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    //    {
+
+
+    //        isJump = false;
+    //    }
+    //}
+    // 9/25 Jung
 
     public void TakeDamage()
     {
@@ -388,6 +445,7 @@ public class WitchController : PlayerBase
     private void PossesionToObj(GameObject obj_)
     {
         obj_.AddComponent<Cube>();
+        obj_.layer = LayerMask.GetMask("Witch");
 
         if (currBody == witchBody)
         {
@@ -419,6 +477,7 @@ public class WitchController : PlayerBase
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_);
+        newBody_.layer = LayerMask.GetMask("Witch");
 
         newBody_.transform.position = lookPoint.transform.position;
         newBody_.AddComponent<Cube>();

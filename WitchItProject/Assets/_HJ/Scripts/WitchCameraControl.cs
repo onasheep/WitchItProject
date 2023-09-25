@@ -20,10 +20,17 @@ public class WitchCameraControl : MonoBehaviourPun
 
 
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         //��ǥ Ÿ���� ã�ƿɴϴ�.
-        target = GameObject.Find("WitchCharacter").transform.GetChild(2).transform;
+        // 9/25 Jung 페퍼로니 제거
+        if (GameObject.Find("CameraLookPoint") == null)
+        {
+            return;
+        }
+        // 9/25 Jung 페퍼로니 제거
+
+        target = GameObject.Find("CameraLookPoint").transform;
         myCamera = GetComponent<CinemachineVirtualCamera>(); //ī�޶� ������Ʈ �޾ƿ���
 
         myCamera.Follow = target; // ī�޶� ����ٴ� Ÿ�� ����

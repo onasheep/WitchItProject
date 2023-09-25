@@ -128,4 +128,15 @@ public abstract class PlayerBase : MonoBehaviourPun
         //    };
         //}
     }
+
+    protected IEnumerator Footfall()
+    {
+        while (true)
+        {
+            Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+            footfall_.transform.position = this.transform.position;
+
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
 }
