@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletPool : MonoBehaviour
+public class ObjPool : MonoBehaviour
 {
-    public static BulletPool instance;
+    public static ObjPool instance;
 
     [SerializeField]
     private GameObject bulletPrefab;
@@ -15,6 +16,13 @@ public class BulletPool : MonoBehaviour
     Queue<Bullet> bulletQueue = new Queue<Bullet>();
     Queue<Effect> hitQueue = new Queue<Effect>();
     Queue<Effect> footfallQueue = new Queue<Effect>();
+
+    public enum EffectNames
+    {
+        Hit,
+        Footfall,
+        Metamor
+    }
 
     private void Awake()
     {
@@ -80,72 +88,72 @@ public class BulletPool : MonoBehaviour
         newObj_.transform.localPosition = Vector3.zero;
         return newObj_;
     }
-    public static Effect GetEffect(GameObject targetPrefab_)
+    public static Effect GetEffect(Enum effectName_)
     {
-        if (targetPrefab_ == instance.hitPrefab)
+        switch (effectName_)
         {
-            if (instance.hitQueue.Count > 0)
-            {
-                Effect obj_ = instance.hitQueue.Dequeue();
-                obj_.gameObject.SetActive(true);
-                obj_.transform.SetParent(null);
-                return obj_;
-            }
-            else
-            {
-                Effect newObj_ = instance.CreateNewEffect(targetPrefab_);
-                newObj_.gameObject.SetActive(true);
-                newObj_.transform.SetParent(null);
-                return newObj_;
-            }
-        }
-        else if (targetPrefab_ == instance.footfallPrefab)
-        {
-            if (instance.footfallQueue.Count > 0)
-            {
-                Effect obj_ = instance.footfallQueue.Dequeue();
-                obj_.gameObject.SetActive(true);
-                obj_.transform.SetParent(null);
-                return obj_;
-            }
-            else
-            {
-                Effect newObj_ = instance.CreateNewEffect(targetPrefab_);
-                newObj_.gameObject.SetActive(true);
-                newObj_.transform.SetParent(null);
-                return newObj_;
-            }
-        }
-        else
-        {
-            return null;
+            case EffectNames.Hit:
+                if (instance.hitQueue.Count > 0)
+                {
+                    Effect obj_ = instance.hitQueue.Dequeue();
+                    obj_.gameObject.SetActive(true);
+                    obj_.transform.SetParent(null);
+                    return obj_;
+                }
+                else
+                {
+                    Effect newObj_ = instance.CreateNewEffect(instance.hitPrefab);
+                    newObj_.gameObject.SetActive(true);
+                    newObj_.transform.SetParent(null);
+                    return newObj_;
+                }
+            case EffectNames.Footfall:
+                if (instance.footfallQueue.Count > 0)
+                {
+                    Effect obj_ = instance.footfallQueue.Dequeue();
+                    obj_.gameObject.SetActive(true);
+                    obj_.transform.SetParent(null);
+                    return obj_;
+                }
+                else
+                {
+                    Effect newObj_ = instance.CreateNewEffect(instance.footfallPrefab);
+                    newObj_.gameObject.SetActive(true);
+                    newObj_.transform.SetParent(null);
+                    return newObj_;
+                }
+            default:
+                return null;
         }
     }
-    public static void ReturnObject(Effect obj_)
+    public static void ReturnObject(Effect obj_, Enum effectName_)
     {
-        if (obj_.gameObject == instance.hitPrefab)
+        switch (effectName_)
         {
-            obj_.gameObject.SetActive(false);
-            obj_.transform.SetParent(instance.transform);
-            obj_.transform.localPosition = Vector3.zero;
-            instance.hitQueue.Enqueue(obj_);
-        }
-        else if (obj_.gameObject == instance.footfallPrefab)
-        {
-            obj_.gameObject.SetActive(false);
-            obj_.transform.SetParent(instance.transform);
-            obj_.transform.localPosition = Vector3.zero;
-            instance.footfallQueue.Enqueue(obj_);
+            case EffectNames.Hit:
+                obj_.gameObject.SetActive(false);
+                obj_.transform.SetParent(instance.transform);
+                obj_.transform.localPosition = Vector3.zero;
+                instance.hitQueue.Enqueue(obj_);
+                break;
+            case EffectNames.Footfall:
+                obj_.gameObject.SetActive(false);
+                obj_.transform.SetParent(instance.transform);
+                obj_.transform.localPosition = Vector3.zero;
+                instance.footfallQueue.Enqueue(obj_);
+                break;
+            default:
+                return;
         }
     }
 
-    public static GameObject GetPrefab(int idx_)
+    public static GameObject GetPrefab(Enum effectName_)
     {
-        switch (idx_)
+        switch (effectName_)
         {
-            case 0:
+            case EffectNames.Hit:
                 return instance.hitPrefab;
-            case 1:
+            case EffectNames.Footfall:
                 return instance.footfallPrefab;
             default:
                 return null;

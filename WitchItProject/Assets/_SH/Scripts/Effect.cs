@@ -12,6 +12,6 @@ public class Effect : MonoBehaviour
 
     public void DestroyThis()
     {
-        BulletPool.ReturnObject(this);
+        ObjPool.ReturnObject(this, ObjPool.EffectNames.Hit);
     }
 }
