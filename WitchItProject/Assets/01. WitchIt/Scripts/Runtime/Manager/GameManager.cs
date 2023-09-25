@@ -105,6 +105,13 @@ public class GameManager : MonoBehaviourPunCallbacks
     private void Start()
     {
         roomInfoCanvasObj.SetActive(false);
+        if (PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("이거 맞나?");
+            randNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
+            // RPC를 사용하여 다른 플레이어에게 randNum 값을 할당합니다.
+            photonView.RPC("AssignRandNum", RpcTarget.AllBuffered, randNum);
+        }
     }
     private void Update()
     {
@@ -156,8 +163,6 @@ public class GameManager : MonoBehaviourPunCallbacks
             roomInfoCanvasObj.SetActive(false);
         }
 
-      
-
         if (isGameStart)
         {
             startPannel.SetActive(false);
@@ -169,14 +174,11 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             else
             {
-                //밑에서 isHiding 15초로 초기화 해주긴 할 거라 없애도 될 것 같긴 합니다 . 일단은 남김
+                //밑에서 isHiding 15초로 초기화 해주긴 할 거라 없애도 될 것 같긴 합니다
                 timeRemaining = 0;
                 timeText.text = string.Format("00:00");
                 isGameStart = false;
                 //TODO 여기서 패널 꺼주고 캐릭터 보여주면 될 것 같습니다.
-                // 그 다음에 프리즈 해제해준 캐릭터를 움직일 수 있게끔 하면 될 것 같습니다.
-                //테스트이긴 하지만 isHiging를 true로 바꿔줍니다.
-
                 isHiding = true;
                 timeRemaining = 15f;
                 RandomChoose();
@@ -214,7 +216,11 @@ public class GameManager : MonoBehaviourPunCallbacks
                 Debug.Log("헌터승리");
                 return;
             }
-
+            if(isWitch) //이게 true 되면 카운트 하나 줄여줌
+            {
+                photonView.RPC("DieWitch", RpcTarget.MasterClient);
+                isWitch = false;
+            }
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
@@ -242,7 +248,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     //exit 버튼의 onclick에 연결할 함수
     private void OnExitClick()
     {
-        //photonView.RPC("ExitPlayer", RpcTarget.MasterClient);
         PhotonNetwork.LeaveRoom();
     }
 
@@ -251,8 +256,6 @@ public class GameManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         PhotonNetwork.LoadLevel("TestGorani");
-      
-        //SceneManager.LoadScene("TestGorani");
     }
 
     //룸에서 네트워크 유저가입장했을때 호출되는 콜백 함수
@@ -321,12 +324,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         }
     }
 
-    [PunRPC]
-    public void ChangeBool(bool test, bool test2)
-    {
-        test = test2;
-    }
-
+ 
     //----------------------
     //HJ_ 230919 변경 
     void CreateHunter()
@@ -343,63 +341,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         int witchSpawnPoint = 1;
         PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+
     }
 
-    public void RandomNum()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            Debug.LogFormat("{0}", PhotonNetwork.PlayerList.Length);
-            randNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
-            photonView.RPC("MasterRandom", RpcTarget.MasterClient, randNum);
-        }
-    }
-
+    //HJ0925 변경
     [PunRPC]
-    public void MasterRandom(int rand)
+    void AssignRandNum(int value)
     {
-        randNum = rand;
-        photonView.RPC("ApplyRandom", RpcTarget.AllBuffered, randNum);
-
-    }
-
-    [PunRPC]
-    public void ApplyRandom(int rand)
-    {
-        randNum = rand;
+        randNum = value;
     }
         
     //HJ++ 0924
     public void RandomChoose()
     {
-        //if (PhotonNetwork.IsMasterClient)
-        //    photonView.RPC("RandomNum", RpcTarget.All);
-
-
-        RandomNum();
-        //int myRandNum = UnityEngine.Random.Range(0, PhotonNetwork.PlayerList.Length);
-
-
-
         int myPlayerIndex = Array.IndexOf(PhotonNetwork.PlayerList, PhotonNetwork.LocalPlayer); //각 플레이어 번호
 
-
         if (randNum == myPlayerIndex)
-        {
+        { 
             CreateHunter();
-            //photonView.RPC("BoolHunter", RpcTarget.All);
         }
         else if (randNum != myPlayerIndex)
         {
             CreateWitch();
             photonView.RPC("AddWCount", RpcTarget.MasterClient);
         }
-       
-        //if (isHunter == false && myPlayerIndex == PhotonNetwork.PlayerList.Length)
-        //{
-        //    CreateHunter();
-        //    photonView.RPC("BoolHunter", RpcTarget.All);
-        //}
     }
 
     [PunRPC]
@@ -424,4 +389,19 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         playerCount--;
     }
+
+    [PunRPC]
+    public void DieWitch()
+    {
+        witchCount--;
+    }
+
+    //HJ__0925
+    [PunRPC]
+    public void SetIsWitch(bool value)
+    {
+        isWitch = value;
+        // isWitch 값이 변경되었습니다.
+    }
+
 }

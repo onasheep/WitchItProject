@@ -66,6 +66,9 @@ MonoBehaviour:
   - BoolHunter
   - ApplyRandom
   - MasterRandom
+  - AssignRandNum
+  - DieWitch
+  - SetIsWitch
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
