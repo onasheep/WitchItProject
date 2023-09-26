@@ -86,18 +86,8 @@ public class Hunter : PlayerBase
 
         Physics.Raycast(myCamera.transform.position + myCamera.transform.forward, myCamera.transform.forward, out hunterRayHit, 15f);
 
+        InputPlayer();
 
-        // SJ_ 230915
-        //MoveHunter();
-        //HJ__
-
-        base.InputPlayer();
-        skillTimer += Time.deltaTime;
-
-        // SJ_ 230915
-
-        //Jump();
-        //ThrowKnife();
 
         LimitCameraAngle();
 
@@ -117,7 +107,7 @@ public class Hunter : PlayerBase
         base.InputPlayer();
     }
 
-    #region SJ_ ��ӹ޾Ƽ� �����ϴ� �Լ�
+    #region SJ_ PlayerBase override
     // SJ_230915 
 
     protected override void Init()
@@ -154,24 +144,19 @@ public class Hunter : PlayerBase
         this.rigthFunc =
             () =>
             {
-                if (skillTimer > rightFuncCool)
-                {
-                    rightFuncCool += skillTimer;
-                    GameObject obj = PhotonNetwork.Instantiate
+                GameObject obj = PhotonNetwork.Instantiate
                 (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
-                    skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
-                }
+                skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
+
             };
         this.QFunc =
             () =>
             {
-                if (skillTimer > QFuncCool)
-                {
-                    skillTimer -= QFuncCool;
-                    GameObject obj = PhotonNetwork.Instantiate
-                  (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
-                    skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
-                }
+
+                GameObject obj = PhotonNetwork.Instantiate
+                (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
+                skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
+
 
             };
         this.jumpFunc = () => JumpHunter();

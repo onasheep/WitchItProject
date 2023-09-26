@@ -34,7 +34,6 @@ public class WitchController : PlayerBase
     private RaycastHit hit;
 
 
-
     // 09/19 Jung
     // 변신한 물체에 따라 바뀔 예정 const X
     private float healthMax = 100;
@@ -136,7 +135,7 @@ public class WitchController : PlayerBase
         // } SJ_ 230922
 
 
-        base.InputPlayer();
+        InputPlayer();
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -234,7 +233,6 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-
                     MetamorphosisToObj(hit.collider.gameObject);
                 }
             };
@@ -242,7 +240,7 @@ public class WitchController : PlayerBase
         this.rigthFunc =
             () =>
             {
-                // TEST : 
+
                 GameObject obj = PhotonNetwork.Instantiate
                 (RDefine.MUSHROOM_ORB, barrel.transform.position, Quaternion.identity);
                 skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);

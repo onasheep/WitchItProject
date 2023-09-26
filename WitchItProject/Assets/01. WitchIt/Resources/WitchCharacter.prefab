@@ -1531,6 +1531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSkillQ_On: 0
+  isSkillRM_On: 0
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5

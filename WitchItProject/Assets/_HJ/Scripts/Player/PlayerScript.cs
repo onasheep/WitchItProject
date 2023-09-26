@@ -49,22 +49,24 @@ public class PlayerScript : MonoBehaviourPun, IPunObservable
 
     void OtherSendMaster(PhotonView colPV)
     {
-        // ÀÚ±â°¡ ¾Æ´Ñ ¶óÀÎÀÌ³ª ÇÃ·¹ÀÌ¾î Ãæµ¹
+        // ï¿½Ú±â°¡ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì³ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½æµ¹
         if (colPV != null && S.actorNum() != colPV.Owner.ActorNumber)
             MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIE, S.actorNum(), colPV.Owner.ActorNumber);
 
-        // º® Ãæµ¹
+        // ï¿½ï¿½ ï¿½æµ¹
         else MM.PV.RPC("MasterReceiveRPC", RpcTarget.MasterClient, DIEWALL, S.actorNum(), 0);
     }
 
     public void OnTriggerStay(Collider col)
     {
-        // Ãæµ¹½Ã ¹æÀåÇÑÅ× Àü´Þ
+        // ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (forbidden()) return;
         isDie = true;
 
         OtherSendMaster(col.GetComponent<PhotonView>());
         
+        // TEST : 
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ 
         //S.SetPos(transform, new Vector3(0, 100, 0));
     }
 
