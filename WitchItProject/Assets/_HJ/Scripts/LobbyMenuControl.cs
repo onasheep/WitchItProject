@@ -33,7 +33,7 @@ public class LobbyMenuControl : MonoBehaviour
         if (Physics.Raycast(ray, out hit))
         {
             //Debug.DrawRay(Input.mousePosition, Vector3.forward, Color.blue);
-            Debug.Log(hit.transform.gameObject.name);
+            //Debug.Log(hit.transform.gameObject.name);
             if (hit.transform.gameObject.layer == 5)
             {
                 StartCoroutine(ButtonSizeUp(hit.transform.gameObject));
