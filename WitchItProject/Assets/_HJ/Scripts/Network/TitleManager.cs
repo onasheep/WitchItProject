@@ -104,7 +104,7 @@ public class TitleManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedLobby()
     {
-        SceneManager.LoadScene("LobbyScene");
         PhotonNetwork.LocalPlayer.NickName = NickNameInput.text;
+        SceneManager.LoadScene("LobbyScene");
     }
 }
