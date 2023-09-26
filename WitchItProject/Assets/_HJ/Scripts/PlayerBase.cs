@@ -37,6 +37,12 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected bool isSkillQ_On = default;
     [SerializeField]
     protected bool isSkillRM_On = default;
+    [SerializeField]
+    protected bool isFire_On = default;
+    [SerializeField]
+    protected bool isMetamol_On = default;
+    protected float fireCool = 0.3f;
+    protected float metamolCool = 1.3f;
     // } Skill Q, RightMouse bool
 
 
@@ -70,6 +76,9 @@ public abstract class PlayerBase : MonoBehaviourPun
         // { Skill bool Init
         isSkillQ_On = true;
         isSkillRM_On = true;
+        isFire_On = true;
+        isMetamol_On = true;
+        
         // } Skill bool Init
     }
 
@@ -79,16 +88,36 @@ public abstract class PlayerBase : MonoBehaviourPun
         verticalMove = Input.GetAxisRaw("Vertical");
         horizontalMove = Input.GetAxisRaw("Horizontal");
 
-        if (Input.GetButtonDown("Fire1"))
+        // SJ_ TEST : 헌터 발사 쿨타임 적용
+        if (Input.GetMouseButtonDown(0))
         {
-            if (leftFunc == null)
+            // TEST : 예외처리 용이지만 잠시 주석으로 테스트 함
+            // TODO : 갔다와서 적요된거 테스트 
+            //if (leftFunc == null)
+            //{
+            //    return;
+            //}
+            if(type == TYPE.HUNTER && isFire_On == true)
             {
-                return;
+                isFire_On = false;
+                this.leftFunc.Invoke();
+                ThreadManager.instance.DoRoutine(() =>  OnSkill(ref isFire_On), fireCool);
+
             }
-            this.leftFunc.Invoke();
+            else if(type == TYPE.WITCH && isMetamol_On == true)
+            {
+                isMetamol_On = false;
+                this.leftFunc.Invoke();
+                ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+
+            }
+            else
+            {
+                /* Do Nothing */
+            }
         }
         // SJ_230926 isSkillOn add 
-        if (Input.GetButtonDown("Fire2") && isSkillRM_On)
+        if (Input.GetMouseButtonDown(1) && isSkillRM_On)
         {
             isSkillRM_On = false;
 

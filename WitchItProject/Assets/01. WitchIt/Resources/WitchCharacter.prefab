@@ -1533,6 +1533,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isSkillQ_On: 0
   isSkillRM_On: 0
+  isFire_On: 0
+  isMetamol_On: 0
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5

@@ -41,7 +41,7 @@ public class ThreadManager : MonoBehaviour
 
     public void Update()
     {
-        skillTimer += Time.deltaTime;
+        Debug.LogFormat("{0}",routines.Count);
     }
 
     public void DoRoutine(UnityAction action_, float time_)
