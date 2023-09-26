@@ -9,20 +9,21 @@ using UnityEngine.Events;
 public abstract class PlayerBase : MonoBehaviourPun
 {
 
+    #region Variables
     protected float hp = default;
     protected float maxHp = default;
 
     protected float damage = default;
 
-    // { Delegate�� ���� UnityAction�� 
+    // { Delegate UnityAction 
     protected UnityAction moveFunc = default;
     protected UnityAction jumpFunc = default;
     protected UnityAction leftFunc = default;
     protected UnityAction rigthFunc = default;
     protected UnityAction QFunc = default;
-    //  Delegate�� ���� UnityAction�� } 
+    // } Delegate UnityAction 
 
-    // { Hunter Witch ���� ����
+    // { Hunter Witch Common
     protected Transform myCamera = default;
     protected GameObject crossHair = default;
     protected Rigidbody rigid = default;
@@ -31,6 +32,16 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected const float MOVESPEED = 5f;
     protected const float JUMPFORCE = 5f;
+
+    // { Skill Q, RightMouse bool
+    [SerializeField]
+    protected bool isSkillQ_On = default;
+    [SerializeField]
+    protected bool isSkillRM_On = default;
+    // } Skill Q, RightMouse bool
+
+
+    // } Hunter Witch Common
 
     // 09/18 Jung
     protected float verticalMove = default;
@@ -47,7 +58,7 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected TYPE type = TYPE.NONE;
 
     //  Hunter Witch ���� ���� }
-
+    #endregion
 
     protected virtual void Init()
     {
@@ -55,6 +66,12 @@ public abstract class PlayerBase : MonoBehaviourPun
 
         rigid = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
+
+
+        // { Skill bool Init
+        isSkillQ_On = true;
+        isSkillRM_On = true;
+        // } Skill bool Init
     }
 
     protected virtual void InputPlayer()
@@ -82,19 +99,30 @@ public abstract class PlayerBase : MonoBehaviourPun
             }
             this.leftFunc.Invoke();
         }
-        if (Input.GetButtonDown("Fire2"))
+        // SJ_230926 isSkillOn add 
+        if (Input.GetButtonDown("Fire2") && isSkillRM_On)
         {
+            isSkillRM_On = false;
+
             this.rigthFunc.Invoke();
+
+            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillRM_On), skillSlot.Slots[0].CoolTime);
+
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q) && isSkillQ_On)
         {
+            isSkillQ_On = false;
+
             this.QFunc.Invoke();
+
+            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillQ_On), skillSlot.Slots[1].CoolTime);
+
         }
         if (Input.GetKeyDown(KeyCode.Space))
         {
             this.jumpFunc.Invoke();
         }
-
+        
     }
 
     protected virtual void Move()
@@ -129,6 +157,11 @@ public abstract class PlayerBase : MonoBehaviourPun
 
         //    };
         //}
+    }
+
+    protected void OnSkill(ref bool isSkillOn_)
+    {
+        isSkillOn_ = true;
     }
 
     protected IEnumerator Footfall()

@@ -34,7 +34,7 @@ public class WitchController : PlayerBase
     private GameObject barrel = default;
     private GameObject lookPoint = default;
     private RaycastHit hit;
-        
+            
 
 
     // 09/19 Jung
@@ -124,7 +124,7 @@ public class WitchController : PlayerBase
         // } SJ_ 230922
 
 
-        base.InputPlayer();
+        InputPlayer();
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -145,6 +145,7 @@ public class WitchController : PlayerBase
         //{
         //    animator.SetTrigger("Die");
         //}
+
     }
 
     protected override void InputPlayer()
@@ -217,7 +218,6 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-
                     MetamorphosisToObj(hit.collider.gameObject);
                 }
             };
@@ -225,7 +225,7 @@ public class WitchController : PlayerBase
         this.rigthFunc =
             () =>
             {
-                // TEST : 
+
                 GameObject obj = PhotonNetwork.Instantiate
                 (RDefine.MUSHROOM_ORB, barrel.transform.position, Quaternion.identity);
                 skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);

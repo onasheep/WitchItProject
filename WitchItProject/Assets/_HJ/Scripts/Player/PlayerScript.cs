@@ -65,7 +65,9 @@ public class PlayerScript : MonoBehaviourPun, IPunObservable
 
         OtherSendMaster(col.GetComponent<PhotonView>());
         
-        S.SetPos(transform, new Vector3(0, 100, 0));
+        // TEST : 
+        // 버그 발견 
+        //S.SetPos(transform, new Vector3(0, 100, 0));
     }
 
 

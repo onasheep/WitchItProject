@@ -1531,6 +1531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSkillQ_On: 0
+  isSkillRM_On: 0
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5
@@ -1555,8 +1557,9 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: 6561133770892635826}
   - {fileID: -2471910343295841514}
+  - {fileID: 6561133770892635826}
+  - {fileID: -1711596391325048408}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1607,7 +1610,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bb605e2d44adaec4bade28dacdb75b09, type: 3}
   m_Name: 
