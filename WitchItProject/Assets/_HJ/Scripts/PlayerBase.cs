@@ -75,20 +75,9 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected virtual void InputPlayer()
     {
-        //HJ 230920__
-        //if (!photonView.IsMine)
-        //{
-        //    return;
-        //}
-        // TODO : �� ���� �Է� �޴� ����� �ִٸ� ����
-
-        // TODO : ���� �Է� ����
-        //if( isDead == true) {  return; }
-
-        // 09/18 Jung
+     
         verticalMove = Input.GetAxisRaw("Vertical");
         horizontalMove = Input.GetAxisRaw("Horizontal");
-        // 09/18 Jung
 
         if (Input.GetButtonDown("Fire1"))
         {
@@ -126,28 +115,26 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected virtual void Move()
     {
-        // TODO : default�� ��� ������ �⺻�� ������ �ֱ�
+        // TODO : 통일성 위해서 일단 수정 가능하다면 하고
+        // 시간이 없어서 아니면 날리자!
         //    if(moveFunc == default)
         //    {
         //        this.moveFunc = () => 
+
         //    }
         this.moveFunc.Invoke();
 
-        // 9/18 Jung
         rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
         rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
 
         animator.SetFloat("InputVertical", verticalMove);
         animator.SetFloat("InputHorizontal", horizontalMove);
-        // 9/18 Jung
     }
 
-    // TODO : ����, ��ȯ 
-    // �̿��̸� ������ �Ѵ� ū ���̰� �����Ƿ�,
-    // �������� ������ �Լ��� ¥�� ���⿡�� ó�� �� �� �ֵ���
     protected virtual void Jump()
     {
-        // TODO : default�� ��� ������ �⺻�� ������ �ֱ�
+        // TODO : 통일성 위해서 일단 수정 가능하다면 하고
+        // 시간이 없어서 아니면 날리자!
         //if (jumpFunc == default)
         //{
         //    this.jumpFunc = () =>
@@ -158,6 +145,7 @@ public abstract class PlayerBase : MonoBehaviourPun
         //}
     }
 
+    // SJ_230925
     protected void OnSkill(ref bool isSkillOn_)
     {
         isSkillOn_ = true;
@@ -169,5 +157,4 @@ public abstract class PlayerBase : MonoBehaviourPun
 
         canSpawnFootfall = true;
     }
-    // 9/25 Jung
 }

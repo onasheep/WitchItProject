@@ -13,6 +13,8 @@ using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    #region Varaiables
+
     //HJ__
     public int randNum = 0;
 
@@ -59,6 +61,10 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
+
+    #endregion
+
+
     void Awake()
     {
         ResourceManager.Init();
@@ -114,6 +120,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     private void Update()
     {
+        // TODO : 형준아 Update문 개오바야...
+        // 함수로 좀 묶어봐...
        
         if (isPlayerReady)
         {
@@ -161,6 +169,7 @@ public class GameManager : MonoBehaviourPunCallbacks
             roomInfoCanvasObj.SetActive(false);
         }
 
+        // { GameStart() 같은걸로 만들어서 묶어라
         if (isGameStart)
         {
             startPannel.SetActive(false);
@@ -249,6 +258,9 @@ public class GameManager : MonoBehaviourPunCallbacks
             }
             photonView.RPC("DisplayTime", RpcTarget.All, timeRemaining);
         }
+
+        // } GameStart() 같은걸로 만들어서 묶어라
+
     }
     //룸 접속 정보를 출력
     void SetRoomInfo()

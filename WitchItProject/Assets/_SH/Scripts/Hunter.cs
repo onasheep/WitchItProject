@@ -2,73 +2,48 @@ using Cinemachine;
 using Photon.Pun;
 using UnityEngine;
 
-// SJ_ 230915
-// PlayerBase ���
+
 public class Hunter : PlayerBase
 {
-    // SJ_ 230915
-    // LEGACY : PlayerBase�� ����
-    //private Transform myCamera;
-    //private Rigidbody rigid;
-    //private Animator animator;
+
 
     //HJ__0920 포톤 테스트 추가
     private PhotonView myPv;
     //=====================
     private RaycastHit hunterRayHit;
 
-    private float rightFuncCool = default;
-    private float QFuncCool = default;
-    private float skillTimer = default;
-
     private GameObject footFall = default;
 
-    // SJ_ 230918
+    // 늑대 스킬 발사 위치
     private GameObject dogRing;
 
     private void OnEnable()
     {
-        //HJ
         if (!photonView.IsMine)
         {
             return;
         }
 
-        // SJ_ 230915
         Init();
-        //
 
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
 
-        // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
-        //
+        
 
-        //myCamera = GameObject.Find("PersonalCamera").transform;
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
         crossHair = gameObject.FindChildObj("CrossHair");
 
-        // SJ_ 230915
-        // LEGACY : PlayerBase���� ������
-        //rigid = GetComponent<Rigidbody>();
-        //animator = GetComponent<Animator>();
     }
 
     private void Update()
     {
 
-        //if (!photonView.IsMine)
-        //{
-        //    return;
-        //}
 
-        //Debug.LogFormat("timer : {0}", skillTimer);
-        //Debug.LogFormat("right : {0}", rightFuncCool);
-        //Debug.LogFormat("q : {0}", QFuncCool);
         if (myPv != null)
         {
             if (!myPv.IsMine)
@@ -108,7 +83,6 @@ public class Hunter : PlayerBase
     }
 
     #region SJ_ PlayerBase override
-    // SJ_230915 
 
     protected override void Init()
     {
@@ -134,10 +108,6 @@ public class Hunter : PlayerBase
         // } SJ_ 석환씨가 말한 주석 
 
         skillSlot.SelSkill((int)type);
-
-        rightFuncCool = skillSlot.Slots[0].CoolTime;
-        QFuncCool = skillSlot.Slots[1].CoolTime;
-
 
 
         this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
@@ -174,7 +144,6 @@ public class Hunter : PlayerBase
     #endregion
     private void FixedUpdate()
     {
-        //HJ 포톤 붙이기
         if (!photonView.IsMine)
         {
             return;
@@ -207,27 +176,16 @@ public class Hunter : PlayerBase
             Debug.LogError("칼이 엄슴");
         }
 
-        //obj_.transform.position = myCamera.position + myCamera.forward;
         obj_.transform.position = start_;
-        //obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.forward, myCamera.transform.forward * -1);
         obj_.transform.rotation = direction_;
 
         animator.SetTrigger("Shot");
 
-        //else if (Input.GetButton("Fire1"))
-        //{
-        //    Bullet obj_ = BulletPool.GetObject();
-
-        //    obj_.transform.position = myCamera.position + myCamera.forward;
-        //    obj_.transform.rotation = Quaternion.LookRotation(myCamera.transform.up, myCamera.transform.forward * -1);
-        //}
     }
 
     private void JumpHunter()
     {
-        // InputPlayer�� ��ü 
-        //if (Input.GetButtonDown("Jump"))
-        //{
+       
         if (animator.GetBool("IsGround"))
         {
             canSpawnFootfall = false;
@@ -239,7 +197,7 @@ public class Hunter : PlayerBase
 
             rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
         }
-        //}
+        
     }
 
     private void MoveHunter()

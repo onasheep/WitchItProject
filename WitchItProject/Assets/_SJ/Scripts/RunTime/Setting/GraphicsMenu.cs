@@ -247,7 +247,7 @@ public class GraphicsMenu : MonoBehaviour
     }
 
 
-
+    // TODO : 소리 조절 
     //public void SetVolume(float volume)
     //{
     //    audioMixer.SetFloat("Volume", volume);

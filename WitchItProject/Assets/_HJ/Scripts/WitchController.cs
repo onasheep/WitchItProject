@@ -3,16 +3,8 @@ using Photon.Pun;
 using System;
 using UnityEngine;
 
-// SJ_ 230915
-// PlayerBase 상속
 public class WitchController : PlayerBase
 {
-
-    // SJ_ 230915
-    // LEGACY : PlayerBase에 존재
-    //[SerializeField] private Rigidbody rigid;
-    //[SerializeField] private Animator animator;
-    //
 
     //HJ__0920 포톤 테스트 추가
     private PhotonView myPv;
@@ -27,14 +19,13 @@ public class WitchController : PlayerBase
     private bool isJump = false;
     public bool isDead = false;
 
-    // SJ_230918
-    // 마녀 스킬 발사 위치
+    // { 마녀 스킬 발사 위치
     private GameObject barrel = default;
     private GameObject lookPoint = default;
     private RaycastHit hit;
+    // } 마녀 스킬 발사 위치
 
 
-    // 09/19 Jung
     // 변신한 물체에 따라 바뀔 예정 const X
     private float healthMax = 100;
     private float health;
@@ -44,9 +35,7 @@ public class WitchController : PlayerBase
 
     private GameObject witchBody;
     private GameObject currBody;
-    // 09/19 Jung
 
-    //HJ__0925
     private GameManager gameManager;
 
     private void Start()
@@ -56,38 +45,29 @@ public class WitchController : PlayerBase
 
     private void OnEnable()
     {
-        // 9/22 Jung
         if (!photonView.IsMine)
         {
             return;
         }
-        // 9/22 Jung
 
         Init();
         health = healthMax;
 
 
 
-        // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
-        //
 
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
-        //Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
 
-        // 9/22 Jung
         myCamera = GameObject.Find("WitchCamera").transform;// 가상 카메라 가져와버리기!
 
         myCamera.GetComponent<CinemachineVirtualCamera>().Follow = transform.GetChild(2);
         myCamera.GetComponent<CinemachineVirtualCamera>().LookAt = transform.GetChild(2);
 
-        //witchBody = GameObject.Find("Character_Female_Witch");
         witchBody = gameObject.FindChildObj("Character_Female_Witch");
         currBody = witchBody;
-        // 9/22 Jung
 
-        //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
     }
 
     private void OnDisable()
@@ -99,7 +79,6 @@ public class WitchController : PlayerBase
 
     void Update()
     {
-        // 9/22 Jung
         if (myPv != null)
         {
             if (!myPv.IsMine)
@@ -117,22 +96,21 @@ public class WitchController : PlayerBase
 
         if (health <= 0)
         {
-            //DieWitch();
-        }
-        // 9/22 Jung
 
-        // { SJ_ 230922
+        }
+
+        // { Ray로 변신, 빙의, 아웃라인 체크 
         if (Physics.Raycast(lookPoint.transform.position, (lookPoint.transform.position - myCamera.position).normalized,
             out hit, 15f, LayerMask.GetMask("ChangeableObjects")))
         {
             if (hit.transform.GetComponent<ChangeableObject>() == null)
             {
                 return;
-            }
+            }       // if : 변신가능 오브젝트가 아니면 return
 
             hit.transform.GetComponent<ChangeableObject>().SetOutline();
         }
-        // } SJ_ 230922
+        // } Ray로 변신, 빙의, 아웃라인 체크 
 
 
         InputPlayer();
@@ -141,21 +119,6 @@ public class WitchController : PlayerBase
         {
             CancelMetamorphosis();
         }
-
-        //if (isDead) { return; }
-        //if (Input.GetKeyDown(KeyCode.Space) && isJump == false)
-        //{
-        //    Jump();
-        //    animator.SetTrigger("Jumping");
-        //}
-        //if (Input.GetKeyDown(KeyCode.Y))
-        //{
-        //    isDead = true;
-        //}
-        //if (isDead)
-        //{
-        //    animator.SetTrigger("Die");
-        //}
 
         if(Input.GetKeyDown(KeyCode.L))
         {
@@ -177,7 +140,6 @@ public class WitchController : PlayerBase
 
     private void FixedUpdate()
     {
-        // 9/22 Jung
         if (myPv != null)
         {
             if (!myPv.IsMine)
@@ -192,27 +154,22 @@ public class WitchController : PlayerBase
                 return;
             }
         }
-        // 9/22 Jung
 
         if (isDead) { return; }
         if (isJump == false)
         {
-            // SJ_ 230915
-            //MoveHunter();
+
             Move();
-            // SJ_ 230915
         }
         else
         {
             //JumpMove();
         }
-        //HJ_ TODO 애니메이션 추가할 때 사용
         SetAnimation("MoveTotal");
         Turn();
     }
 
     #region SJ_ 상속받아서 동작하는 함수
-    // SJ_230915 
 
     protected override void Init()
     {
@@ -225,7 +182,6 @@ public class WitchController : PlayerBase
         skillSlot.SelSkill((int)type);
         //  스킬 담김 }
 
-        //  ��ų ��� }
 
 
         this.leftFunc =
@@ -264,15 +220,10 @@ public class WitchController : PlayerBase
 
     #endregion
 
-    // SJ_ 230915
-    // Base에 Move함수가 있어 함수 이름 변경
+
     void MoveWitch()
     {
-        //==============================���� �κ� ���� ����
 
-        // 09/18 Jung
-        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
         if (isMetamor) { /* Do Nothing */ }
         else if (!isMetamor)
@@ -285,22 +236,12 @@ public class WitchController : PlayerBase
             dirVelocity.y = rigid.velocity.y;
             rigid.velocity = dirVelocity;
         }
-        // 09/18 Jung
 
-        //==============================���� ��
-        //Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
-        //Vector3 moveHorizontal = new Vector3(1, 0, 0) * moveDirectionX;
-        //Vector3 moveNormalized = (moveHorizontal + moveVertical).normalized;
-        //Vector3 moveVelocity = moveNormalized * moveSpeed;
-        //myRigid.velocity = moveVelocity;
-        //==============================���� ��
-        //==============================
     }
 
     void SetAnimation(string name)
     {
-        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
+
 
         float moveTotal = Mathf.Clamp01(Mathf.Abs(verticalMove) + Mathf.Abs(horizontalMove));
         animator.SetFloat(name, moveTotal);
@@ -308,18 +249,11 @@ public class WitchController : PlayerBase
 
     void Turn()
     {
-        //==============================공통 부분 삭제 예정
-        //float moveDirectionX = Input.GetAxis("Horizontal");
-        //float moveDirectionZ = Input.GetAxis("Vertical");
+
 
         Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
         Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
-        //==============================변경 전
-        //if (!(moveDirectionX == 0f && moveDirectionZ == 0f))
-        //{
-        //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(moveDirectionX, 0, moveDirectionZ)), Time.deltaTime * rotationSpeed);
-        //}
-        //==============================변경 후
+
         moveDirection += myCamera.right * horizontalMove;
         Vector3 targetDirection = moveDirection;
         targetDirection.y = 0f;
@@ -330,11 +264,9 @@ public class WitchController : PlayerBase
         Quaternion lookDirection = Quaternion.LookRotation(targetDirection);
         Quaternion targetRotation = Quaternion.Slerp(transform.rotation, lookDirection, rotationSpeed * Time.deltaTime);
         transform.rotation = targetRotation;
-        //==============================
     }
 
-    // TODO : 각각 헌터와 마녀가 점프가 많이 다르다면 
-    // 지금 같은 방식으로, 아니라면 PalyerBase에서 공통적으로 만들 것
+
     private void JumpWitch()
     {
         if (!photonView.IsMine)
@@ -347,15 +279,14 @@ public class WitchController : PlayerBase
                 StopCoroutine(Footfall());
 
                 isJump = true;
-                // myAnimator.SetBool("Jumping", false);
 
 
                 rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+                animator.SetTrigger("Jumping");
             }
         }
     }
 
-    // 9/22 Jung
     private void OnCollisionStay(Collision collision)
     {
         if (myPv != null)
@@ -397,7 +328,6 @@ public class WitchController : PlayerBase
             }
         }
     }
-    // 9/22 Jung
 
     void JumpMove()
     {
@@ -413,17 +343,6 @@ public class WitchController : PlayerBase
 
     }
 
-    // 9/25 Jung: OnCollisionStay가 있으므로 주석처리 
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-    //    {
-
-
-    //        isJump = false;
-    //    }
-    //}
-    // 9/25 Jung
 
     [PunRPC]
     public void TakeDamage()
@@ -435,19 +354,11 @@ public class WitchController : PlayerBase
         }
     }
 
-    //HJ=======================================================================
-    //230929 
+
 
     void DieWitch()
     {
-        //if(photonView.IsMine)
-        //{
-        //FindObjectOfType<GameManager>().isWitch = true;
-        //}
-        //PhotonNetwork.Destroy(gameObject);
-        //FindObjectOfType<GameManager>().witchCount -= 1;
 
-        //HJ__0925
         // 마스터 클라이언트에 RPC를 보내서 isWitch 값을 변경합니다.
         gameManager.photonView.RPC("SetIsWitch", RpcTarget.MasterClient, true);
        
@@ -467,7 +378,6 @@ public class WitchController : PlayerBase
         else if (!witchBody.activeInHierarchy)
         {
             transform.position = lookPoint.transform.position;
-            //witchBody.transform.position = lookPoint.transform.position;
 
             witchBody.SetActive(true);
 
@@ -526,8 +436,7 @@ public class WitchController : PlayerBase
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_);
-        // SJ_ 230925
-        // GetMask => NameToLayer 
+
         newBody_.layer = LayerMask.NameToLayer("Witch");
 
         newBody_.transform.position = lookPoint.transform.position;

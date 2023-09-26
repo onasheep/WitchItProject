@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: -3667031631652278392}
   - component: {fileID: 2656673374236813771}
   - component: {fileID: -504476512666693870}
-  m_Layer: 9
+  m_Layer: 15
   m_Name: Wolf
   m_TagString: Projectile
   m_Icon: {fileID: 0}
