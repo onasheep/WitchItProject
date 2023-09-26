@@ -67,17 +67,18 @@ public class WitchController : PlayerBase
 
         Cursor.lockState = CursorLockMode.Locked; // 마우스 커서를 잠금 상태로 설정
         Cursor.visible = false; // 마우스 커서를 숨김
-        Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
+        //Debug.Log(GetComponent<Collider>().bounds.size.magnitude);
 
         // 9/22 Jung
         myCamera = GameObject.Find("WitchCamera").transform;// 가상 카메라 가져와버리기!
 
         myCamera.GetComponent<CinemachineVirtualCamera>().Follow = transform.GetChild(2);
         myCamera.GetComponent<CinemachineVirtualCamera>().LookAt = transform.GetChild(2);
-        // 9/22 Jung
 
-        witchBody = GameObject.Find("Character_Female_Witch");
+        //witchBody = GameObject.Find("Character_Female_Witch");
+        witchBody = gameObject.FindChildObj("Character_Female_Witch");
         currBody = witchBody;
+        // 9/22 Jung
 
         //myCamera = GameObject.Find("Main Camera").transform; //메인카메라를 가져와버리기
     }
@@ -109,7 +110,7 @@ public class WitchController : PlayerBase
 
         if (health <= 0)
         {
-            DieWitch();
+            //DieWitch();
         }
         // 9/22 Jung
 
@@ -257,9 +258,10 @@ public class WitchController : PlayerBase
     void MoveWitch()
     {
         //==============================���� �κ� ���� ����
+
         // 09/18 Jung
-        float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        float moveDirectionX = Input.GetAxisRaw("Horizontal");
+        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
+        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
         if (isMetamor) { /* Do Nothing */ }
         else if (!isMetamor)
@@ -273,6 +275,7 @@ public class WitchController : PlayerBase
             rigid.velocity = dirVelocity;
         }
         // 09/18 Jung
+
         //==============================���� ��
         //Vector3 moveVertical = new Vector3(0, 0, 1) * moveDirectionZ;
         //Vector3 moveHorizontal = new Vector3(1, 0, 0) * moveDirectionX;
@@ -285,28 +288,28 @@ public class WitchController : PlayerBase
 
     void SetAnimation(string name)
     {
-        float moveDirectionZ = Input.GetAxisRaw("Vertical");
-        float moveDirectionX = Input.GetAxisRaw("Horizontal");
+        //float moveDirectionZ = Input.GetAxisRaw("Vertical");
+        //float moveDirectionX = Input.GetAxisRaw("Horizontal");
 
-        float moveTotal = Mathf.Clamp01(Mathf.Abs(moveDirectionZ) + Mathf.Abs(moveDirectionX));
+        float moveTotal = Mathf.Clamp01(Mathf.Abs(verticalMove) + Mathf.Abs(horizontalMove));
         animator.SetFloat(name, moveTotal);
     }
 
     void Turn()
     {
         //==============================공통 부분 삭제 예정
-        float moveDirectionX = Input.GetAxis("Horizontal");
-        float moveDirectionZ = Input.GetAxis("Vertical");
+        //float moveDirectionX = Input.GetAxis("Horizontal");
+        //float moveDirectionZ = Input.GetAxis("Vertical");
 
         Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
-        Vector3 moveDirection = forwardLook * moveDirectionZ + myCamera.right * moveDirectionX;
+        Vector3 moveDirection = forwardLook * verticalMove + myCamera.right * horizontalMove;
         //==============================변경 전
         //if (!(moveDirectionX == 0f && moveDirectionZ == 0f))
         //{
         //    transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(new Vector3(moveDirectionX, 0, moveDirectionZ)), Time.deltaTime * rotationSpeed);
         //}
         //==============================변경 후
-        moveDirection += myCamera.right * moveDirectionX;
+        moveDirection += myCamera.right * horizontalMove;
         Vector3 targetDirection = moveDirection;
         targetDirection.y = 0f;
         if (targetDirection == Vector3.zero)
@@ -365,10 +368,17 @@ public class WitchController : PlayerBase
 
             if (point.y <= transform.position.y + 0.5f)
             {
-                if (canSpawnFootfall)
+                if (verticalMove != 0 || horizontalMove != 0)
                 {
-                    StartCoroutine(Footfall());
-                    canSpawnFootfall = false;
+                    if (canSpawnFootfall)
+                    {
+                        canSpawnFootfall = false;
+
+                        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+                        footfall_.transform.position = transform.position;
+
+                        StartCoroutine(Footfall());
+                    }
                 }
 
                 isJump = false;

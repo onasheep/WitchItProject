@@ -81,7 +81,8 @@ public abstract class PlayerBase : MonoBehaviourPun
             }
             this.leftFunc.Invoke();
         }
-        if (Input.GetButtonDown("Fire2"))
+        //if (Input.GetButtonDown("Fire2"))
+        if (Input.GetMouseButtonDown(1))
         {
             this.rigthFunc.Invoke();
         }
@@ -130,13 +131,12 @@ public abstract class PlayerBase : MonoBehaviourPun
         //}
     }
 
+    // 9/25 Jung
     protected IEnumerator Footfall()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.25f);
 
         canSpawnFootfall = true;
-
-        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
-        footfall_.transform.position = this.transform.position;
     }
+    // 9/25 Jung
 }

@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
+
+        Physics.IgnoreLayerCollision(gameObject.layer, LayerMask.NameToLayer("Hunter"));
     }
 
     private void OnEnable()

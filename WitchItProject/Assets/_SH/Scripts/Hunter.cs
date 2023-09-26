@@ -50,9 +50,7 @@ public class Hunter : PlayerBase
         myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
         myCamera.SetParent(transform);
         myCamera.transform.position = transform.position + new Vector3(0, 1.6f, 0);
-        crossHair = GameObject.Find("CrossHair");
-
-        footFall = GameObject.Find("Footfall");
+        crossHair = gameObject.FindChildObj("CrossHair");
 
         // SJ_ 230915
         // LEGACY : PlayerBase���� ������
@@ -247,9 +245,9 @@ public class Hunter : PlayerBase
         //{
         if (animator.GetBool("IsGround"))
         {
-            StopCoroutine(Footfall());
+            canSpawnFootfall = false;
 
-            footFall.SetActive(false);
+            StopCoroutine(Footfall());
 
             animator.SetBool("IsGround", false);
             animator.SetTrigger("Jump");
@@ -324,10 +322,17 @@ public class Hunter : PlayerBase
 
             if (point.y <= transform.position.y + 0.5f)
             {
-                if (canSpawnFootfall)
+                if (verticalMove != 0 || horizontalMove != 0)
                 {
-                    StartCoroutine(Footfall());
-                    canSpawnFootfall = false;
+                    if (canSpawnFootfall)
+                    {
+                        canSpawnFootfall = false;
+
+                        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+                        footfall_.transform.position = transform.position;
+
+                        StartCoroutine(Footfall());
+                    }
                 }
 
                 animator.SetBool("IsGround", true);
