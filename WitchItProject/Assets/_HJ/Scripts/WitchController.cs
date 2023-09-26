@@ -1,8 +1,6 @@
 using Cinemachine;
-using EPOOutline;
 using Photon.Pun;
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 // SJ_ 230915
@@ -34,7 +32,7 @@ public class WitchController : PlayerBase
     private GameObject barrel = default;
     private GameObject lookPoint = default;
     private RaycastHit hit;
-        
+
 
 
     // 09/19 Jung
@@ -61,7 +59,7 @@ public class WitchController : PlayerBase
         Init();
         health = healthMax;
 
-        
+
 
         // HJ_ 230920 
         myPv = GetComponent<PhotonView>();
@@ -107,6 +105,11 @@ public class WitchController : PlayerBase
             {
                 return;
             }
+        }
+
+        if (health <= 0)
+        {
+            DieWitch();
         }
         // 9/22 Jung
 
@@ -156,7 +159,7 @@ public class WitchController : PlayerBase
 
         base.InputPlayer();
 
- 
+
     }
 
     private void FixedUpdate()
@@ -319,8 +322,8 @@ public class WitchController : PlayerBase
     // TODO : 각각 헌터와 마녀가 점프가 많이 다르다면 
     // 지금 같은 방식으로, 아니라면 PalyerBase에서 공통적으로 만들 것
     private void JumpWitch()
-    {  
-        if(!photonView.IsMine)
+    {
+        if (!photonView.IsMine)
         { return; }
         if (isMetamor) { /* Do Nothing */ }
         else if (!isMetamor)
@@ -401,10 +404,14 @@ public class WitchController : PlayerBase
     //}
     // 9/25 Jung
 
+    [PunRPC]
     public void TakeDamage()
     {
         // 데미지는 5?
-        health -= 5;
+        if (photonView.IsMine)
+        {
+            health -= 5;
+        }
     }
 
     //HJ=======================================================================
@@ -424,33 +431,33 @@ public class WitchController : PlayerBase
     private void CancelMetamorphosis()
     {
 
-            if (witchBody.activeInHierarchy)
-            {
-                return;
-            }
-            else if (!witchBody.activeInHierarchy)
-            {
-                transform.position = lookPoint.transform.position;
-                //witchBody.transform.position = lookPoint.transform.position;
+        if (witchBody.activeInHierarchy)
+        {
+            return;
+        }
+        else if (!witchBody.activeInHierarchy)
+        {
+            transform.position = lookPoint.transform.position;
+            //witchBody.transform.position = lookPoint.transform.position;
 
-                witchBody.SetActive(true);
+            witchBody.SetActive(true);
 
-                GetComponent<Rigidbody>().useGravity = true;
-                GetComponent<Collider>().enabled = true;
+            GetComponent<Rigidbody>().useGravity = true;
+            GetComponent<Collider>().enabled = true;
 
-                rigid.velocity = Vector3.zero;
-                rigid.angularVelocity = Vector3.zero;
+            rigid.velocity = Vector3.zero;
+            rigid.angularVelocity = Vector3.zero;
 
-                GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
 
-                lookPoint.transform.SetParent(transform);
-                lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
+            lookPoint.transform.SetParent(transform);
+            lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
 
-                Destroy(prevBody_);
+            Destroy(prevBody_);
 
-                currBody = witchBody;
-            }
-        
+            currBody = witchBody;
+        }
+
 
         GetComponent<WitchController>().isMetamor = false;
     }

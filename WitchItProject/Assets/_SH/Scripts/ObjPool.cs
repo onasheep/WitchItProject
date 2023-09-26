@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static ObjPool;
 
 public class ObjPool : MonoBehaviour
 {
@@ -102,7 +101,7 @@ public class ObjPool : MonoBehaviour
             case EffectNames.Footfall:
                 newObj_ = Instantiate(footfallPrefab).GetComponent<Effect>();
                 break;
-                
+
             case EffectNames.Metamor:
                 newObj_ = Instantiate(metamorPrefab).GetComponent<Effect>();
                 break;
@@ -111,6 +110,8 @@ public class ObjPool : MonoBehaviour
                 newObj_ = null;
                 break;
         }
+
+        newObj_.effectName = effectName_;
 
         newObj_.gameObject.SetActive(false);
         newObj_.transform.SetParent(transform);
@@ -153,7 +154,7 @@ public class ObjPool : MonoBehaviour
                     newObj_.transform.SetParent(null);
                     return newObj_;
                 }
-                
+
             case EffectNames.Metamor:
                 if (instance.metamorQueue.Count > 0)
                 {
@@ -189,7 +190,7 @@ public class ObjPool : MonoBehaviour
             case EffectNames.Footfall:
                 instance.footfallQueue.Enqueue(obj_);
                 break;
-                
+
             case EffectNames.Metamor:
                 instance.metamorQueue.Enqueue(obj_);
                 break;

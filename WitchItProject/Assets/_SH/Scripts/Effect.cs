@@ -1,10 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Effect : MonoBehaviour
 {
+    public Enum effectName;
+
     private void OnEnable()
     {
         Invoke("DestroyThis", 2f);
@@ -12,6 +12,6 @@ public class Effect : MonoBehaviour
 
     public void DestroyThis()
     {
-        ObjPool.ReturnObject(this, ObjPool.EffectNames.Hit);
+        ObjPool.ReturnObject(this, effectName);
     }
 }
