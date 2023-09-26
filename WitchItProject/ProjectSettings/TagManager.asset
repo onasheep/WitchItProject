@@ -11,6 +11,7 @@ TagManager:
   - Projectile
   - Bullet
   - Missile
+  - Animal
   layers:
   - Default
   - TransparentFX
@@ -47,4 +48,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: testUI
+    uniqueID: 1361384821
     locked: 0
