@@ -12,7 +12,7 @@ EditorBuildSettings:
     path: Assets/_YS/Scenes/TestGameMap.unity
     guid: 78bfe50f65b6347468d66b56e10b8db8
   - enabled: 0
-    path: Assets/_HJ/Scenes/TestTitleScene.unity
+    path: Assets/_HJ/Scenes/TitleScene.unity
     guid: 12a6659fdd08da749ab5b3b1b234c50b
   - enabled: 0
     path: Assets/_HJ/Scenes/LobbyScene.unity

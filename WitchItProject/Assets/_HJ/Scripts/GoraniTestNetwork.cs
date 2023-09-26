@@ -203,21 +203,21 @@ public class GoraniTestNetwork : MonoBehaviourPunCallbacks
     }
     #endregion
 
-    #region myFuntion
-    void AssignTeam(int sizeOfPlayer)
-    {
-        ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
-        if(sizeOfPlayer % 4 == 0 )
-        {
-            hash.Add("Hunter", 0);
-        }
-        else
-        {
-            hash.Add("Witch", 1);
-        }
-        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
-    }
-    #endregion
+    //#region myFuntion
+    //void AssignTeam(int sizeOfPlayer)
+    //{
+    //    ExitGames.Client.Photon.Hashtable hash = new ExitGames.Client.Photon.Hashtable();
+    //    if(sizeOfPlayer % 4 == 0 )
+    //    {
+    //        hash.Add("Hunter", 0);
+    //    }
+    //    else
+    //    {
+    //        hash.Add("Witch", 1);
+    //    }
+    //    PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+    //}
+    //#endregion
     
   
 }

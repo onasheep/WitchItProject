@@ -88,7 +88,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void Update()
     {
         //TODO 지울 예정
-        StatusText.text = PhotonNetwork.NetworkClientState.ToString(); //단순히 현재 네트워크 어떤 상태인지를 나타내는 텍스트
+        //StatusText.text = PhotonNetwork.NetworkClientState.ToString(); //단순히 현재 네트워크 어떤 상태인지를 나타내는 텍스트
     }
 
 
