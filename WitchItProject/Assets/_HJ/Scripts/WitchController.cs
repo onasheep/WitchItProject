@@ -47,6 +47,14 @@ public class WitchController : PlayerBase
     private GameObject currBody;
     // 09/19 Jung
 
+    //HJ__0925
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
     private void OnEnable()
     {
         // 9/22 Jung
@@ -149,6 +157,11 @@ public class WitchController : PlayerBase
         //{
         //    animator.SetTrigger("Die");
         //}
+
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            DieWitch();
+        }
     }
 
     protected override void InputPlayer()
@@ -425,16 +438,24 @@ public class WitchController : PlayerBase
     }
 
     //HJ=======================================================================
-    //230919 작업 게임매니저의 witchCount 줄여주고 늘려주는 함수 추가
-    void GetWitch()
-    {
-        //마녀가 생성될 때 이 함수를 써서 늘려줍니다.
-        FindObjectOfType<GameManager>().witchCount += 1;
-    }
+    //230929 
 
     void DieWitch()
     {
-        FindObjectOfType<GameManager>().witchCount -= 1;
+        //if(photonView.IsMine)
+        //{
+        //FindObjectOfType<GameManager>().isWitch = true;
+        //}
+        //PhotonNetwork.Destroy(gameObject);
+        //FindObjectOfType<GameManager>().witchCount -= 1;
+
+        //HJ__0925
+        // 마스터 클라이언트에 RPC를 보내서 isWitch 값을 변경합니다.
+        gameManager.photonView.RPC("SetIsWitch", RpcTarget.MasterClient, true);
+       
+
+        // 여기에서 플레이어를 파괴하거나 다른 처리를 수행할 수 있습니다.
+        PhotonNetwork.Destroy(gameObject);
     }
 
 

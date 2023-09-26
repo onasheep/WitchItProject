@@ -13,8 +13,12 @@ public class WitchCameraSetup : MonoBehaviourPun
     [SerializeField][Range(0f, 10f)] private float defaultCameraDistance;
     [SerializeField][Range(0f, 10f)] private float maxCameraDistance = 1f;
     [SerializeField][Range(0f, 10f)] private float minCameraDistance = 8f;
-    private void Awake()
+    private void Start()
     {
+        if(photonView.IsMine) 
+        {
+            return;
+        }
         hunterCam = GameObject.Find("HunterCamera");
         witchCam = GameObject.Find("WitchCamera").GetComponent<CinemachineVirtualCamera>();
 
@@ -27,18 +31,17 @@ public class WitchCameraSetup : MonoBehaviourPun
         lookPoint = this.gameObject.FindChildObj("CameraLookPoint").GetComponent<Transform>();
 
         // 만약 자신이 로컬플레이어라면
-        //if (photonView.IsMine)
-        //{
-        //hunterCam.SetActive(false);
-        //씬에 있는 시네머신 가상 카메라를 찾고
-        //witchCam.Follow = transform;
-        //witchCam.LookAt = transform;
+     
+            hunterCam.SetActive(false);
+            //씬에 있는 시네머신 가상 카메라를 찾고
+            witchCam.Follow = transform;
+            witchCam.LookAt = transform;
 
 
-        witchCam.Follow = lookPoint;
+            witchCam.Follow = lookPoint;
         witchCam.LookAt = lookPoint;
 
-        //}
+        
 
         myBody = witchCam.GetCinemachineComponent<CinemachineFramingTransposer>();
 
