@@ -112,7 +112,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         //HJ_____LobbyPanel
-        PhotonNetwork.AutomaticallySyncScene = true; //æ¿ µø±‚»≠ 
+        //PhotonNetwork.AutomaticallySyncScene = true; //æ¿ µø±‚»≠ 
         GameObject lobbyCanvas = GameObject.Find("LobbyCanvas");
         lobbyPanel = lobbyCanvas.transform.GetChild(0).gameObject;
         playBtn = lobbyPanel.transform.GetChild(0).GetComponent<Button>();
@@ -189,7 +189,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     #region πÊ
     public void CreateRoom()
     {
-        if(playPanel.activeSelf == true)
+        if (playPanel.activeSelf == true)
         {
             playPanel.SetActive(false);
         }
@@ -199,7 +199,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void JoinRandomRoom()
     {
-        if(roomPanel.activeSelf==true)
+        if (roomPanel.activeSelf==true)
         {
             roomPanel.SetActive(false);
         }
@@ -209,6 +209,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoom()
     {
+        PhotonNetwork.AutomaticallySyncScene = false; //æ¿ µø±‚»≠ 
+
         roomPanel.SetActive(false);
         inRoomPanel.SetActive(false);
         playPanel.SetActive(true);
@@ -217,7 +219,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        if(roomPanel.activeSelf == true)
+        PhotonNetwork.AutomaticallySyncScene = true; //æ¿ µø±‚»≠ 
+        if (roomPanel.activeSelf == true)
         {
             roomPanel.SetActive(false);
         }
@@ -238,12 +241,14 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
     {
+        JoinRoomRenewal();
         RoomRenewal();
         ChatRPC("<color=yellow>" + newPlayer.NickName + "¥‘¿Ã ¬¸∞°«œºÃΩ¿¥œ¥Ÿ</color>");
     }
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
+        JoinRoomRenewal();
         RoomRenewal();
         ChatRPC("<color=yellow>" + otherPlayer.NickName + "¥‘¿Ã ≈¿Â«œºÃΩ¿¥œ¥Ÿ</color>");
     }
@@ -253,7 +258,13 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         listText.text = "";
         for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             listText.text += PhotonNetwork.PlayerList[i].NickName + ((i + 1 == PhotonNetwork.PlayerList.Length) ? "" : ", ");
-        roomInfoText.text = PhotonNetwork.CurrentRoom.Name + " / " + PhotonNetwork.CurrentRoom.PlayerCount + "∏Ì / " + PhotonNetwork.CurrentRoom.MaxPlayers + "√÷¥Î";
+        roomInfoText.text =string.Format("{0}/{1}∏Ì{2}√÷¥Î", PhotonNetwork.CurrentRoom.Name, PhotonNetwork.CurrentRoom.PlayerCount, PhotonNetwork.CurrentRoom.MaxPlayers);//  + " / " +  + "∏Ì / " +  + "√÷¥Î";
+    }
+    void JoinRoomRenewal()
+    {
+        listText.text = "";
+        for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            listText.text += PhotonNetwork.PlayerList[i].NickName + ((i + 1 == PhotonNetwork.PlayerList.Length) ? "" : ", ");
     }
     #endregion
 
@@ -294,7 +305,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         playPanel.SetActive(false);
         roomPanel.SetActive(true);
-        RoomRenewal();
+        JoinRoomRenewal();
     }
     public void PushCreateRoom()
     {
