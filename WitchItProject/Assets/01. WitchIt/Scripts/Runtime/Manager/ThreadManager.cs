@@ -66,10 +66,9 @@ public class ThreadManager : MonoBehaviour
     {
         Coroutine curruntRoutine = default;
 
-        curruntRoutine = StartCoroutine(SetTimer(action_, time_)).KillCoroutine(this,time_ + 0.01f);
+        // TODO : 추후 KillCoroutine 동작 확인 후 추가 예정
+        curruntRoutine = StartCoroutine(SetTimer(action_, time_))/*.KillCoroutine(this,time_ + 0.01f)*/;
         routines.Add(curruntRoutine);
-
-        curruntRoutine = StartCoroutine(routine);
         return curruntRoutine;
     }
 

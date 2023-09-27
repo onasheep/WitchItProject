@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1808488, g: 0.2263873, b: 0.30721074, a: 1}
+  m_IndirectSpecularColor: {r: 0.18084905, g: 0.22638777, b: 0.30721128, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -1208,7 +1208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &24895069
 Transform:
   m_ObjectHideFlags: 0
@@ -28848,10 +28848,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randNum: 0
-  roomName: {fileID: 0}
-  connectInfo: {fileID: 0}
-  msgList: {fileID: 0}
-  exitBtn: {fileID: 0}
   witchPrefab: {fileID: 4768873954757801179, guid: f8b5d9fc1bb50d34d98f420d341eee25, type: 3}
   hunterPrefab: {fileID: 6132522099847389497, guid: 869e8ce0575040f44a9fb9c2ceb259d0, type: 3}
   hostCanvasObj: {fileID: 0}
@@ -33547,7 +33543,7 @@ RectTransform:
   - {fileID: 963751243}
   - {fileID: 1406532568}
   m_Father: {fileID: 0}
-  m_RootOrder: 26
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -34811,7 +34807,7 @@ Transform:
   - {fileID: 120269258}
   - {fileID: 367150416}
   m_Father: {fileID: 0}
-  m_RootOrder: 29
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &859967104
 PrefabInstance:
@@ -56188,8 +56184,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1804089243}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62970,7 +62965,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 28
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1609250239
 PrefabInstance:
@@ -77682,7 +77677,7 @@ RectTransform:
   - {fileID: 1978718122}
   - {fileID: 1840597658}
   m_Father: {fileID: 0}
-  m_RootOrder: 25
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -89110,7 +89105,7 @@ RectTransform:
   m_Children:
   - {fileID: 6089806759534405488}
   m_Father: {fileID: 0}
-  m_RootOrder: 27
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

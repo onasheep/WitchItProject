@@ -408,7 +408,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         isPlaying = false;
     }
  
-    void CreateHunter()
+    public void CreateHunter()
     {
         //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         //int hunterSpawnPoint = 2;
