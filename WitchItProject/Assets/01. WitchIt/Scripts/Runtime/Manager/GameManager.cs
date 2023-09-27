@@ -6,13 +6,14 @@ using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using Hashtable = ExitGames.Client.Photon.Hashtable;
+//using Hashtable = ExitGames.Client.Photon.Hashtable;
 using System;
 using Photon.Pun.UtilityScripts;
 using System.Runtime.InteropServices;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
+    
     #region Varaiables
 
     //HJ__
@@ -24,10 +25,6 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public Button exitBtn;
 
-    //HJ-----> 변수 위치 이동 0921
-    //HJ_work 해야될 일
-    //========================================================================
-    //1.승패, 2. 진영, 마녀 수 확인
     [SerializeField] private GameObject witchPrefab;
     [SerializeField] private GameObject hunterPrefab;
 
@@ -58,6 +55,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public bool isHiding = false; //마녀 숨는시간
     public bool isPlaying = false; //게임중인지
 
+    public GameObject hunterWinPanel;
+    public GameObject witchWinPanel;
 
     [SerializeField] private float timeRemaining = 600;
     [SerializeField] private TMP_Text timeText = default;
@@ -92,7 +91,8 @@ public class GameManager : MonoBehaviourPunCallbacks
             hostCanvasObj.SetActive(false);
         }
 
-        
+        witchWinPanel = GameObject.Find("ResutlCanvas").transform.GetChild(0).gameObject;
+        hunterWinPanel = GameObject.Find("ResutlCanvas").transform.GetChild(1).gameObject;
 
         ////접속 정보 추출 및 표시
         SetRoomInfo();
@@ -363,11 +363,11 @@ public class GameManager : MonoBehaviourPunCallbacks
     void CreateHunter()
     {
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        //int witchSpawnPoint = 1;
         int hunterSpawnPoint = 2;
+        PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+        //int witchSpawnPoint = 1;
         // TODO : Hunter로 변경하기 
         // TEST : Witch 변신가능 오브젝트 아웃라인 테스트
-        PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
     }
     void CreateWitch()
     {
@@ -381,13 +381,17 @@ public class GameManager : MonoBehaviourPunCallbacks
     [PunRPC]
     void WinH()
     {
+        hunterWinPanel.SetActive(true);
         Debug.Log("헌터 승리");
+        PhotonNetwork.LoadLevel("TestGameMap");
     }
 
     [PunRPC]
     void WinW()
     {
+        witchWinPanel.SetActive(true);
         Debug.Log("마녀 승리");
+        PhotonNetwork.LoadLevel("TestGameMap");
     }
     //======================================
     //HJ0925 변경

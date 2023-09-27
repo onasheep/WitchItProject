@@ -165,6 +165,8 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         createBtn.onClick.AddListener(() => CreateRoom());
         createBackBtn.onClick.AddListener(() => BackCreateRoom());
 
+        sendBtn.onClick.AddListener(() => Send());
+
         playPanel.SetActive(false);
         roomPanel.SetActive(false);
         inRoomPanel.SetActive(false);
@@ -215,6 +217,10 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        if(roomPanel.activeSelf == true)
+        {
+            roomPanel.SetActive(false);
+        }
         inRoomPanel.SetActive(true);
         RoomRenewal();
         chatInput.text = "";
@@ -288,6 +294,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         playPanel.SetActive(false);
         roomPanel.SetActive(true);
+        RoomRenewal();
     }
     public void PushCreateRoom()
     {
