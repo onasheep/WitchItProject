@@ -15,18 +15,22 @@ public class ObjPool : MonoBehaviour
     private GameObject footfallPrefab;
     [SerializeField]
     private GameObject metamorPrefab;
+    [SerializeField]
+    private GameObject possesPrefab;
 
     Queue<Bullet> bulletQueue = new Queue<Bullet>();
 
     Queue<Effect> hitQueue = new Queue<Effect>();
     Queue<Effect> footfallQueue = new Queue<Effect>();
     Queue<Effect> metamorQueue = new Queue<Effect>();
+    Queue<Effect> possesQueue = new Queue<Effect>();
 
     public enum EffectNames
     {
         Hit,
         Footfall,
-        Metamor
+        Metamor,
+        Posses
     }
 
     private void Awake()
@@ -39,6 +43,7 @@ public class ObjPool : MonoBehaviour
         hitPrefab = (GameObject)Resources.Load("Hit");
         footfallPrefab = (GameObject)Resources.Load("Footfall");
         metamorPrefab = (GameObject)Resources.Load("Metamorphosis");
+        possesPrefab = (GameObject)Resources.Load("Possesion");
 
         Initialize(30);
     }
@@ -52,6 +57,7 @@ public class ObjPool : MonoBehaviour
             hitQueue.Enqueue(CreateNewEffect(EffectNames.Hit));
             footfallQueue.Enqueue(CreateNewEffect(EffectNames.Footfall));
             metamorQueue.Enqueue(CreateNewEffect(EffectNames.Metamor));
+            possesQueue.Enqueue(CreateNewEffect(EffectNames.Posses));
         }
     }
 
@@ -104,6 +110,10 @@ public class ObjPool : MonoBehaviour
 
             case EffectNames.Metamor:
                 newObj_ = Instantiate(metamorPrefab).GetComponent<Effect>();
+                break;
+
+            case EffectNames.Posses:
+                newObj_ = Instantiate(possesPrefab).GetComponent<Effect>();
                 break;
 
             default:
@@ -171,6 +181,22 @@ public class ObjPool : MonoBehaviour
                     return newObj_;
                 }
 
+            case EffectNames.Posses:
+                if (instance.possesQueue.Count > 0)
+                {
+                    Effect obj_ = instance.possesQueue.Dequeue();
+                    obj_.gameObject.SetActive(true);
+                    obj_.transform.SetParent(null);
+                    return obj_;
+                }
+                else
+                {
+                    Effect newObj_ = instance.CreateNewEffect(EffectNames.Posses);
+                    newObj_.gameObject.SetActive(true);
+                    newObj_.transform.SetParent(null);
+                    return newObj_;
+                }
+
             default:
                 return null;
         }
@@ -193,6 +219,10 @@ public class ObjPool : MonoBehaviour
 
             case EffectNames.Metamor:
                 instance.metamorQueue.Enqueue(obj_);
+                break;
+                
+            case EffectNames.Posses:
+                instance.possesQueue.Enqueue(obj_);
                 break;
 
             default:

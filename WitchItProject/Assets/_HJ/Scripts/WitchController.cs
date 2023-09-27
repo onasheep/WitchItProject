@@ -117,10 +117,11 @@ public class WitchController : PlayerBase
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            CancelMetamorphosis();
+            photonView.RPC("CancelMetamorphosis", RpcTarget.All);
+            //CancelMetamorphosis();
         }
 
-        if(Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L))
         {
             DieWitch();
         }
@@ -158,13 +159,15 @@ public class WitchController : PlayerBase
         if (isDead) { return; }
         if (isJump == false)
         {
-
             Move();
         }
         else
         {
             //JumpMove();
         }
+
+
+
         SetAnimation("MoveTotal");
         Turn();
     }
@@ -189,14 +192,14 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    MetamorphosisToObj(hit.collider.gameObject);
+                    photonView.RPC("MetamorphosisToObj", RpcTarget.All, hit.collider.gameObject);
+                    //MetamorphosisToObj(hit.collider.gameObject);
                 }
             };
 
         this.rigthFunc =
             () =>
             {
-
                 GameObject obj = PhotonNetwork.Instantiate
                 (RDefine.MUSHROOM_ORB, barrel.transform.position, Quaternion.identity);
                 skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);
@@ -206,7 +209,8 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    PossesionToObj(hit.collider.gameObject);
+                    photonView.RPC("PossesionToObj", RpcTarget.All, hit.collider.gameObject);
+                    //PossesionToObj(hit.collider.gameObject);
                 }
             };
         this.jumpFunc = () => JumpWitch();
@@ -225,7 +229,11 @@ public class WitchController : PlayerBase
     {
 
 
-        if (isMetamor) { /* Do Nothing */ }
+        if (isMetamor)
+        {
+            MoveVertical();
+            MoveHorizontal();
+        }
         else if (!isMetamor)
         {
             Vector3 forwardLook = new Vector3(myCamera.forward.x, 0, myCamera.forward.z);
@@ -238,6 +246,46 @@ public class WitchController : PlayerBase
         }
 
     }
+
+    // { 변신 후 이동 로직
+    void MoveVertical()
+    {
+        // 이동에 사용할 축
+        // 전후 방향에 수직이며, 시계방향으로 90도 만큼 돌아간 축
+        Vector3 torqueAxis_ = myCamera.transform.right;
+        torqueAxis_.y = 0;
+
+        if (verticalMove > 0)
+        {
+            // 축에 시계방향으로 회전
+            rigid.AddTorque(torqueAxis_ * 50);
+        }
+        else if (verticalMove < 0)
+        {
+            // 축에 반시계방향으로 회전
+            rigid.AddTorque(torqueAxis_ * -50);
+        }
+    }
+
+    void MoveHorizontal()
+    {
+        // 이동에 사용할 축
+        // 벡터 상 반대의 방향을 갖는 축
+        Vector3 torqueAxis_ = myCamera.transform.forward;
+        torqueAxis_.y = 0;
+
+        if (horizontalMove > 0)
+        {
+            // 축에 시계방향으로 회전
+            rigid.AddTorque(torqueAxis_ * -50);
+        }
+        else if (horizontalMove < 0)
+        {
+            // 축에 반시계방향으로 회전
+            rigid.AddTorque(torqueAxis_ * 50);
+        }
+    }
+    // } 변신 후 이동 로직
 
     void SetAnimation(string name)
     {
@@ -361,13 +409,13 @@ public class WitchController : PlayerBase
 
         // 마스터 클라이언트에 RPC를 보내서 isWitch 값을 변경합니다.
         gameManager.photonView.RPC("SetIsWitch", RpcTarget.MasterClient, true);
-       
+
 
         // 여기에서 플레이어를 파괴하거나 다른 처리를 수행할 수 있습니다.
         PhotonNetwork.Destroy(gameObject);
     }
 
-
+    [PunRPC]
     private void CancelMetamorphosis()
     {
 
@@ -401,10 +449,14 @@ public class WitchController : PlayerBase
         GetComponent<WitchController>().isMetamor = false;
     }
 
+    [PunRPC]
     private void PossesionToObj(GameObject obj_)
     {
         obj_.AddComponent<Cube>();
         obj_.layer = LayerMask.NameToLayer("Witch");
+
+        Effect sparkle_ = ObjPool.GetEffect(ObjPool.EffectNames.Posses);
+        sparkle_.gameObject.transform.position = lookPoint.transform.position;
 
         if (currBody == witchBody)
         {
@@ -433,6 +485,7 @@ public class WitchController : PlayerBase
         GetComponent<WitchController>().isMetamor = true;
     }
 
+    [PunRPC]
     private void MetamorphosisToObj(GameObject obj_)
     {
         GameObject newBody_ = Instantiate(obj_);
@@ -440,7 +493,8 @@ public class WitchController : PlayerBase
         newBody_.layer = LayerMask.NameToLayer("Witch");
 
         newBody_.transform.position = lookPoint.transform.position;
-        newBody_.AddComponent<Cube>();
+       // newBody_.AddComponent<Cube>();
+        newBody_.AddComponent<WitchController>();
 
         Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
         smoke_.gameObject.transform.position = lookPoint.transform.position;
@@ -471,25 +525,4 @@ public class WitchController : PlayerBase
 
         GetComponent<WitchController>().isMetamor = true;
     }
-
-    private void ShootRay()
-    {
-        if (Input.GetButtonDown("Fire1"))
-        {
-            if (hit.collider != null)
-            {
-                MetamorphosisToObj(hit.collider.gameObject);
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            if (hit.collider != null)
-            {
-                PossesionToObj(hit.collider.gameObject);
-            }
-        }
-    }
-
-
 }

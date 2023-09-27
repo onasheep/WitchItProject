@@ -73,6 +73,10 @@ MonoBehaviour:
   - WinH
   - WinW
   - SetOver
+  - ActiveFalseModel
+  - CancelMetamorphosis
+  - MetamorphosisToObj
+  - PossesionToObj
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
