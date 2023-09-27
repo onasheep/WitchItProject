@@ -101,20 +101,16 @@ public abstract class PlayerBase : MonoBehaviourPun
             {
                 isFire_On = false;
                 this.leftFunc.Invoke();
-                ThreadManager.instance.DoRoutine(() =>  OnSkill(ref isFire_On), fireCool);
+                ThreadManager.instance.DoRoutine(() =>  
+                    OnSkill(ref isFire_On), fireCool).KillCoroutine(this, fireCool + 0.01f);
 
             }
-            else if(type == TYPE.WITCH && isMetamol_On == true)
+            //SJ_230927
+            else if(type == TYPE.WITCH)
             {
-                isMetamol_On = false;
                 this.leftFunc.Invoke();
-                ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+            }
 
-            }
-            else
-            {
-                /* Do Nothing */
-            }
         }
         // SJ_230926 isSkillOn add 
         if (Input.GetMouseButtonDown(1) && isSkillRM_On)
@@ -178,6 +174,7 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected void OnSkill(ref bool isSkillOn_)
     {
         isSkillOn_ = true;
+        
     }
 
     protected IEnumerator Footfall()

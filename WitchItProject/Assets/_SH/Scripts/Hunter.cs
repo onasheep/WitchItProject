@@ -87,13 +87,14 @@ public class Hunter : PlayerBase
     protected override void Init()
     {
         base.Init();
-
         dogRing = this.gameObject.FindChildObj("DogRing");
-
         base.type = TYPE.HUNTER;
 
-        Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
+        // { 스킬 담김 
+        skillSlot.SelSkill((int)type);
+        // } 스킬 담김 
 
+        Camera main = GameObject.Find("Main Camera").GetComponent<Camera>();
         // { SJ_ 석환씨가 말한 주석 
 
         //// 현재 Culling Mask 값을 가져옵니다.
@@ -107,28 +108,25 @@ public class Hunter : PlayerBase
 
         // } SJ_ 석환씨가 말한 주석 
 
-        skillSlot.SelSkill((int)type);
 
 
-        this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
+        this.leftFunc = 
+            () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
         this.rigthFunc =
-            () =>
-            {
-                GameObject obj = PhotonNetwork.Instantiate
-                (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
-                skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
+        () =>
+        {
+            GameObject obj = PhotonNetwork.Instantiate
+            (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
+            skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
 
-            };
+        };
         this.QFunc =
-            () =>
-            {
-
-                GameObject obj = PhotonNetwork.Instantiate
-                (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
-                skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
-
-
-            };
+        () =>
+        {
+            GameObject obj = PhotonNetwork.Instantiate
+            (RDefine.CROSS_OBJ, myCamera.position + myCamera.forward, Quaternion.identity);
+            skillSlot.Slots[1].ActivateSkill(obj, myCamera.forward);
+        };
         this.jumpFunc = () => JumpHunter();
     }
 
@@ -167,8 +165,6 @@ public class Hunter : PlayerBase
     [PunRPC]
     private void ThrowKnife(Vector3 start_, Quaternion direction_)
     {
-        Debug.Log("칼던짐");
-
         Bullet obj_ = ObjPool.GetBullet();
 
         if (obj_ == null)

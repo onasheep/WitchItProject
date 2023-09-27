@@ -192,8 +192,15 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    photonView.RPC("MetamorphosisToObj", RpcTarget.All, hit.collider.gameObject);
-                    //MetamorphosisToObj(hit.collider.gameObject);
+                    //SJ_230927
+                    if (isMetamol_On == true)
+                    {
+
+                        isMetamol_On = false;
+                        photonView.RPC("MetamorphosisToObj", RpcTarget.All, hit.collider.gameObject);
+                         //MetamorphosisToObj(hit.collider.gameObject);
+                        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+                    }
                 }
             };
 
@@ -483,6 +490,9 @@ public class WitchController : PlayerBase
         }
 
         GetComponent<WitchController>().isMetamor = true;
+
+        //SJ_230927
+        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
     }
 
     [PunRPC]
@@ -524,5 +534,6 @@ public class WitchController : PlayerBase
         }
 
         GetComponent<WitchController>().isMetamor = true;
+
     }
 }
