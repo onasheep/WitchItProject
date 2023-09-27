@@ -95,11 +95,17 @@ public class TestCustom : MonoBehaviour
             // 프리팹 경로 확인
             Debug.Log("prefabPath 값: " + prefabPath);
 
+#if UNITY_EDITOR
             // 플레이어 오브젝트(이제 커스텀 오브젝트를 포함)를 프리팹으로 저장
             PrefabUtility.SaveAsPrefabAsset(PlayerObject, prefabPath);
+#endif
             Debug.Log("PrefabUtility.SaveAsPrefabAsset 함수가 호출되었습니다."); // PrefabUtility.SaveAsPrefabAsset 함수 호출 확인
-            
+
+            //AssetDatabase.Refresh();
+#if UNITY_EDITOR
+            // AssetDatabase를 사용하는 코드
             AssetDatabase.Refresh();
+#endif
         }
     }
 }

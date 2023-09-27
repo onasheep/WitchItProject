@@ -1,13 +1,17 @@
-using UnityEngine;
 using Photon.Pun;
+using UnityEngine;
 
 public class CharacterSpawner : MonoBehaviourPunCallbacks
 {
-    public GameObject playerPrefab;
+    public GameObject customHunterPrefab;
     public Transform[] spawnPoints;
+
+    public string hunterScriptName = "Hunter";
 
     private void Start()
     {
+        customHunterPrefab = Resources.Load<GameObject>("CustomHunter");
+
         if (PhotonNetwork.IsConnectedAndReady)
         {
             SpawnPlayer();
@@ -16,19 +20,27 @@ public class CharacterSpawner : MonoBehaviourPunCallbacks
 
     private void SpawnPlayer()
     {
-        int spawnPointIndex = Random.Range(0, spawnPoints.Length);
-        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[spawnPointIndex].position, Quaternion.identity);
+        int hunterSpawnPoint = 2;
+        GameObject player = PhotonNetwork.Instantiate(customHunterPrefab.name, spawnPoints[hunterSpawnPoint].position, spawnPoints[hunterSpawnPoint].rotation);
 
-        // 활성화할 스크립트와 PhotonView를 찾습니다.
-        MonoBehaviourPun[] scriptsToActivate = player.GetComponents<MonoBehaviourPun>();
-        //playerbase가 MonoBehaviourPun 써서
-        PhotonView photonViewToActivate = player.GetComponent<PhotonView>();
-
-        // 스크립트와 PhotonView를 활성화합니다.
-        foreach (MonoBehaviour script in scriptsToActivate)
+        // Hunter 스크립트를 추가합니다.
+        System.Type hunterScriptType = System.Type.GetType(hunterScriptName);
+        if (hunterScriptType != null)
         {
-            script.enabled = true;
+            MonoBehaviour hunterScriptInstance = (MonoBehaviour)player.AddComponent(hunterScriptType);
+            hunterScriptInstance.enabled = true;
         }
-        photonViewToActivate.enabled = true;
+        else
+        {
+            Debug.LogError("스크립트를 찾을 수 없습니다: " + hunterScriptName);
+        }
+
+        // PhotonView, PhotonTransformView, PhotonAnimatorView 컴포넌트를 추가합니다.
+        PhotonView photonView = player.AddComponent<PhotonView>();
+        PhotonTransformView photonTransformView = player.AddComponent<PhotonTransformView>();
+        PhotonAnimatorView photonAnimatorView = player.AddComponent<PhotonAnimatorView>();
+
+        // 필요한 경우 추가 설정을 여기에 작성합니다.
     }
+
 }
