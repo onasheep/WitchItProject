@@ -24,10 +24,14 @@ public static partial class GFunc
         }
 
         // 여기서 뭔가 리스트에서 빼줘야 함.
-        //ThreadManager.instance.RemoveRoutine(routine);
+        ThreadManager.instance.RemoveRoutine(routine);
         // 그 다음에 인스턴스 킬
+        Debug.LogFormat("routine null or default ? : {0}", GFunc.IsCoroutineDead(routine));
+
         manager_.StopCoroutine(routine);
         routine = default;
+        Debug.LogFormat("routine null or default ? : {0}", GFunc.IsCoroutineDead(routine));
+
 
         //yield return 0.1f;
         //Debug.LogFormat("is real dead Coroutine?? -> {0}", IsCoroutineDead(routine));

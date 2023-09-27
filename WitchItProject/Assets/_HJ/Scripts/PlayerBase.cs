@@ -128,7 +128,7 @@ public abstract class PlayerBase : MonoBehaviourPun
 
             this.QFunc.Invoke();
 
-            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillQ_On), skillSlot.Slots[1].CoolTime);
+            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillQ_On), skillSlot.Slots[1].CoolTime).KillCoroutine(this, skillSlot.Slots[1].CoolTime + 0.01f);
 
         }
         if (Input.GetKeyDown(KeyCode.Space))
