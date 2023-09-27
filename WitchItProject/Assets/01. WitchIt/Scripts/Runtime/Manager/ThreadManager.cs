@@ -56,7 +56,7 @@ public class ThreadManager : MonoBehaviour
         IEnumerator routine = SetTimer(action_, time_);
         routines.Add(routine);
 
-        curruntRoutine = StartCoroutine(routine.KillCoroutine(time_));
+        //curruntRoutine = StartCoroutine(routine.KillCoroutine(time_));
         return curruntRoutine;
     }
 
