@@ -195,7 +195,6 @@ public class WitchController : PlayerBase
                         isMetamol_On = false;
                         MetamorphosisToObj(hit.collider.gameObject);
                         ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
-
                     }
                 }
             };
@@ -203,7 +202,6 @@ public class WitchController : PlayerBase
         this.rigthFunc =
             () =>
             {
-
                 GameObject obj = PhotonNetwork.Instantiate
                 (RDefine.MUSHROOM_ORB, barrel.transform.position, Quaternion.identity);
                 skillSlot.Slots[0].ActivateSkill(obj, (barrel.transform.position - myCamera.position).normalized);

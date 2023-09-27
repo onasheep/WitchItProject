@@ -101,7 +101,8 @@ public abstract class PlayerBase : MonoBehaviourPun
             {
                 isFire_On = false;
                 this.leftFunc.Invoke();
-                ThreadManager.instance.DoRoutine(() =>  OnSkill(ref isFire_On), fireCool);
+                ThreadManager.instance.DoRoutine(() =>  
+                    OnSkill(ref isFire_On), fireCool).KillCoroutine(this, fireCool + 0.01f);
 
             }
             //SJ_230927

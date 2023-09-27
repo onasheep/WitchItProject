@@ -1,3 +1,4 @@
+using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,12 +50,14 @@ public class ThreadManager : MonoBehaviour
         
     }
 
-    public void DoRoutine(UnityAction action_, float time_)
+    public Coroutine DoRoutine(UnityAction action_, float time_)
     {
+        Coroutine curruntRoutine = default;
         IEnumerator routine = SetTimer(action_, time_);
         routines.Add(routine);
-        StartCoroutine(routine.KillCoroutine(time_));
 
+        curruntRoutine = StartCoroutine(routine.KillCoroutine(time_));
+        return curruntRoutine;
     }
 
     private IEnumerator SetTimer(UnityAction action_, float time_)
