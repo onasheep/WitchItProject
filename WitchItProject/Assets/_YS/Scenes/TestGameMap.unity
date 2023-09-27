@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18084905, g: 0.22638777, b: 0.30721128, a: 1}
+  m_IndirectSpecularColor: {r: 0.1808488, g: 0.2263873, b: 0.30721074, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &4
 LightmapSettings:
@@ -12782,7 +12782,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 288938085}
   sceneViewId: 158
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -15649,7 +15651,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 363988802}
   sceneViewId: 151
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -22663,7 +22667,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 528443197}
   sceneViewId: 186
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -33500,7 +33506,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 803910173}
   sceneViewId: 215
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -41073,7 +41080,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 1014127979}
   sceneViewId: 136
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -42502,7 +42511,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 1059732230}
   sceneViewId: 133
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -49004,7 +49015,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1230723413}
   sceneViewId: 114
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -49503,7 +49515,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 1238343458}
   sceneViewId: 112
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -53165,7 +53179,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 1344430674}
   sceneViewId: 104
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -54608,7 +54624,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1373028369}
   sceneViewId: 99
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -56342,7 +56359,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1424668804}
   sceneViewId: 93
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -60724,7 +60742,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1544981532}
   sceneViewId: 84
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -68770,7 +68789,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1726959083}
   sceneViewId: 54
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -70137,7 +70157,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 1756244811}
   sceneViewId: 51
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -74139,7 +74161,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 1843514965}
   sceneViewId: 39
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -84340,7 +84363,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 2065424952}
   sceneViewId: 11
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -85963,7 +85988,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 2094599871}
   sceneViewId: 6
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -87689,7 +87716,9 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 0}
+  - {fileID: 2123727266}
   sceneViewId: 196
   InstantiationId: 0
   isRuntimeInstantiated: 0

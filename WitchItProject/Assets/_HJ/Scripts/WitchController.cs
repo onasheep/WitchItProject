@@ -117,8 +117,8 @@ public class WitchController : PlayerBase
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            photonView.RPC("CancelMetamorphosis", RpcTarget.All);
-            //CancelMetamorphosis();
+            CancelMetamorphosis(myPv.ViewID);
+            photonView.RPC("CancelMetamorphosis", RpcTarget.Others, myPv.ViewID);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -197,8 +197,8 @@ public class WitchController : PlayerBase
                     {
 
                         isMetamol_On = false;
-                        photonView.RPC("MetamorphosisToObj", RpcTarget.All, hit.collider.gameObject);
-                         //MetamorphosisToObj(hit.collider.gameObject);
+                        MetamorphosisToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                        photonView.RPC("MetamorphosisToObj", RpcTarget.Others, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
                         ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
                     }
                 }
@@ -216,8 +216,8 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    photonView.RPC("PossesionToObj", RpcTarget.All, hit.collider.gameObject);
-                    //PossesionToObj(hit.collider.gameObject);
+                    PossesionToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                    photonView.RPC("PossesionToObj", RpcTarget.Others, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
                 }
             };
         this.jumpFunc = () => JumpWitch();
@@ -423,117 +423,130 @@ public class WitchController : PlayerBase
     }
 
     [PunRPC]
-    private void CancelMetamorphosis()
+    private void CancelMetamorphosis(int myViewID_)
     {
+        GameObject witch_ = PhotonView.Find(myViewID_).gameObject;
+        GameObject witchBody_ = witch_.transform.GetChild(0).gameObject;
+        GameObject lookPoint_ = witch_.transform.GetChild(2).gameObject;
 
-        if (witchBody.activeInHierarchy)
+        if (witchBody_.activeInHierarchy)
         {
             return;
         }
-        else if (!witchBody.activeInHierarchy)
+        else if (!witchBody_.activeInHierarchy)
         {
-            transform.position = lookPoint.transform.position;
+            witch_.transform.position = lookPoint_.transform.position;
 
-            witchBody.SetActive(true);
+            witchBody_.SetActive(true);
 
-            GetComponent<Rigidbody>().useGravity = true;
-            GetComponent<Collider>().enabled = true;
+            witch_.GetComponent<Rigidbody>().useGravity = true;
+            witch_.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            witch_.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-            rigid.velocity = Vector3.zero;
-            rigid.angularVelocity = Vector3.zero;
+            witch_.GetComponent<Collider>().enabled = true;
 
-            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+            GameObject prevBody_ = lookPoint_.transform.parent.gameObject;
 
-            lookPoint.transform.SetParent(transform);
-            lookPoint.transform.localPosition = new Vector3(0, 1.379f, 0);
+            lookPoint_.transform.SetParent(transform);
+            lookPoint_.transform.localPosition = new Vector3(0, 1.379f, 0);
 
             Destroy(prevBody_);
 
-            currBody = witchBody;
+            witch_.GetComponent<WitchController>().currBody = witchBody_;
         }
 
-
-        GetComponent<WitchController>().isMetamor = false;
+        witch_.GetComponent<WitchController>().isMetamor = false;
     }
 
     [PunRPC]
-    private void PossesionToObj(GameObject obj_)
+    private void PossesionToObj(int myViewID_, int objViewID_)
     {
+        GameObject witch_ = PhotonView.Find(myViewID_).gameObject;
+        GameObject witchBody_ = witch_.transform.GetChild(0).gameObject;
+        GameObject lookPoint_ = witch_.transform.GetChild(2).gameObject;
+
+        GameObject obj_ = PhotonView.Find(objViewID_).gameObject;
         obj_.AddComponent<Cube>();
         obj_.layer = LayerMask.NameToLayer("Witch");
 
         Effect sparkle_ = ObjPool.GetEffect(ObjPool.EffectNames.Posses);
-        sparkle_.gameObject.transform.position = lookPoint.transform.position;
+        sparkle_.gameObject.transform.position = lookPoint_.transform.position;
 
-        if (currBody == witchBody)
+        if (witch_.GetComponent<WitchController>().currBody == witchBody_)
         {
-            currBody.SetActive(false);
+            witchBody_.SetActive(false);
 
-            GetComponent<Rigidbody>().useGravity = false;
-            GetComponent<Collider>().enabled = false;
+            witch_.GetComponent<Rigidbody>().useGravity = false;
+            witch_.GetComponent<Collider>().enabled = false;
 
-            lookPoint.transform.SetParent(obj_.transform);
-            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+            lookPoint_.transform.SetParent(obj_.transform);
+            lookPoint_.transform.position = obj_.GetComponent<Renderer>().bounds.center;
 
-            currBody = obj_;
+            witch_.GetComponent<WitchController>().currBody = obj_;
         }
         else
         {
-            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+            GameObject prevBody_ = lookPoint_.transform.parent.gameObject;
 
-            lookPoint.transform.SetParent(obj_.transform);
-            lookPoint.transform.position = obj_.GetComponent<Renderer>().bounds.center;
+            lookPoint_.transform.SetParent(obj_.transform);
+            lookPoint_.transform.position = obj_.GetComponent<Renderer>().bounds.center;
 
             Destroy(prevBody_);
 
-            currBody = obj_;
+            witch_.GetComponent<WitchController>().currBody = obj_;
         }
 
-        GetComponent<WitchController>().isMetamor = true;
+        witch_.GetComponent<WitchController>().isMetamor = true;
 
         //SJ_230927
         ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
     }
 
     [PunRPC]
-    private void MetamorphosisToObj(GameObject obj_)
+    private void MetamorphosisToObj(int myViewID_, int objViewID_)
     {
-        GameObject newBody_ = Instantiate(obj_);
+        GameObject witch_ = PhotonView.Find(myViewID_).gameObject;
+        GameObject witchBody_ = witch_.transform.GetChild(0).gameObject;
+        GameObject lookPoint_ = witch_.transform.GetChild(2).gameObject;
 
+        GameObject newBody_ = PhotonNetwork.Instantiate("HunterCharacter", lookPoint_.transform.position, lookPoint_.transform.rotation);
+        //GameObject newBody_ = Instantiate(PhotonView.Find(objViewID_).gameObject);
+
+
+
+        newBody_.transform.position = lookPoint_.transform.position;
+        // newBody_.AddComponent<Cube>();
+        newBody_.AddComponent<WitchController>();
         newBody_.layer = LayerMask.NameToLayer("Witch");
 
-        newBody_.transform.position = lookPoint.transform.position;
-       // newBody_.AddComponent<Cube>();
-        newBody_.AddComponent<WitchController>();
-
         Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
-        smoke_.gameObject.transform.position = lookPoint.transform.position;
+        smoke_.gameObject.transform.position = lookPoint_.transform.position;
 
-        if (currBody == witchBody)
+        if (witch_.GetComponent<WitchController>().currBody == witchBody_)
         {
-            currBody.SetActive(false);
+            witchBody_.SetActive(false);
 
             GetComponent<Rigidbody>().useGravity = false;
             GetComponent<Collider>().enabled = false;
 
-            lookPoint.transform.SetParent(newBody_.transform);
-            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
+            lookPoint_.transform.SetParent(newBody_.transform);
+            lookPoint_.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
 
-            currBody = newBody_;
+            witch_.GetComponent<WitchController>().currBody = newBody_;
         }
         else
         {
-            GameObject prevBody_ = lookPoint.transform.parent.gameObject;
+            GameObject prevBody_ = lookPoint_.transform.parent.gameObject;
 
-            lookPoint.transform.SetParent(newBody_.transform);
-            lookPoint.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
+            lookPoint_.transform.SetParent(newBody_.transform);
+            lookPoint_.transform.position = newBody_.GetComponent<Renderer>().bounds.center;
 
             Destroy(prevBody_);
 
-            currBody = newBody_;
+            witch_.GetComponent<WitchController>().currBody = newBody_;
         }
 
-        GetComponent<WitchController>().isMetamor = true;
+        witch_.GetComponent<WitchController>().isMetamor = true;
 
     }
 }
