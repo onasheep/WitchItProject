@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/_HJ/Scenes/TestGorani.unity
-    guid: 4fbf87bc045a27f48b79c97b7e35935a
   - enabled: 1
     path: Assets/_HJ/Scenes/TitleScene.unity
     guid: 12a6659fdd08da749ab5b3b1b234c50b
