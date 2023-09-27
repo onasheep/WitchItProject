@@ -78,9 +78,13 @@ MonoBehaviour:
   - MetamorphosisToObj
   - PossesionToObj
   - UpdateCustom
+<<<<<<< HEAD
   - RpcClearBuffer
   - RpcNonServerOwnedTeleportFromServer
   - RpcTeleport
+=======
+  - SetObjs
+>>>>>>> origin/Jung
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

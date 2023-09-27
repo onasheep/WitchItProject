@@ -118,7 +118,7 @@ public class WitchController : PlayerBase
         if (Input.GetKeyDown(KeyCode.F))
         {
             CancelMetamorphosis(myPv.ViewID);
-            photonView.RPC("CancelMetamorphosis", RpcTarget.Others, myPv.ViewID);
+            photonView.RPC("CancelMetamorphosis", RpcTarget.All, myPv.ViewID);
         }
 
         if (Input.GetKeyDown(KeyCode.L))
@@ -197,8 +197,8 @@ public class WitchController : PlayerBase
                     {
 
                         isMetamol_On = false;
-                        MetamorphosisToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
-                        photonView.RPC("MetamorphosisToObj", RpcTarget.Others, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                        //MetamorphosisToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                        photonView.RPC("MetamorphosisToObj", RpcTarget.All, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
                         ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
                     }
                 }
@@ -216,8 +216,8 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    PossesionToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
-                    photonView.RPC("PossesionToObj", RpcTarget.Others, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                    //PossesionToObj(myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
+                    photonView.RPC("PossesionToObj", RpcTarget.All, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID);
                 }
             };
         this.jumpFunc = () => JumpWitch();
@@ -238,8 +238,8 @@ public class WitchController : PlayerBase
 
         if (isMetamor)
         {
-            MoveVertical();
-            MoveHorizontal();
+            //MoveVertical();
+            //MoveHorizontal();
         }
         else if (!isMetamor)
         {
@@ -509,14 +509,14 @@ public class WitchController : PlayerBase
         GameObject witchBody_ = witch_.transform.GetChild(0).gameObject;
         GameObject lookPoint_ = witch_.transform.GetChild(2).gameObject;
 
-        GameObject newBody_ = PhotonNetwork.Instantiate("HunterCharacter", lookPoint_.transform.position, lookPoint_.transform.rotation);
+        GameObject newBody_ = PhotonNetwork.Instantiate(PhotonView.Find(objViewID_).name, lookPoint_.transform.position, lookPoint_.transform.rotation);
         //GameObject newBody_ = Instantiate(PhotonView.Find(objViewID_).gameObject);
 
 
 
         newBody_.transform.position = lookPoint_.transform.position;
-        // newBody_.AddComponent<Cube>();
-        newBody_.AddComponent<WitchController>();
+        newBody_.AddComponent<Cube>();
+        //newBody_.AddComponent<WitchController>();
         newBody_.layer = LayerMask.NameToLayer("Witch");
 
         Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
