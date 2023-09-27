@@ -1,21 +1,14 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ThreadManager : MonoBehaviour
 {
     public static ThreadManager instance;
-
-    private Dictionary<string, IEnumerator> routineDic;
     
-    public static List<IEnumerator> routines;
+    private static List<IEnumerator> routines;
 
-    private const string SET_TIMER = "SetTimer";
-
-    private float skillTimer = default;
     
     private void Awake()
     {
@@ -34,7 +27,6 @@ public class ThreadManager : MonoBehaviour
     private void Init()
     {
         routines = new List<IEnumerator>();
-        skillTimer = 0f;
     }
 
 
@@ -44,19 +36,30 @@ public class ThreadManager : MonoBehaviour
         Debug.LogFormat("{0}",routines.Count);
     }
 
+    private void OnDestroy()
+    {
+        if( routines.Count > 1 )
+        {
+            foreach(IEnumerator routine in routines)
+            {
+                StopCoroutine(routine);
+            }
+        }
+        else { /* Do Nothing */ }
+        
+    }
+
     public void DoRoutine(UnityAction action_, float time_)
     {
-
         IEnumerator routine = SetTimer(action_, time_);
         routines.Add(routine);
-        StartCoroutine(routine);
+        StartCoroutine(routine.KillCoroutine(time_));
 
     }
 
     private IEnumerator SetTimer(UnityAction action_, float time_)
     {
 
-        Debug.Log("SetTimer?");
         while (0 <= time_)
         {
             time_ -= Time.deltaTime;

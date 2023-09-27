@@ -111,14 +111,15 @@ public class Hunter : PlayerBase
 
 
         this.leftFunc = () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
-        this.rigthFunc =
-            () =>
-            {
-                GameObject obj = PhotonNetwork.Instantiate
-                (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
-                skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
 
-            };
+        this.rigthFunc =
+        () =>
+        {
+            GameObject obj = PhotonNetwork.Instantiate
+            (RDefine.WOLF_OBJ, dogRing.transform.position, Quaternion.identity);
+            skillSlot.Slots[0].ActivateSkill(obj, dogRing.transform.forward);
+
+        };
         this.QFunc =
             () =>
             {
@@ -167,8 +168,6 @@ public class Hunter : PlayerBase
     [PunRPC]
     private void ThrowKnife(Vector3 start_, Quaternion direction_)
     {
-        Debug.Log("칼던짐");
-
         Bullet obj_ = ObjPool.GetBullet();
 
         if (obj_ == null)

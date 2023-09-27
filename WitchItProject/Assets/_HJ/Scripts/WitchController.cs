@@ -189,7 +189,14 @@ public class WitchController : PlayerBase
             {
                 if (hit.collider != null)
                 {
-                    MetamorphosisToObj(hit.collider.gameObject);
+                    //SJ_230927
+                    if (isMetamol_On == true)
+                    {
+                        isMetamol_On = false;
+                        MetamorphosisToObj(hit.collider.gameObject);
+                        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+
+                    }
                 }
             };
 
@@ -431,6 +438,9 @@ public class WitchController : PlayerBase
         }
 
         GetComponent<WitchController>().isMetamor = true;
+
+        //SJ_230927
+        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
     }
 
     private void MetamorphosisToObj(GameObject obj_)
@@ -470,6 +480,7 @@ public class WitchController : PlayerBase
         }
 
         GetComponent<WitchController>().isMetamor = true;
+
     }
 
     private void ShootRay()
