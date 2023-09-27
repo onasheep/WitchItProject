@@ -8,7 +8,7 @@ public class ThreadManager : MonoBehaviour
 {
     public static ThreadManager instance;
     
-    private static List<IEnumerator> routines;
+    private static List<Coroutine> routines;
 
     
     private void Awake()
@@ -27,7 +27,7 @@ public class ThreadManager : MonoBehaviour
 
     private void Init()
     {
-        routines = new List<IEnumerator>();
+        routines = new List<Coroutine>();
     }
 
 
@@ -37,24 +37,37 @@ public class ThreadManager : MonoBehaviour
         Debug.LogFormat("{0}",routines.Count);
     }
 
-    private void OnDestroy()
-    {
-        if( routines.Count > 1 )
-        {
-            foreach(IEnumerator routine in routines)
-            {
-                StopCoroutine(routine);
-            }
-        }
-        else { /* Do Nothing */ }
+    
+
+    // TODO : GFunc + Thread 에서 적용되면 삭제할 예정 
+    //private void OnDestroy()
+    //{
+    //    if( routines.Count > 1 )
+    //    {
+    //        foreach(IEnumerator routine in routines)
+    //        {
+    //            StopCoroutine(routine);
+    //        }
+    //    }
+    //    else { /* Do Nothing */ }
         
+    //}
+
+    public void RemoveRoutine(Coroutine routine)
+    {
+        routines.Remove(routine);
+        Debug.LogFormat("routine null or default ? : {0}", GFunc.IsCoroutineDead(routine));
+
+
     }
+
 
     public Coroutine DoRoutine(UnityAction action_, float time_)
     {
         Coroutine curruntRoutine = default;
-        IEnumerator routine = SetTimer(action_, time_);
-        routines.Add(routine);
+
+        curruntRoutine = StartCoroutine(SetTimer(action_, time_)).KillCoroutine(this,time_ + 0.01f);
+        routines.Add(curruntRoutine);
 
         //curruntRoutine = StartCoroutine(routine.KillCoroutine(time_));
         return curruntRoutine;
