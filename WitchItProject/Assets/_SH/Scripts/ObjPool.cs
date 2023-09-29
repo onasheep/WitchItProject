@@ -45,7 +45,7 @@ public class ObjPool : MonoBehaviour
         metamorPrefab = (GameObject)Resources.Load("Metamorphosis");
         possesPrefab = (GameObject)Resources.Load("Possesion");
 
-        Initialize(30);
+        Initialize(10);
     }
 
     private void Initialize(int initCount)

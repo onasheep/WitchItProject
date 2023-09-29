@@ -10,7 +10,7 @@ public class SetChangeableObject : MonoBehaviourPun
 
     private void Start()
     {
-        photonView.RPC("SetObjs", RpcTarget.MasterClient, 100);
+        photonView.RPC("SetObjs", RpcTarget.MasterClient, 50);
     }
 
     [PunRPC]
@@ -23,7 +23,6 @@ public class SetChangeableObject : MonoBehaviourPun
 
             GameObject obj_ = PhotonNetwork.Instantiate(changeableObjs[objIdx_].name, spawnPoints[pointIdx_].GetComponent<Collider>().bounds.center + new Vector3(0, 2, 0), Quaternion.identity);
 
-            obj_.name = changeableObjs[objIdx_].name;
             obj_.transform.SetParent(transform, true);
         }
     }

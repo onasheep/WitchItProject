@@ -82,6 +82,11 @@ MonoBehaviour:
   - RpcNonServerOwnedTeleportFromServer
   - RpcTeleport
   - SetObjs
+  - CancelPlease
+  - MetamorphosisPlease
+  - PossesionPlease
+  - SetModelActive
+  - SetObjsPlease
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

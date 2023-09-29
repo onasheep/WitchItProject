@@ -29,7 +29,7 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected Animator animator = default;
     protected SkillSlot skillSlot = default;
 
-    protected const float MOVESPEED = 5f;
+    protected const float MOVESPEED = 50f;
     protected const float JUMPFORCE = 5f;
 
     // { Skill Q, RightMouse bool
@@ -84,7 +84,12 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected virtual void InputPlayer()
     {
-     
+
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         verticalMove = Input.GetAxisRaw("Vertical");
         horizontalMove = Input.GetAxisRaw("Horizontal");
 
@@ -149,11 +154,8 @@ public abstract class PlayerBase : MonoBehaviourPun
         //    }
         this.moveFunc.Invoke();
 
-        rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
-        rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
-
-        animator.SetFloat("InputVertical", verticalMove);
-        animator.SetFloat("InputHorizontal", horizontalMove);
+        //rigid.AddForce(transform.forward * verticalMove * 50, ForceMode.Force);
+        //rigid.AddForce(transform.right * horizontalMove * 50, ForceMode.Force);
     }
 
     protected virtual void Jump()

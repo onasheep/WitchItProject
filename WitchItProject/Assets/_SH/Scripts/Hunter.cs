@@ -12,8 +12,6 @@ public class Hunter : PlayerBase
     //=====================
     private RaycastHit hunterRayHit;
 
-    private GameObject footFall = default;
-
     // 늑대 스킬 발사 위치
     private GameObject dogRing;
 
@@ -30,7 +28,7 @@ public class Hunter : PlayerBase
         Cursor.visible = false; // 마우스 커서를 숨김
 
         myPv = GetComponent<PhotonView>();
-        
+
 
         myCamera = GameObject.Find("HunterCamera").transform;
         myCamera.GetComponent<CinemachineVirtualCamera>().Priority += 1;
@@ -64,6 +62,8 @@ public class Hunter : PlayerBase
         InputPlayer();
 
 
+        RotateVertical();
+        RotateHorizontal();
         LimitCameraAngle();
 
         if (rigid.velocity.magnitude > 5f)
@@ -74,11 +74,6 @@ public class Hunter : PlayerBase
 
     protected override void InputPlayer()
     {
-        if (!photonView.IsMine)
-        {
-            return;
-        }
-
         base.InputPlayer();
     }
 
@@ -110,8 +105,13 @@ public class Hunter : PlayerBase
 
 
 
-        this.leftFunc = 
-            () => photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
+        this.leftFunc =
+        () =>
+        {
+            animator.SetTrigger("Shot");
+
+            photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
+        };
         this.rigthFunc =
         () =>
         {
@@ -149,9 +149,6 @@ public class Hunter : PlayerBase
 
         Move();
 
-        RotateVertical();
-        RotateHorizontal();
-
         if (hunterRayHit.collider != null)
         {
             crossHair.transform.position = hunterRayHit.point;
@@ -174,14 +171,10 @@ public class Hunter : PlayerBase
 
         obj_.transform.position = start_;
         obj_.transform.rotation = direction_;
-
-        animator.SetTrigger("Shot");
-
     }
 
     private void JumpHunter()
     {
-       
         if (animator.GetBool("IsGround"))
         {
             canSpawnFootfall = false;
@@ -193,7 +186,6 @@ public class Hunter : PlayerBase
 
             rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
         }
-        
     }
 
     private void MoveHunter()
