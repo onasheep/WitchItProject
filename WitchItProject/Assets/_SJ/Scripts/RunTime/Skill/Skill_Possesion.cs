@@ -17,7 +17,7 @@ public class Skill_Possesion : SkillBase
         GameObject currBody = witchBody;
         GameObject lookPoint = PlayerController.gameObject.FindChildObj("WitchCamera");
 
-        object_.AddComponent<Cube>();
+        object_.AddComponent<RollingMove>();
         
         
         if (currBody == witchBody)

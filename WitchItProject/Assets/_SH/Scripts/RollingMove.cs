@@ -1,7 +1,7 @@
 using Photon.Pun;
 using UnityEngine;
 
-public class Cube : MonoBehaviourPun
+public class RollingMove : MonoBehaviourPun
 {
     public Transform myCamera;
 
