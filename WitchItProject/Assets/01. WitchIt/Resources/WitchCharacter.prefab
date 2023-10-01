@@ -1535,6 +1535,8 @@ MonoBehaviour:
   isSkillRM_On: 0
   isFire_On: 0
   isMetamol_On: 0
+  hpObj: {fileID: 6811440001142438461, guid: cb623c5ab32f00743bc9f77c4b59a4aa, type: 3}
+  hpBar: {fileID: 0}
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5
