@@ -6,6 +6,8 @@ public static class RDefine
     public const string PLAYER_HUNTER = "HunterCharacter";
     public const string PLAYER_HUNTER2 = "CustomHunter";
     public const string PLAYER_WITCH = "WitchCharacter";
+    public const string PLAYER_WITCH2 = "CustomWitch";
+
 
     // } 플레이어 프리팹
 

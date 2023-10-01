@@ -1439,7 +1439,6 @@ GameObject:
   - component: {fileID: 580610352094114148}
   - component: {fileID: -2471910343295841514}
   - component: {fileID: 6561133770892635826}
-  - component: {fileID: 2181252969271028222}
   - component: {fileID: -151748321477811077}
   m_Layer: 7
   m_Name: WitchCharacter
@@ -1526,7 +1525,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
   m_Name: 
@@ -1574,7 +1573,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
@@ -1590,7 +1589,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
   m_Name: 
@@ -1607,22 +1606,6 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 2
     LayerIndex: 0
---- !u!114 &2181252969271028222
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb605e2d44adaec4bade28dacdb75b09, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  myBody: {fileID: 0}
-  defaultCameraDistance: 0
-  maxCameraDistance: 1
-  minCameraDistance: 8
 --- !u!114 &-151748321477811077
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1630,7 +1613,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8069ffa6ab7df7340ad5ce0c3da47526, type: 3}
   m_Name: 
@@ -2487,6 +2470,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3069584255766238075, guid: e9d3dd39d5850ad4fb64b6c6f3fe8b03, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3842837307634298433, guid: e9d3dd39d5850ad4fb64b6c6f3fe8b03, type: 3}
+      propertyPath: sceneViewId
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3842837307634298433, guid: e9d3dd39d5850ad4fb64b6c6f3fe8b03, type: 3}
