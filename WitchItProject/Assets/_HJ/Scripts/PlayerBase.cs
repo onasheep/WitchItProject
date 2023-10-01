@@ -32,18 +32,17 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected const float MOVESPEED = 50f;
     protected const float JUMPFORCE = 5f;
 
-    // { Skill Q, RightMouse bool
-    [SerializeField]
+    // { Skill Q, RightMouse 
     protected bool isSkillQ_On = default;
-    [SerializeField]
     protected bool isSkillRM_On = default;
-    [SerializeField]
     protected bool isFire_On = default;
-    [SerializeField]
     protected bool isMetamol_On = default;
     protected float fireCool = 0.3f;
     protected float metamolCool = 1.3f;
-    // } Skill Q, RightMouse bool
+
+    protected GameObject WitchSkillUi;
+    protected GameObject HunterSkillUi;
+    // } Skill Q, RightMouse 
 
 
     // } Hunter Witch Common
@@ -71,6 +70,8 @@ public abstract class PlayerBase : MonoBehaviourPun
 
         rigid = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
+
+        skillSlot0 = GFunc.GetRootObj("")
 
 
         // { Skill bool Init
@@ -108,6 +109,7 @@ public abstract class PlayerBase : MonoBehaviourPun
                 this.leftFunc.Invoke();
                 ThreadManager.instance.DoRoutine(() =>  
                     OnSkill(ref isFire_On), fireCool).KillCoroutine(this, fireCool + 0.01f);
+                
 
             }
             //SJ_230927

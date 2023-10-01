@@ -64,13 +64,6 @@ public class SkillSlot
 
     //}
 
-    // LEGACY : 생성자로 대체 
-    //// 스킬 정보를 초기화 
-    //void Init()
-    //{
-
-    //}       // Init()
-
 
 
 
