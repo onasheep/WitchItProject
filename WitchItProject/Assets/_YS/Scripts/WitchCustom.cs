@@ -7,18 +7,18 @@ using UnityEngine.UI;
 
 
 
-public class TestCustom : MonoBehaviour
+public class WitchCustom : MonoBehaviour
 {
     public GameObject PlayerObject;
     public GameObject[] rightCustoms;
     private int rightCurrentCustom;
 
-    public GameObject[] leftCustoms;
-    private int leftCurrentCustom;
+    public GameObject[] backCustoms;
+    private int backCurrentCustom;
 
     public Button saveButton;
     public Button switchRightButton;
-    public Button switchLeftButton;
+    public Button switchBackButton;
 
     // Start is called before the first frame update
     void Start()
@@ -26,14 +26,14 @@ public class TestCustom : MonoBehaviour
         saveButton.onClick.AddListener(SaveCustom);
 
         switchRightButton.onClick.AddListener(SwitchRightCustom);
-        switchLeftButton.onClick.AddListener(SwitchLeftCustom);
+        switchBackButton.onClick.AddListener(SwitchBackCustom);
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateRightCustom();
-        UpdateLeftCustom();
+        UpdateBackCustom();
     }
 
     public void SwitchRightCustom()
@@ -44,11 +44,11 @@ public class TestCustom : MonoBehaviour
         }
     }
 
-    public void SwitchLeftCustom()
+    public void SwitchBackCustom()
     {
-        if (leftCustoms.Length > 0)
+        if (backCustoms.Length > 0)
         {
-            leftCurrentCustom = (leftCurrentCustom + 1) % leftCustoms.Length;
+            backCurrentCustom = (backCurrentCustom + 1) % backCustoms.Length;
         }
     }
 
@@ -68,17 +68,17 @@ public class TestCustom : MonoBehaviour
         }
     }
 
-    void UpdateLeftCustom()
+    void UpdateBackCustom()
     {
-        for (int i = 0; i < leftCustoms.Length; i++)
+        for (int i = 0; i < backCustoms.Length; i++)
         {
-            if (i == leftCurrentCustom)
+            if (i == backCurrentCustom)
             {
-                leftCustoms[i].SetActive(true);
+                backCustoms[i].SetActive(true);
             }
             else
             {
-                leftCustoms[i].SetActive(false);
+                backCustoms[i].SetActive(false);
             }
         }
     }
@@ -92,10 +92,10 @@ public class TestCustom : MonoBehaviour
 
         // 커스텀 오브젝트를 합친 후 저장
         if (rightCurrentCustom >= 0 && rightCurrentCustom < rightCustoms.Length &&
-            leftCurrentCustom >= 0 && leftCurrentCustom < leftCustoms.Length)
+            backCurrentCustom >= 0 && backCurrentCustom < backCustoms.Length)
         {
             //Debug.Log("SaveCustomObject 호출 전");
-            SaveCustomObject(rightCustoms[rightCurrentCustom], leftCustoms[leftCurrentCustom]);
+            SaveCustomObject(rightCustoms[rightCurrentCustom], backCustoms[backCurrentCustom]);
             //Debug.Log("SaveCustomObject 호출 후");
         }
         else
@@ -106,10 +106,10 @@ public class TestCustom : MonoBehaviour
         }
     }
 
-    void SaveCustomObject(GameObject rightCustomObject, GameObject leftCustomObject)
+    void SaveCustomObject(GameObject rightCustomObject, GameObject backCustomObject)
     {
         rightCustomObject.transform.SetParent(PlayerObject.transform);
-        leftCustomObject.transform.SetParent(PlayerObject.transform);
+        backCustomObject.transform.SetParent(PlayerObject.transform);
 
         string prefabPath = Path.Combine("Assets/Resources", PlayerObject.name + ".prefab");
 

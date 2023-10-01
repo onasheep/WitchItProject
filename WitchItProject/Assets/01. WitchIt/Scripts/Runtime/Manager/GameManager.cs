@@ -11,6 +11,8 @@ using System;
 using Photon.Pun.UtilityScripts;
 using System.Runtime.InteropServices;
 using UnityEngine.Events;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
+using Smooth;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
@@ -401,27 +403,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void CreateHunter()
     {
-        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        int hunterSpawnPoint = 2;
-        PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
+        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        //int hunterSpawnPoint = 2;
+        //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
 
         // YS_ 230927 Merged
         //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER2, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
 
         // YS_ 230927 test
-        //Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
-        //int hunterSpawnPoint = 2;
-
-        //// YS_ TEST AFTER MERGE
-        //// GameObject hunter = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER2, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
+        Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+        int hunterSpawnPoint = 2;
+        GameObject hunter = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER2, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
 
         //// // 컴포넌트를 활성화합니다.
-        //// hunter.GetComponent<PhotonTransformView>().enabled = true;
-        //// //Debug.Log("PhotonTransformView 활성화됨");
-        //// hunter.GetComponent<PhotonAnimatorView>().enabled = true;
-        //// //Debug.Log("PhotonAnimatorView 활성화됨");
-        //// hunter.GetComponent<Hunter>().enabled = true; 
-        //// //Debug.Log("스크립트 활성화됨");
+        hunter.GetComponent<PhotonTransformView>().enabled = true;
+        //Debug.Log("PhotonTransformView 활성화됨");
+        hunter.GetComponent<PhotonAnimatorView>().enabled = true;
+        //Debug.Log("PhotonAnimatorView 활성화됨");
+        hunter.GetComponent<Hunter>().enabled = true;
+        //Debug.Log("스크립트 활성화됨");
         //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
         //int witchSpawnPoint = 1;
         // TEST : Witch 변신가능 오브젝트 아웃라인 테스트
@@ -431,11 +431,25 @@ public class GameManager : MonoBehaviourPunCallbacks
     }
     public void CreateWitch()
     {
+    //    Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
+    //    int witchSpawnPoint = 1;
+    //    PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH2, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+
+        //_YS TEST
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         int witchSpawnPoint = 1;
-        PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+        GameObject witch = PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH2, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+
+
+        witch.GetComponent<PhotonTransformView>().enabled = true;
+        //Debug.Log("PhotonTransformView 활성화됨");
+        witch.GetComponent<PhotonAnimatorView>().enabled = true;
+        //Debug.Log("PhotonAnimatorView 활성화됨");
+        witch.GetComponent<WitchController>().enabled = true;
+        witch.GetComponent<SmoothSyncPUN2>().enabled = true;
+
     }
-    
+
     [PunRPC]
     void WinH()
     {

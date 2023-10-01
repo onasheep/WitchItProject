@@ -14,4 +14,13 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_YS/Scenes/TestGameMap.unity
     guid: 78bfe50f65b6347468d66b56e10b8db8
+  - enabled: 1
+    path: Assets/_YS/Scenes/CustomLobbyScene.unity
+    guid: 5067b44894663a445992d92e4c18083d
+  - enabled: 1
+    path: Assets/_YS/Scenes/CustomHunterScene.unity
+    guid: e3e014ba2e496414ea515d1ecf28798d
+  - enabled: 1
+    path: Assets/_YS/Scenes/CustomWitchScene.unity
+    guid: 9d55034b0bdb4d7408c09b53b8ccd8b2
   m_configObjects: {}
