@@ -2,15 +2,20 @@ using Cinemachine;
 using Photon.Pun;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WitchController : PlayerBase
 {
+    //1001 hp 연동
+    [SerializeField] private GameObject hpObj;
+    [SerializeField] private Image hpBar; 
+
 
     //HJ__0920 포톤 테스트 추가
     private PhotonView myPv;
     //=====================
 
-    [SerializeField][Range(0, 100)] private int witchHealth = 50;
+    [Range(0, 100)] public int witchHealth = 50;
     [SerializeField][Range(0f, 100f)] private float witchMana = 50f;
 
 
@@ -37,6 +42,12 @@ public class WitchController : PlayerBase
     private GameObject currBody;
 
     private GameManager gameManager;
+
+
+    private void Awake()
+    {
+       
+    }
 
     private void Start()
     {
@@ -92,6 +103,14 @@ public class WitchController : PlayerBase
             {
                 return;
             }
+        }
+
+        //HJ__1001
+        if(photonView.IsMine)
+        {
+            hpObj = GameObject.Find("WitchCanvas");
+            hpBar = hpObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Image>();
+            hpBar.fillAmount = (health/50f);
         }
 
         if (health <= 0)
