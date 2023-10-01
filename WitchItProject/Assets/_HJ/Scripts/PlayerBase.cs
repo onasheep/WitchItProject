@@ -71,15 +71,12 @@ public abstract class PlayerBase : MonoBehaviourPun
         rigid = this.GetComponent<Rigidbody>();
         animator = this.GetComponent<Animator>();
 
-        skillSlot0 = GFunc.GetRootObj("")
-
-
+        
         // { Skill bool Init
         isSkillQ_On = true;
         isSkillRM_On = true;
         isFire_On = true;
         isMetamol_On = true;
-        
         // } Skill bool Init
     }
 
