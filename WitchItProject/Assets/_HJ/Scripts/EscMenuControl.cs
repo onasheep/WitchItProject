@@ -1,26 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class EscMenuControl : MonoBehaviour
 {
     [SerializeField] GameObject firstPanel;
-    //[SerializeField] GameObject secondPanel;
+    [SerializeField] GameObject settingPanel;
     [SerializeField] Canvas myCanvas;
 
+    [SerializeField] Button continueBtn;
+    [SerializeField] Button settingBtn;
+    [SerializeField] Button lobbyBtn;
+
+
     [SerializeField] private bool isEscMenu = false;
+    [SerializeField] private bool isSetting = false;
 
     private float btnMaxSize = 1.2f;
     private float btnMinSize = 1.0f;
 
     void Start()
     {
-        //firstPanel = transform.GetChild(0).gameObject;
-        //secondPanel = transform.GetChild(1).gameObject;
+        firstPanel = transform.GetChild(0).gameObject;
+        settingPanel = transform.GetChild(1).gameObject;
         myCanvas = GetComponent<Canvas>();
+
+        continueBtn =  firstPanel.transform.GetChild(0).GetComponent<Button>();
+        settingBtn = firstPanel.transform.GetChild(1).GetComponent<Button>();
+        lobbyBtn = firstPanel.transform.GetChild(4).GetComponent<Button>();
+
+        settingPanel.SetActive(false);
+
+        continueBtn.onClick.AddListener(() => ContinueGame());
+        settingBtn.onClick.AddListener(() => OpenSetting());
+        lobbyBtn.onClick.AddListener(() => GoLobby());
     }
 
     void Update()
+    {
+        OpenEscMenu();
+        OffSetting();
+    }
+
+
+    void OpenEscMenu()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -55,6 +80,7 @@ public class EscMenuControl : MonoBehaviour
         }
     }
 
+
     IEnumerator ButtonSizeUp(GameObject myBtn)
     {
         RectTransform myButton = myBtn.GetComponent<RectTransform>();
@@ -71,5 +97,33 @@ public class EscMenuControl : MonoBehaviour
             yield return null;
         }
         yield return new WaitForSeconds(1f);
+    }
+
+    void OffSetting()
+    {
+        if (isSetting)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                isSetting = false;
+            }
+        }
+    }
+    void ContinueGame()
+    {
+        isEscMenu = false;
+    }
+
+    void OpenSetting()
+    {
+        isEscMenu = false;
+        firstPanel.SetActive(false);
+        isSetting = true;
+        settingPanel.SetActive(true);
+    }
+
+    void GoLobby()
+    {
+        SceneManager.LoadScene("LobbyScene");
     }
 }
