@@ -7,6 +7,7 @@ public class RollingMove : MonoBehaviourPun
 
     private Rigidbody rigid;
 
+    public WitchController myWitchCon;
 
     private void Start()
     {

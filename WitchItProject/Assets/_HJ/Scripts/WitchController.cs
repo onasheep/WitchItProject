@@ -97,7 +97,7 @@ public class WitchController : PlayerBase
 
         if (health <= 0)
         {
-
+            DieWitch();
         }
 
         // { Ray로 변신, 빙의, 아웃라인 체크 
@@ -120,7 +120,7 @@ public class WitchController : PlayerBase
         {
             isMetamor = false;
 
-            //photonView.RPC("CancelMetamorphosis", RpcTarget.All, myPv.ViewID, lookPoint.transform.position);
+            photonView.RPC("MetamorEffect", RpcTarget.AllBufferedViaServer, lookPoint.transform.position);
             photonView.RPC("CancelPlease", RpcTarget.MasterClient, myPv.ViewID, lookPoint.transform.position);
         }
 
@@ -194,7 +194,7 @@ public class WitchController : PlayerBase
                         isMetamor = true;
 
                         isMetamol_On = false;
-                        //photonView.RPC("MetamorphosisToObj", RpcTarget.All, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position, lookPoint.transform.rotation);
+                        photonView.RPC("MetamorEffect", RpcTarget.AllBufferedViaServer, lookPoint.transform.position);
                         photonView.RPC("MetamorphosisPlease", RpcTarget.MasterClient, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position, lookPoint.transform.rotation);
 
                         ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
@@ -216,7 +216,7 @@ public class WitchController : PlayerBase
                 {
                     isMetamor = true;
 
-                    //photonView.RPC("PossesionToObj", RpcTarget.All, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position);
+                    photonView.RPC("PossesionEffect", RpcTarget.AllBufferedViaServer, lookPoint.transform.position);
                     photonView.RPC("PossesionPlease", RpcTarget.MasterClient, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position);
                 }
                 this.jumpFunc = () => JumpWitch();
@@ -331,19 +331,16 @@ public class WitchController : PlayerBase
     {
         if (!photonView.IsMine)
         { return; }
-        if (isMetamor) { /* Do Nothing */ }
-        else if (!isMetamor)
+
+        if (!isJump)
         {
-            if (!isJump)
-            {
-                StopCoroutine(Footfall());
+            StopCoroutine(Footfall());
 
-                isJump = true;
+            isJump = true;
 
 
-                rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
-                animator.SetTrigger("Jumping");
-            }
+            rigid.AddForce(transform.up * JUMPFORCE, ForceMode.Impulse);
+            animator.SetTrigger("Jumping");
         }
     }
 
@@ -403,15 +400,11 @@ public class WitchController : PlayerBase
 
     }
 
-
     [PunRPC]
-    public void TakeDamage()
+    public void TakeDamage(int myViewID_)
     {
         // 데미지는 5?
-        if (photonView.IsMine)
-        {
-            health -= 5;
-        }
+        PhotonView.Find(myViewID_).GetComponent<WitchController>().health -= 5;
     }
 
 
@@ -424,13 +417,14 @@ public class WitchController : PlayerBase
 
 
         // 여기에서 플레이어를 파괴하거나 다른 처리를 수행할 수 있습니다.
+        PhotonNetwork.Destroy(currBody);
         PhotonNetwork.Destroy(gameObject);
     }
 
     [PunRPC]
     private void CancelPlease(int myViewID_, Vector3 lookPosition_)
     {
-        photonView.RPC("CancelMetamorphosis", RpcTarget.AllBufferedViaServer, myViewID_, lookPosition_);
+        photonView.RPC("CancelMetamorphosis", RpcTarget.MasterClient, myViewID_, lookPosition_);
     }
 
     [PunRPC]
@@ -439,9 +433,6 @@ public class WitchController : PlayerBase
         WitchController witch_ = PhotonView.Find(myViewID_).GetComponent<WitchController>();
         GameObject witchBody_ = witch_.witchBody;
         GameObject lookPoint_ = witch_.lookPoint;
-
-        Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
-        smoke_.transform.position = lookPosition_;
 
         if (witch_.currBody == witchBody_)
         {
@@ -475,7 +466,15 @@ public class WitchController : PlayerBase
     [PunRPC]
     private void PossesionPlease(int myViewID_, int objViewID_, Vector3 lookPosition_)
     {
-        photonView.RPC("PossesionToObj", RpcTarget.AllBufferedViaServer, myViewID_, objViewID_, lookPosition_);
+        photonView.RPC("PossesionToObj", RpcTarget.MasterClient, myViewID_, objViewID_, lookPosition_);
+    }
+
+
+    [PunRPC]
+    private void PossesionEffect(Vector3 lookPosition_)
+    {
+        Effect sparkle_ = ObjPool.GetEffect(ObjPool.EffectNames.Posses);
+        sparkle_.transform.position = lookPosition_;
     }
 
     [PunRPC]
@@ -488,9 +487,6 @@ public class WitchController : PlayerBase
         GameObject obj_ = PhotonView.Find(objViewID_).gameObject;
         obj_.AddComponent<RollingMove>();
         obj_.layer = LayerMask.NameToLayer("Witch");
-
-        Effect sparkle_ = ObjPool.GetEffect(ObjPool.EffectNames.Posses);
-        sparkle_.transform.position = lookPosition_;
 
         if (witch_.currBody == witchBody_)
         {
@@ -529,7 +525,14 @@ public class WitchController : PlayerBase
     [PunRPC]
     private void MetamorphosisPlease(int myViewID_, int objViewID_, Vector3 lookPosition_, Quaternion lookRotation_)
     {
-        photonView.RPC("MetamorphosisToObj", RpcTarget.AllBufferedViaServer, myViewID_, objViewID_, lookPosition_, lookRotation_);
+        photonView.RPC("MetamorphosisToObj", RpcTarget.MasterClient, myViewID_, objViewID_, lookPosition_, lookRotation_);
+    }
+
+    [PunRPC]
+    private void MetamorEffect(Vector3 lookPosition_)
+    {
+        Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
+        smoke_.transform.position = lookPosition_;
     }
 
     [PunRPC]
@@ -542,13 +545,11 @@ public class WitchController : PlayerBase
         string objName_ = PhotonView.Find(objViewID_).name.Replace("(Clone)", "");
         GameObject newBody_ = PhotonNetwork.Instantiate(objName_, lookPosition_, lookRotation_);
 
-        newBody_.name = PhotonView.Find(objViewID_).name;
-        newBody_.transform.position = lookPoint_.transform.position;
+        newBody_.name = "Witch?";
+        newBody_.transform.position = lookPosition_;
         newBody_.AddComponent<RollingMove>();
+        newBody_.AddComponent<RollingMove>().myWitchCon = GetComponent<WitchController>();
         newBody_.layer = LayerMask.NameToLayer("Witch");
-
-        Effect smoke_ = ObjPool.GetEffect(ObjPool.EffectNames.Metamor);
-        smoke_.transform.position = lookPosition_;
 
         if (witch_.currBody == witchBody_)
         {
