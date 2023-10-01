@@ -11,7 +11,6 @@ using System;
 using Photon.Pun.UtilityScripts;
 using System.Runtime.InteropServices;
 using UnityEngine.Events;
-using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 using Smooth;
 
 public class GameManager : MonoBehaviourPunCallbacks

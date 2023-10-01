@@ -347,7 +347,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 1
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &4768873953729185602
@@ -864,10 +864,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSkillQ_On: 0
-  isSkillRM_On: 0
-  isFire_On: 0
-  isMetamol_On: 0
+  hpObj: {fileID: 0}
+  hpBar: {fileID: 0}
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5
@@ -895,7 +893,7 @@ MonoBehaviour:
   - {fileID: 6751461694551852791}
   - {fileID: 6561133769863504723}
   - {fileID: 9071623716506102170}
-  sceneViewId: 2
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &6751461694551852791
