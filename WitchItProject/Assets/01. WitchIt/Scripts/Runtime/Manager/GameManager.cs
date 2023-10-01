@@ -412,14 +412,14 @@ public class GameManager : MonoBehaviourPunCallbacks
         // YS_ 230927 test
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         int hunterSpawnPoint = 2;
-        GameObject hunter = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER2, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
+        GameObject hunter = PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0);
 
         //// // 컴포넌트를 활성화합니다.
-        hunter.GetComponent<PhotonTransformView>().enabled = true;
-        //Debug.Log("PhotonTransformView 활성화됨");
-        hunter.GetComponent<PhotonAnimatorView>().enabled = true;
-        //Debug.Log("PhotonAnimatorView 활성화됨");
-        hunter.GetComponent<Hunter>().enabled = true;
+        //hunter.GetComponent<PhotonTransformView>().enabled = true;
+        ////Debug.Log("PhotonTransformView 활성화됨");
+        //hunter.GetComponent<PhotonAnimatorView>().enabled = true;
+        ////Debug.Log("PhotonAnimatorView 활성화됨");
+        //hunter.GetComponent<Hunter>().enabled = true;
         //Debug.Log("스크립트 활성화됨");
         //PhotonNetwork.Instantiate(RDefine.PLAYER_HUNTER, points[hunterSpawnPoint].position, points[hunterSpawnPoint].rotation, 0); //헌터 생성입니다.
         //int witchSpawnPoint = 1;
@@ -437,15 +437,15 @@ public class GameManager : MonoBehaviourPunCallbacks
         //_YS TEST
         Transform[] points = GameObject.Find("SpawnPointGroup").GetComponentsInChildren<Transform>();
         int witchSpawnPoint = 1;
-        GameObject witch = PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH2, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
+        GameObject witch = PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
 
 
-        witch.GetComponent<PhotonTransformView>().enabled = true;
-        //Debug.Log("PhotonTransformView 활성화됨");
-        witch.GetComponent<PhotonAnimatorView>().enabled = true;
-        //Debug.Log("PhotonAnimatorView 활성화됨");
-        witch.GetComponent<WitchController>().enabled = true;
-        witch.GetComponent<SmoothSyncPUN2>().enabled = true;
+        //witch.GetComponent<PhotonTransformView>().enabled = true;
+        ////Debug.Log("PhotonTransformView 활성화됨");
+        //witch.GetComponent<PhotonAnimatorView>().enabled = true;
+        ////Debug.Log("PhotonAnimatorView 활성화됨");
+        //witch.GetComponent<WitchController>().enabled = true;
+        //witch.GetComponent<SmoothSyncPUN2>().enabled = true;
 
     }
 

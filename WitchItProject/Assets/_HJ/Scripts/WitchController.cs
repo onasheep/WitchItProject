@@ -110,7 +110,7 @@ public class WitchController : PlayerBase
         {
             hpObj = GameObject.Find("WitchCanvas");
             hpBar = hpObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Image>();
-            hpBar.fillAmount = (health/50f);
+            hpBar.fillAmount = (health/100f);
         }
 
         if (health <= 0)
@@ -391,8 +391,7 @@ public class WitchController : PlayerBase
                     {
                         canSpawnFootfall = false;
 
-                        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
-                        footfall_.transform.position = transform.position;
+                        photonView.RPC("FootfallEffect", RpcTarget.AllBufferedViaServer, lookPoint.transform.position);
 
                         StartCoroutine(Footfall());
                     }
@@ -402,6 +401,13 @@ public class WitchController : PlayerBase
                 break;
             }
         }
+    }
+
+    [PunRPC]
+    private void FootfallEffect(Vector3 myPos_)
+    {
+        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+        footfall_.transform.position = myPos_;
     }
 
     void JumpMove()

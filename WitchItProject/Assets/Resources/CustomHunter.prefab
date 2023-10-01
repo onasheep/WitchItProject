@@ -6477,7 +6477,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 797372201}
   - {fileID: 797372202}
-  sceneViewId: 4
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!114 &6132522099125209046
@@ -6492,10 +6492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfeed7f38e19b14f933497c5188d7dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSkillQ_On: 0
-  isSkillRM_On: 0
-  isFire_On: 0
-  isMetamol_On: 0
 --- !u!1 &6132522099124889831
 GameObject:
   m_ObjectHideFlags: 0
@@ -7133,7 +7129,7 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 2
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
 --- !u!1 &6132522099124914341
@@ -7561,6 +7557,6 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents: []
-  sceneViewId: 3
+  sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

@@ -110,7 +110,7 @@ public class Hunter : PlayerBase
         {
             animator.SetTrigger("Shot");
 
-            photonView.RPC("ThrowKnife", RpcTarget.All, transform.position + transform.up * 1.6f + transform.forward, myCamera.transform.rotation);
+            photonView.RPC("ThrowKnife", RpcTarget.All, myCamera.transform.position + transform.forward, myCamera.transform.rotation);
         };
         this.rigthFunc =
         () =>
@@ -259,8 +259,7 @@ public class Hunter : PlayerBase
                     {
                         canSpawnFootfall = false;
 
-                        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
-                        footfall_.transform.position = transform.position;
+                        photonView.RPC("FootfallEffect", RpcTarget.AllBufferedViaServer, transform.position);
 
                         StartCoroutine(Footfall());
                     }
@@ -270,5 +269,12 @@ public class Hunter : PlayerBase
                 break;
             }
         }
+    }
+
+    [PunRPC]
+    private void FootfallEffect(Vector3 myPos_)
+    {
+        Effect footfall_ = ObjPool.GetEffect(ObjPool.EffectNames.Footfall);
+        footfall_.transform.position = myPos_;
     }
 }
