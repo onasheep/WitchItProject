@@ -8,7 +8,7 @@ public class WitchController : PlayerBase
 {
     //1001 hp 연동
     [SerializeField] private GameObject hpObj;
-    [SerializeField] private Image hpBar; 
+    [SerializeField] private Image hpBar;
 
 
     //HJ__0920 포톤 테스트 추가
@@ -46,7 +46,7 @@ public class WitchController : PlayerBase
 
     private void Awake()
     {
-       
+
     }
 
     private void Start()
@@ -107,11 +107,11 @@ public class WitchController : PlayerBase
         }
 
         //HJ__1001
-        if(photonView.IsMine)
+        if (photonView.IsMine)
         {
             hpObj = GameObject.Find("WitchCanvas");
             hpBar = hpObj.transform.GetChild(1).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).gameObject.transform.GetChild(0).GetComponent<Image>();
-            hpBar.fillAmount = (health/100f);
+            hpBar.fillAmount = (health / 100f);
         }
 
         if (health <= 0)
@@ -424,6 +424,14 @@ public class WitchController : PlayerBase
 
     }
 
+
+
+    [PunRPC]
+    public void TakeDamagePlease(int myViewID_)
+    {
+        photonView.RPC("TakeDamage", RpcTarget.AllBufferedViaServer, myViewID_);
+    }
+
     [PunRPC]
     public void TakeDamage(int myViewID_)
     {
@@ -441,8 +449,12 @@ public class WitchController : PlayerBase
 
 
         // 여기에서 플레이어를 파괴하거나 다른 처리를 수행할 수 있습니다.
-        PhotonNetwork.Destroy(currBody);
         PhotonNetwork.Destroy(gameObject);
+
+        if (isMetamor)
+        {
+            PhotonNetwork.Destroy(currBody);
+        }
     }
 
     [PunRPC]
