@@ -142,11 +142,12 @@ public class WitchController : PlayerBase
             photonView.RPC("CancelPlease", RpcTarget.MasterClient, myPv.ViewID, lookPoint.transform.position);
         }
 
-
-        //if (Input.GetKeyDown(KeyCode.L))
-        //{
-        //    DieWitch();
-        //}
+        //속도제한 1002
+        if (rigid.velocity.magnitude > 5f)
+        {
+            rigid.velocity = rigid.velocity.normalized * 5f;
+        }
+     
     }
 
     protected override void InputPlayer()
