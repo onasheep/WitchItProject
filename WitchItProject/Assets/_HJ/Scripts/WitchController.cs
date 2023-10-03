@@ -427,16 +427,16 @@ public class WitchController : PlayerBase
 
 
     [PunRPC]
-    public void TakeDamagePlease(int myViewID_)
+    public void TakeDamagePlease()
     {
-        photonView.RPC("TakeDamage", RpcTarget.AllBufferedViaServer, myViewID_);
+        photonView.RPC("TakeDamage", RpcTarget.AllBufferedViaServer);
     }
 
     [PunRPC]
-    public void TakeDamage(int myViewID_)
+    public void TakeDamage()
     {
         // 데미지는 5?
-        PhotonView.Find(myViewID_).GetComponent<WitchController>().health -= 5;
+        health -= 5;
     }
 
 
@@ -504,7 +504,7 @@ public class WitchController : PlayerBase
     private void PossesionPlease(int myViewID_, int objViewID_, Vector3 lookPosition_, int actorNum_)
     {
         GameObject obj_ = PhotonView.Find(objViewID_).gameObject;
-
+        obj_.AddComponent<RollingMove>().myWitchCon = PhotonView.Find(myViewID_).GetComponent<WitchController>();
         photonView.RPC("PossesionEffect", RpcTarget.AllBufferedViaServer, lookPosition_);
         photonView.RPC("PossesionToObj", RpcTarget.AllBufferedViaServer, myViewID_, objViewID_, lookPosition_, actorNum_);
     }
@@ -526,8 +526,7 @@ public class WitchController : PlayerBase
 
         GameObject obj_ = PhotonView.Find(objViewID_).gameObject;
         obj_.name = "Witch?";
-        obj_.AddComponent<RollingMove>();
-        obj_.AddComponent<RollingMove>().myWitchCon = witch_;
+       
         obj_.layer = LayerMask.NameToLayer("Witch");
 
         obj_.GetComponent<PhotonView>().TransferOwnership(actorNum_);
@@ -569,6 +568,7 @@ public class WitchController : PlayerBase
         string objName_ = PhotonView.Find(objViewID_).name.Replace("(Clone)", "");
         GameObject newBody_ = PhotonNetwork.Instantiate(objName_, lookPosition_, lookRotation_);
         newBody_.GetComponent<PhotonView>().TransferOwnership(actorNum_);
+        newBody_.AddComponent<RollingMove>().myWitchCon = PhotonView.Find(myViewID_).GetComponent<WitchController>(); 
 
         photonView.RPC("MetamorEffect", RpcTarget.AllBufferedViaServer, lookPosition_);
         photonView.RPC("MetamorphosisToObj", RpcTarget.AllBufferedViaServer, myViewID_, newBody_.GetComponent<PhotonView>().ViewID, lookPosition_, actorNum_);
@@ -591,8 +591,8 @@ public class WitchController : PlayerBase
         GameObject newBody_ = PhotonView.Find(objViewID_).gameObject;
         newBody_.name = "Witch?";
         newBody_.transform.position = lookPosition_;
-        newBody_.AddComponent<RollingMove>();
-        newBody_.AddComponent<RollingMove>().myWitchCon = witch_;
+        //newBody_.AddComponent<RollingMove>();
+        //newBody_.AddComponent<RollingMove>().myWitchCon = witch_;
         newBody_.layer = LayerMask.NameToLayer("Witch");
 
         newBody_.GetComponent<PhotonView>().TransferOwnership(actorNum_);

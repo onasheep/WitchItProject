@@ -41,12 +41,12 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.GetComponent<WitchController>() != null)
         {
-            collision.gameObject.GetComponent<WitchController>().photonView.RPC("TakeDamagePlease", RpcTarget.MasterClient, collision.gameObject.GetComponent<PhotonView>().ViewID);
+            collision.gameObject.GetComponent<WitchController>().photonView.RPC("TakeDamagePlease", RpcTarget.MasterClient);
         }
 
         if (collision.gameObject.GetComponent<RollingMove>() != null)
         {
-            collision.gameObject.GetComponent<WitchController>().photonView.RPC("TakeDamagePlease", RpcTarget.MasterClient, collision.gameObject.GetComponent<PhotonView>().ViewID);
+            collision.gameObject.GetComponent<RollingMove>().myWitchCon.photonView.RPC("TakeDamagePlease", RpcTarget.MasterClient);
         }
 
         Effect effect_ = ObjPool.GetEffect(ObjPool.EffectNames.Hit);
