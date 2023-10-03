@@ -231,18 +231,20 @@ public class GameManager : MonoBehaviourPunCallbacks
                     //헌터 승리 UI 와 처리
                     //헌터 승리 캔버스 띄어주고 RPC로 other에게 헌터 승리 함수 원격 실행 시켜야 함 
                     //Debug.Log("헌터승리");
-                    WinH();
-                    photonView.RPC("WinH", RpcTarget.Others);
                     SetOver();
                     photonView.RPC("SetOver", RpcTarget.Others);
+                    WinH();
+                    photonView.RPC("WinH", RpcTarget.Others);
                     return;
                 }
             }
+            
             if (isWitch) //이게 true 되면 카운트 하나 줄여줌
             {
                 photonView.RPC("DieWitch", RpcTarget.MasterClient);
                 isWitch = false;
             }
+
             if (timeRemaining > 0)
             {
                 timeRemaining -= Time.deltaTime;
@@ -253,15 +255,16 @@ public class GameManager : MonoBehaviourPunCallbacks
                 timeText.text = string.Format("00:00");
                 if (PhotonNetwork.IsMasterClient)
                 {
+                    SetOver();
+                    photonView.RPC("SetOver", RpcTarget.Others);
                     WinW();
                     photonView.RPC("WinW", RpcTarget.Others);
-                    UnityAction action = () =>
-                    {
-                        SetOver();
-                        photonView.RPC("SetOver", RpcTarget.Others);
-                    };
-
-                    ThreadManager.instance.DoRoutine(action, 5f);
+                    //UnityAction action = () =>
+                    ////{
+                    //SetOver();
+                    //photonView.RPC("SetOver", RpcTarget.Others);
+                    //};
+                    //ThreadManager.instance.DoRoutine(action, 5f);
 
                 }
                 Debug.Log("헌터가 찾는 시간이 끝났습니다. 그리고 마녀의 승리입니다.");
@@ -456,7 +459,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         Debug.Log("헌터 승리");
         // SJ_ 이 기능을 하는 다른 함수에도 아래와 같이 넣으면 동작함!!
         ThreadManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
-        //PhotonNetwork.LoadLevel("TestGameMap");
+        
     }
     
     [PunRPC]
@@ -465,7 +468,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         witchWinPanel.SetActive(true);
         Debug.Log("마녀 승리");
         ThreadManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
-        PhotonNetwork.LoadLevel("TestGameMap");
+        
     }
     
     [PunRPC]

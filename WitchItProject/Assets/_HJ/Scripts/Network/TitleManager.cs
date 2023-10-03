@@ -18,6 +18,7 @@ public class TitleManager : MonoBehaviourPunCallbacks
     [SerializeField] private GameObject disconnectPanel;
     [SerializeField] private Button lobbyButton;
     [SerializeField] private Text buttonText = default;
+    [SerializeField] private GameObject pressObj = default;
 
     [Header("DisconnectPanel")]
     public InputField NickNameInput;
@@ -41,7 +42,7 @@ public class TitleManager : MonoBehaviourPunCallbacks
         lobbyButton = disconnectPanel.transform.GetChild(1).gameObject.GetComponent<Button>();
         
         buttonText = lobbyButton.transform.GetChild(0).gameObject.GetComponent<Text>();
-
+        pressObj = titleCanvas.transform.GetChild(2).gameObject;
         introVideo = introCanvas.transform.GetChild(0).gameObject.GetComponent<VideoPlayer>();
         lobbyButton.onClick.AddListener(() => EnterLobby());
         disconnectPanel.SetActive(false);
@@ -67,6 +68,7 @@ public class TitleManager : MonoBehaviourPunCallbacks
         {
             if (Input.anyKeyDown)
             {
+                pressObj.SetActive(false);
                 disconnectPanel.SetActive(true);
             }
         }

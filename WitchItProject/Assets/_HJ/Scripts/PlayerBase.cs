@@ -29,7 +29,7 @@ public abstract class PlayerBase : MonoBehaviourPun
     protected Animator animator = default;
     protected SkillSlot skillSlot = default;
 
-    protected const float MOVESPEED = 50f;
+    protected const float MOVESPEED = 25f;
     protected const float JUMPFORCE = 5f;
 
     // { Skill Q, RightMouse 
@@ -159,6 +159,7 @@ public abstract class PlayerBase : MonoBehaviourPun
 
     protected virtual void Jump()
     {
+
         // TODO : 통일성 위해서 일단 수정 가능하다면 하고
         // 시간이 없어서 아니면 날리자!
         //if (jumpFunc == default)

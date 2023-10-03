@@ -7,11 +7,11 @@ using UnityEngine.UI;
 public class EscMenuControl : MonoBehaviour
 {
     [SerializeField] GameObject firstPanel;
-    [SerializeField] GameObject settingPanel;
+    //[SerializeField] GameObject settingPanel;
     [SerializeField] Canvas myCanvas;
 
     [SerializeField] Button continueBtn;
-    [SerializeField] Button settingBtn;
+    //[SerializeField] Button settingBtn;
     [SerializeField] Button lobbyBtn;
 
 
@@ -24,24 +24,24 @@ public class EscMenuControl : MonoBehaviour
     void Start()
     {
         firstPanel = transform.GetChild(0).gameObject;
-        settingPanel = transform.GetChild(1).gameObject;
+        //settingPanel = transform.GetChild(1).gameObject;
         myCanvas = GetComponent<Canvas>();
 
         continueBtn =  firstPanel.transform.GetChild(0).GetComponent<Button>();
-        settingBtn = firstPanel.transform.GetChild(1).GetComponent<Button>();
+        //settingBtn = firstPanel.transform.GetChild(1).GetComponent<Button>();
         lobbyBtn = firstPanel.transform.GetChild(4).GetComponent<Button>();
 
-        settingPanel.SetActive(false);
+        //settingPanel.SetActive(false);
 
         continueBtn.onClick.AddListener(() => ContinueGame());
-        settingBtn.onClick.AddListener(() => OpenSetting());
+        //settingBtn.onClick.AddListener(() => OpenSetting());
         lobbyBtn.onClick.AddListener(() => GoLobby());
     }
 
     void Update()
     {
         OpenEscMenu();
-        OffSetting();
+        //OffSetting();
     }
 
 
@@ -119,7 +119,7 @@ public class EscMenuControl : MonoBehaviour
         isEscMenu = false;
         firstPanel.SetActive(false);
         isSetting = true;
-        settingPanel.SetActive(true);
+        //settingPanel.SetActive(true);
     }
 
     void GoLobby()

@@ -52,6 +52,7 @@ public class WitchController : PlayerBase
     private void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
+        health = healthMax;
     }
 
     private void OnEnable()
@@ -142,10 +143,11 @@ public class WitchController : PlayerBase
             photonView.RPC("CancelPlease", RpcTarget.MasterClient, myPv.ViewID, lookPoint.transform.position);
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            DieWitch();
-        }
+
+        //if (Input.GetKeyDown(KeyCode.L))
+        //{
+        //    DieWitch();
+        //}
     }
 
     protected override void InputPlayer()
@@ -237,9 +239,10 @@ public class WitchController : PlayerBase
                     photonView.RPC("PossesionEffect", RpcTarget.AllBufferedViaServer, lookPoint.transform.position);
                     photonView.RPC("PossesionPlease", RpcTarget.MasterClient, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position);
                 }
-                this.jumpFunc = () => JumpWitch();
-
+                //this.jumpFunc = () => JumpWitch();
             };
+        this.jumpFunc = () => JumpWitch();
+
     }
 
     protected override void Move()
