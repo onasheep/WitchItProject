@@ -18,6 +18,11 @@ public class RollingMove : MonoBehaviourPun
 
     private void FixedUpdate()
     {
+        if (!photonView.IsMine)
+        {
+            return;
+        }
+
         MoveVertical();
         MoveHorizontal();
     }
