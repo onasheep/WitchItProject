@@ -32,7 +32,7 @@ public class GraphicsMenu : MonoBehaviour
     [Header("Vsync")]
     public Toggle vsyncToggle;
     public TMP_Dropdown antiAliasingDropdown;    
-    private int aniAliasingNum = default;
+    private int antiAliasingNum = default;
 
     [Header("Gamma")]
     private PostProcessVolume volume;
@@ -161,7 +161,6 @@ public class GraphicsMenu : MonoBehaviour
         width = Screen.width - (fpsRect.rect.width / 2);
         height = Screen.height - (fpsRect.rect.height / 2);
         Rect rect = new Rect(width, height, Screen.width, Screen.height);
-        //
 
         float fps = 1.0f / Time.deltaTime;
         float ms = Time.deltaTime * 1000.0f;
@@ -177,7 +176,6 @@ public class GraphicsMenu : MonoBehaviour
 
     #region DropDownOptionChange
 
-
     public void DropdownOptionChange(int idx)
     {
         resolutionNum = idx;
@@ -185,7 +183,7 @@ public class GraphicsMenu : MonoBehaviour
 
     public void AnitiAliasingOptionChange(int idx)
     {
-        aniAliasingNum = idx;
+        antiAliasingNum = idx;
     }
 
     #endregion
@@ -229,7 +227,7 @@ public class GraphicsMenu : MonoBehaviour
         // } Resolution Fullscreen Set
 
         // { Antialiasing Set
-        QualitySettings.antiAliasing = aniAliasingNum;
+        QualitySettings.antiAliasing = antiAliasingNum;
         // } Antialiasing Set
 
         //// { Gamma Set
@@ -239,11 +237,9 @@ public class GraphicsMenu : MonoBehaviour
     }       // SetResoultion()
 
 
-    // Click Back Button
-    // TODO : Change to Quit Setting
-    public void OnApplicationQuit()
+    public void OffCanvas()
     {
-        Application.Quit();
+        this.gameObject.SetActive(false);
     }
 
 

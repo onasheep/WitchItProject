@@ -13,7 +13,7 @@ public static partial class GFunc
     {
         DoKillCoroutine(routine, manager_, time_);
         return routine;
-    }
+    }       // KillCoroutine()
 
     private static IEnumerator DoKillCoroutine(Coroutine routine, MonoBehaviour manager_, float time_)
     {
@@ -32,10 +32,17 @@ public static partial class GFunc
         routine = default;
         Debug.LogFormat("routine null or default ? : {0}", GFunc.IsCoroutineDead(routine));
 
-
         //yield return 0.1f;
         //Debug.LogFormat("is real dead Coroutine?? -> {0}", IsCoroutineDead(routine));
-    }
+    }       // DoKillCoroutine()
+
+    public static  void KillAllCoroutuine(this List<Coroutine> routines_, MonoBehaviour manager_)
+    {
+        foreach(Coroutine routine in routines_)
+        {
+            manager_.StopCoroutine(routine);
+        }
+    }       // KillAllCoroutuine()
 
     public static bool IsCoroutineDead(this Coroutine routine)
     {

@@ -442,7 +442,6 @@ public class GameManager : MonoBehaviourPunCallbacks
         int witchSpawnPoint = 1;
         GameObject witch = PhotonNetwork.Instantiate(RDefine.PLAYER_WITCH, points[witchSpawnPoint].position, points[witchSpawnPoint].rotation, 0); //마녀 생성입니다.
 
-
         //witch.GetComponent<PhotonTransformView>().enabled = true;
         ////Debug.Log("PhotonTransformView 활성화됨");
         //witch.GetComponent<PhotonAnimatorView>().enabled = true;

@@ -1,4 +1,3 @@
-using Photon.Pun.Demo.Cockpit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,7 +9,8 @@ public class ThreadManager : MonoBehaviour
     
     private static List<Coroutine> routines;
 
-    
+    private List<Coroutine> runningCoroutine;
+
     private void Awake()
     {
         if(instance == null || instance == default)
@@ -21,8 +21,9 @@ public class ThreadManager : MonoBehaviour
         }       // if : instance가 비어있는 경우 채워주고, 초기화 필요 O
         else
         {
+            routines.Clear();
             return;
-        }       // else : instance가 이미 존재하기 떄문에 , 초기화 필요 X
+        }       // else : instance가 이미 존재하기 떄문에 , routines를 지워줌
     }
 
     private void Init()
@@ -30,28 +31,33 @@ public class ThreadManager : MonoBehaviour
         routines = new List<Coroutine>();
     }
 
-
-
-    public void Update()
+    private void OnDestroy()
     {
-        Debug.LogFormat("{0}",routines.Count);
+        //routines.KillAllCoroutuine(this);
+
+        //routines.Clear();
     }
 
-    
+    // TEST : 
+    private void KillAll()
+    {
+        //if(Input.GetKeyDown(KeyCode.P))
+        //{
+        //    routines.KillAllCoroutuine(this);
+        //    foreach(Coroutine routine in routines)
+        //    {
+        //        Debug.LogFormat("routine is default? : {0}", routine == default);
+        //    }
+        //}
 
-    // TODO : GFunc + Thread 에서 적용되면 삭제할 예정 
-    //private void OnDestroy()
-    //{
-    //    if( routines.Count > 1 )
-    //    {
-    //        foreach(IEnumerator routine in routines)
-    //        {
-    //            StopCoroutine(routine);
-    //        }
-    //    }
-    //    else { /* Do Nothing */ }
-        
-    //}
+
+
+    }
+    public void Update()
+    {
+        KillAll();
+        Debug.LogFormat("{0}",routines.Count);
+    }
 
     public void RemoveRoutine(Coroutine routine)
     {

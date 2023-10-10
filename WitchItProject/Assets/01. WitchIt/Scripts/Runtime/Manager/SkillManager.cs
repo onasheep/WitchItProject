@@ -12,6 +12,7 @@ public class SkillManager
     {
         HunterSkill = new Dictionary<string, SkillBase>();
         WitchSkill = new Dictionary<string,SkillBase>();
+
         InitSkill();
     }
     void InitSkill()

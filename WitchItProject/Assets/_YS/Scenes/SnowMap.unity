@@ -48247,15 +48247,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   randNum: 0
-  roomName: {fileID: 0}
-  connectInfo: {fileID: 0}
-  msgList: {fileID: 0}
-  exitBtn: {fileID: 0}
   witchPrefab: {fileID: 0}
   hunterPrefab: {fileID: 0}
   hostCanvasObj: {fileID: 0}
   clientCanvasObj: {fileID: 0}
-  roomInfoCanvasObj: {fileID: 0}
   startPannel: {fileID: 0}
   readyPannel: {fileID: 0}
   masterStartBtn: {fileID: 0}
@@ -48264,6 +48259,12 @@ MonoBehaviour:
   playerCount: 0
   readyCount: 0
   isEveryReady: 0
+  witchCanvas: {fileID: 0}
+  hpPanel: {fileID: 0}
+  wSkillPanel: {fileID: 0}
+  hunterCanvas: {fileID: 0}
+  crossHairPanel: {fileID: 0}
+  hSkillPanel: {fileID: 0}
   isGameStart: 0
   totalWHCount: 0
   hunterCount: 0
@@ -48276,6 +48277,11 @@ MonoBehaviour:
   witchWinPanel: {fileID: 0}
   timeRemaining: 600
   timeText: {fileID: 0}
+  isEscape: 0
+  escMenuCanvas: {fileID: 0}
+  escPanel: {fileID: 0}
+  continueBtn: {fileID: 0}
+  returnmMainMenuBtn: {fileID: 0}
 --- !u!1001 &1489370809
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66873,11 +66879,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 425461376466491734, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.72727275
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 425461376466491734, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1009714324098929338, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_Name
@@ -66897,7 +66903,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2661089305389907552, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2661089305389907562, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_Pivot.x
@@ -66985,15 +66991,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3221935751423118338, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.72727275
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3221935751423118338, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3221935751423118338, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.72727275
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5941567739012654870, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_MaxValue

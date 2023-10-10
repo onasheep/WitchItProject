@@ -7,6 +7,10 @@ using UnityEngine.UI;
 public class EscMenuControl : MonoBehaviour
 {
     [SerializeField] GameObject firstPanel;
+    // { SJ_ 231010 
+    [SerializeField] GameObject graphicsCanvas;
+    // } SJ_ 231010 
+
     //[SerializeField] GameObject settingPanel;
     [SerializeField] Canvas myCanvas;
 
@@ -126,4 +130,19 @@ public class EscMenuControl : MonoBehaviour
     {
         SceneManager.LoadScene("LobbyScene");
     }
+
+    // SJ_ 231010
+    // { Graphics Setting On / Off
+    public void OnGraphicsSetting()
+    {
+
+        graphicsCanvas.SetActive(true);
+    }
+
+    public void OffGraphicsSetting()
+    {
+
+        graphicsCanvas.SetActive(false);
+    }
+    // } Graphics Setting On / Off
 }

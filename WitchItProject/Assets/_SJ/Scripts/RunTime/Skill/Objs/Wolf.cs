@@ -91,7 +91,7 @@ public class Wolf : MonoBehaviour
             isFind = true;
             animator.SetBool("isFind", isFind);
         }       // if : 마녀가 범위 안에 있는 경우
-
+        else { /* Do Nothing */ }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -103,5 +103,6 @@ public class Wolf : MonoBehaviour
             isFind = false;
             animator.SetBool("isFind", isFind) ;
         }       // if : 마녀가 범위 밖에 있는 경우
+        else { /* Do Nothing */ }
     }
 }
