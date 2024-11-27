@@ -17,8 +17,6 @@ public class SkillManager
     }
     void InitSkill()
     {
-        // TODO : 초기화 시점 및 List 생성 시점은 SkillSlot 생성 이전
-        // SOLUTION : SceneManger 등을 통해 미리 관리 ?
         Skill_Wolf skill_wolf = new Skill_Wolf();
         Skill_Cross skill_cross = new Skill_Cross();
         Skill_Beartrap skill_beartrap = new Skill_Beartrap();

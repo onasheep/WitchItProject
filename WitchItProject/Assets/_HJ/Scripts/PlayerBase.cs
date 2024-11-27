@@ -45,6 +45,7 @@ public abstract class PlayerBase : MonoBehaviourPun
         // } Skill Q, RightMouse 
 
 
+
     // } Hunter Witch Common
 
     // 09/18 Jung
@@ -94,17 +95,11 @@ public abstract class PlayerBase : MonoBehaviourPun
         // SJ_ TEST : 헌터 발사 쿨타임 적용
         if (Input.GetMouseButtonDown(0))
         {
-            // TEST : 예외처리 용이지만 잠시 주석으로 테스트 함
-            // TODO : 갔다와서 적요된거 테스트 
-            //if (leftFunc == null)
-            //{
-            //    return;
-            //}
             if(type == TYPE.HUNTER && isFire_On == true)
             {
                 isFire_On = false;
                 this.leftFunc.Invoke();
-                ThreadManager.instance.DoRoutine(() => OnSkill(ref isFire_On), fireCool).KillCoroutine(this, fireCool + 0.01f);
+                CoroutineManager.instance.DoRoutine(() => OnSkill(ref isFire_On), fireCool).KillCoroutine(this, fireCool + 0.01f);
                 
 
             }
@@ -122,7 +117,7 @@ public abstract class PlayerBase : MonoBehaviourPun
 
             this.rigthFunc.Invoke();
 
-            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillRM_On), skillSlot.Slots[0].CoolTime);
+            CoroutineManager.instance.DoRoutine(() => OnSkill(ref isSkillRM_On), skillSlot.Slots[0].CoolTime);
 
         }
         if (Input.GetKeyDown(KeyCode.Q) && isSkillQ_On)
@@ -131,7 +126,7 @@ public abstract class PlayerBase : MonoBehaviourPun
 
             this.QFunc.Invoke();
 
-            ThreadManager.instance.DoRoutine(() => OnSkill(ref isSkillQ_On), skillSlot.Slots[1].CoolTime).KillCoroutine(this, skillSlot.Slots[1].CoolTime + 0.01f);
+            CoroutineManager.instance.DoRoutine(() => OnSkill(ref isSkillQ_On), skillSlot.Slots[1].CoolTime).KillCoroutine(this, skillSlot.Slots[1].CoolTime + 0.01f);
 
         }
         if (Input.GetKeyDown(KeyCode.Space))

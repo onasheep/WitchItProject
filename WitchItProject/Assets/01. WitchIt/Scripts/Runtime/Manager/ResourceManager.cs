@@ -1,59 +1,67 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static RDefine;
 
 public static class ResourceManager
 {
 
-    public static Dictionary<string, GameObject> objs;
-    public static Dictionary<string, GameObject> effects;
-    public static Dictionary<string, GameObject> players;
+
+    // ! Enum 과 리소스 경로 매칭
+    public static Dictionary<EResourceType, string> resourcesPath
+     = new Dictionary<EResourceType, string>()
+     {
+         {EResourceType.EFFECT, EFFECT_PATH },
+         {EResourceType.OBJECT, OBJ_PATH },
+         {EResourceType.PLAYER, PLAYER_PATH }
+     };
+
+    public static readonly Dictionary<EResourceType, Dictionary<string, GameObject>> resources
+        = new Dictionary<EResourceType, Dictionary<string, GameObject>>();
+
     public static void Init()
     {
-        objs = new Dictionary<string, GameObject>();
-        effects = new Dictionary<string, GameObject>();
-        players = new Dictionary<string, GameObject>();
 
-        AddResouces();
-    }
+        foreach (EResourceType type in Enum.GetValues(typeof(EResourceType)))
+        {
+            resources[type] = new Dictionary<string, GameObject>();
+            AddResources(type);
+        }   
 
-    public static void AddResouces()
+    }       // Init()
+
+    private static void AddResources(EResourceType type)
     {
-        // TODO : 추후 리소스 폴더 내부에서 폴더로 또 나눠지는 경우 "path" 지정 
-        GameObject[] effectResource = Resources.LoadAll<GameObject>(RDefine.EFFECT_PATH);
-        GameObject[] objResources = Resources.LoadAll<GameObject>(RDefine.OBJ_PATH);
-        GameObject[] playerResources = Resources.LoadAll<GameObject>(RDefine.PLAYER_PATH);
-        #region [TEST] 받아온 리소스들을 한번의 작업으로 다른 Dictionary로 넣으려 함 
-        // TEST : 
-        //List<GameObject[]> resourcesList = new List<GameObject[]>();
-
-        //resourcesList.Add(objResources);
-        //resourcesList.Add(effectResource);
-
-        //foreach (GameObject[] resources in resourcesList)
-        //{
-        //    foreach (GameObject resource in resources)
-        //    {
-        //        effects.Add(resource.name, resource);
-        //    }
-        //}
-        // TEST :
-        #endregion
-
-        foreach (GameObject resource in effectResource)
+        if (!resourcesPath.TryGetValue(type, out string path))
         {
-            effects.Add(resource.name, resource);
-        }
+            Debug.LogWarning($"{path} is not defined");
+            return;
+        }       // if : 경로가 잘못되었을 때 
 
-        foreach (GameObject resource in objResources)
+        GameObject[] loadedResources = Resources.LoadAll<GameObject>(path);
+        foreach(GameObject resource in loadedResources)
         {
-            objs.Add(resource.name, resource);
+            resources[type].Add(resource.name, resource);
         }
+    }       // AddResources()
 
-        foreach (GameObject resource in  playerResources)
+    
+    public static GameObject GetResource(EResourceType type,string name)
+    {
+        if (!resources.TryGetValue(type, out Dictionary<string,GameObject> dict))
         {
-            players.Add(resource.name, resource);
-        }
+            Debug.LogWarning($"Resoucre {type} is not defined");
+            return null;
+        }       // if : type이 존재하지 않을 떄
 
-    }
+        if(!dict.TryGetValue(name, out GameObject resource))
+        {
+            Debug.LogWarning($"Resoucre {name} is not defined");
+            return null;
+        }       // if : name이 존재하지 않을 때
+        
+        return resource;
+        
+    }       // GetResource()
 }

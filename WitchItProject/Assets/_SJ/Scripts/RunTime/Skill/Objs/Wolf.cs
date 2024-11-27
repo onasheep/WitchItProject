@@ -75,7 +75,7 @@ public class Wolf : MonoBehaviour
     private void DestroyWolf()
     {
         
-        GameObject effect = Instantiate(ResourceManager.effects[RDefine.EFFECT_SMOKE], this.transform.position+ smokeEffectOffset, Quaternion.identity);
+        GameObject effect = Instantiate(ResourceManager.GetResource(RDefine.EResourceType.EFFECT, RDefine.EFFECT_SMOKE), this.transform.position+ smokeEffectOffset, Quaternion.identity);
         Destroy(effect, 2f);
         Destroy(this.gameObject);
     }

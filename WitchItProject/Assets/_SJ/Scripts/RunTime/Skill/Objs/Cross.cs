@@ -74,7 +74,7 @@ public class Cross : MonoBehaviour
         }       // loop : 범위가 작아지고 그 동안 범위를 마녀는 이동 할 수 없음
 
         GameObject effect = 
-            Instantiate(ResourceManager.effects[RDefine.EFFECT_EXPLOSION_YELLOW], this.transform.position + new Vector3(0f, 0.5f,0f), Quaternion.identity);
+            Instantiate(ResourceManager.GetResource(RDefine.EResourceType.EFFECT, RDefine.EFFECT_EXPLOSION_YELLOW), this.transform.position + new Vector3(0f, 0.5f,0f), Quaternion.identity);
         Destroy(effect,1f);
 
         Destroy(this.gameObject);        

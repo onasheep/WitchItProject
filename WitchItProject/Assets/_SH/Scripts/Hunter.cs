@@ -41,7 +41,6 @@ public class Hunter : PlayerBase
     private void Update()
     {
 
-
         if (myPv != null)
         {
             if (!myPv.IsMine)

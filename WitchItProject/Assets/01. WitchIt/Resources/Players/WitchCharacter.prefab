@@ -1436,7 +1436,6 @@ GameObject:
   - component: {fileID: 4768873954748149822}
   - component: {fileID: 4768873954748149809}
   - component: {fileID: 4768873954748149808}
-  - component: {fileID: 3476384170727550897}
   m_Layer: 7
   m_Name: WitchCharacter
   m_TagString: Untagged
@@ -1525,25 +1524,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc8a5494bdac0094690fb9710daff462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hpObj: {fileID: 0}
+  hpBar: {fileID: 0}
   witchHealth: 50
   witchMana: 50
   rotationSpeed: 5
   isDead: 0
   isMetamor: 0
---- !u!114 &3476384170727550897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4768873954757801179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9fa4626e65d104b4990ae7760b234f9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
-  lookPoint: {fileID: 0}
 --- !u!1 &4768873954757802391
 GameObject:
   m_ObjectHideFlags: 0

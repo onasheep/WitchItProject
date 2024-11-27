@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ThreadManager : MonoBehaviour
+public class CoroutineManager : MonoBehaviour
 {
-    public static ThreadManager instance;
+    public static CoroutineManager instance;
     
     private static List<Coroutine> routines;
 
@@ -49,9 +49,7 @@ public class ThreadManager : MonoBehaviour
         //        Debug.LogFormat("routine is default? : {0}", routine == default);
         //    }
         //}
-
-
-
+        
     }
     public void Update()
     {

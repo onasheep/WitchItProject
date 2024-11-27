@@ -216,7 +216,7 @@ public class WitchController : PlayerBase
                         isMetamol_On = false;
                         photonView.RPC("MetamorphosisPlease", RpcTarget.MasterClient, myPv.ViewID, hit.collider.gameObject.GetComponent<PhotonView>().ViewID, lookPoint.transform.position, lookPoint.transform.rotation, PhotonNetwork.LocalPlayer.ActorNumber);
 
-                        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+                        CoroutineManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
                     }
                 }
             };
@@ -560,7 +560,7 @@ public class WitchController : PlayerBase
         witch_.currBody = obj_;
 
         //SJ_230927
-        ThreadManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
+        CoroutineManager.instance.DoRoutine(() => OnSkill(ref isMetamol_On), metamolCool);
     }
 
     [PunRPC]

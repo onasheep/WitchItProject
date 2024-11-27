@@ -457,7 +457,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         hunterWinPanel.SetActive(true);
         Debug.Log("헌터 승리");
         // SJ_ 이 기능을 하는 다른 함수에도 아래와 같이 넣으면 동작함!!
-        ThreadManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
+        CoroutineManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
         
     }
     
@@ -466,7 +466,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         witchWinPanel.SetActive(true);
         Debug.Log("마녀 승리");
-        ThreadManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
+        CoroutineManager.instance.DoRoutine(() => PhotonNetwork.LoadLevel("TestGameMap"), 5f);
         
     }
     

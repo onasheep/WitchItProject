@@ -8,7 +8,6 @@ public static class RDefine
     public const string PLAYER_WITCH = "WitchCharacter";
     public const string PLAYER_WITCH2 = "CustomWitch";
 
-
     // } 플레이어 프리팹
 
 
@@ -39,4 +38,9 @@ public static class RDefine
 
     // 09/13 Jung literal
     public const string BULLET_OBJ = "Bullet";
+
+    public  enum EResourceType
+    {
+        OBJECT, EFFECT, PLAYER
+    };
 }

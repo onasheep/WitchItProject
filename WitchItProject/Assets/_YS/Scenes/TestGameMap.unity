@@ -14791,7 +14791,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 468948277}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6122af33b9c423f41a94d0aea43802e4, type: 3}
+  m_Script: {fileID: 11500000, guid: bb9fb833569b81c45a79e6ce269a4a7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &471199580
@@ -30724,6 +30724,10 @@ PrefabInstance:
     - target: {fileID: 2661089305709200068, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_Color.r
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2661089305709200071, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
+      propertyPath: m_MovementType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2661089305709200121, guid: 5ed41563d34da29459570ea91ef39634, type: 3}
       propertyPath: m_Layer

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class SkillBase
+public abstract class SkillBase
 {
     public PlayerBase PlayerController { get; protected set; }
     public string SkillType {  get; protected set; }
@@ -16,12 +16,13 @@ public class SkillBase
     }
     public virtual void ActivateSkill(GameObject object_, Vector3 dir)
     {
-        /* Skill_"스킬"이 실행됨 */
-    }
-    public virtual void ActivateSkill(GameObject object_)
-    {
-        /* Skill_"스킬"이 실행됨 */
+
     }
 
+    public virtual void ActivateSkill(GameObject object_)
+    {
+
+    }
+ 
 }
 

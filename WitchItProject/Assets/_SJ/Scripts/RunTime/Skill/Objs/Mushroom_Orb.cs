@@ -15,7 +15,7 @@ public class Mushroom_Orb : MonoBehaviour
         Physics.IgnoreLayerCollision(0, 0);
         Physics.IgnoreLayerCollision(7, 7);
 
-        GameObject effectOrb = Instantiate(ResourceManager.effects[RDefine.EFFECT_ORB],this.transform.position, Quaternion.identity);  
+        GameObject effectOrb = Instantiate(ResourceManager.GetResource(RDefine.EResourceType.EFFECT,RDefine.EFFECT_ORB),this.transform.position, Quaternion.identity);  
         Destroy(effectOrb, existTime);
 
         if (other.gameObject.layer == LayerMask.NameToLayer("Ground")

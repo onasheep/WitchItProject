@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEditor;
 
 public class GraphicsMenu : MonoBehaviour
 {
@@ -19,7 +18,7 @@ public class GraphicsMenu : MonoBehaviour
     private RectTransform fpsRect = default;    
     private float width;
     private float height;
-    private int size = 15;
+    private readonly int size = 15;
     private Color color = Color.black;
 
     [Header("Resolution")]
